@@ -1,0 +1,31 @@
+{
+  "logo": {
+    "png": "tu-gimnasio-logo.png",
+    "width": 1205,
+    "height": 1177
+  },
+  "identity": {
+    "png": "tu-gimnasio-identidad.png",
+    "webp": "tu-gimnasio-identidad.webp",
+    "width": 1254,
+    "height": 1254
+  },
+  "manifesto": {
+    "png": "tu-gimnasio-actividades.png",
+    "webp": "tu-gimnasio-actividades.webp",
+    "width": 1600,
+    "height": 900
+  },
+  "schedule": {
+    "archived": true,
+    "png": "tu-gimnasio-horarios-referencia.png",
+    "width": 1206,
+    "height": 1508
+  },
+  "spinning": {
+    "archived": true,
+    "png": "tu-gimnasio-spinning.png",
+    "width": 1206,
+    "height": 1507
+  }
+}

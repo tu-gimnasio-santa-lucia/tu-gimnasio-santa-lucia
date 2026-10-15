@@ -1,0 +1,25 @@
+{
+  "name": "tu-gimnasio-santa-lucia",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sitio institucional estático de Tu Gimnasio, Santa Lucía",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node scripts/browser-check.mjs",
+    "check": "node scripts/check.mjs",
+    "dev": "node scripts/preview.mjs",
+    "backup": "node scripts/backup.mjs",
+    "publish": "node scripts/publish.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "jsqr": "1.4.0",
+    "playwright": "1.64.1",
+    "pngjs": "7.0.0"
+  }
+}

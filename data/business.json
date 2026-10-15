@@ -1,0 +1,66 @@
+{
+  "$schema": "./business.schema.json",
+  "name": "Tu Gimnasio",
+  "foundedYear": 1996,
+  "phoneDisplay": "03777 72-3911",
+  "phoneInternational": "543777723911",
+  "address": {
+    "street": "Av. Italia 109",
+    "locality": "Santa Lucía",
+    "region": "Corrientes",
+    "postalCode": "W3440",
+    "country": "AR",
+    "plusCode": "2W73+W9"
+  },
+  "contacts": {
+    "instagram": "https://www.instagram.com/tugimnasio1/",
+    "maps": "https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8",
+    "whatsappMessage": "Hola Tu Gimnasio, quisiera consultar por las actividades."
+  },
+  "hours": {
+    "weekdayLabel": "Lunes a viernes",
+    "weekendLabel": "Sábado y domingo",
+    "weekdays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "07:00",
+    "closes": "22:00",
+    "weekendClosed": true,
+    "notice": "Las clases tienen horarios específicos. Consultá disponibilidad por WhatsApp. En feriados el horario puede variar."
+  },
+  "mottos": {
+    "equality": "Todos somos iguales, la diferencia está en los detalles.",
+    "returnToBasics": "Volvamos a las bases.",
+    "yourPlace": "Tu lugar, tu gimnasio."
+  },
+  "activities": [
+    {
+      "id": "musculacion",
+      "name": "Musculación",
+      "description": "Tu espacio para construir fuerza y entrenar con constancia.",
+      "accent": "yellow"
+    },
+    {
+      "id": "spinning",
+      "name": "Spinning",
+      "description": "Energía en grupo y ritmo sobre la bici para superarte.",
+      "accent": "blue"
+    },
+    {
+      "id": "gimnasia-grupal",
+      "name": "Gimnasia grupal",
+      "description": "Clases para moverte, compartir y disfrutar el proceso.",
+      "accent": "red"
+    },
+    {
+      "id": "pilates",
+      "name": "Pilates",
+      "description": "Control, movilidad y equilibrio para sentirte mejor.",
+      "accent": "white"
+    }
+  ],
+  "googleRating": {
+    "value": 4.8,
+    "reviewCount": 18,
+    "verifiedAt": "2026-10-15",
+    "source": "https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"
+  }
+}

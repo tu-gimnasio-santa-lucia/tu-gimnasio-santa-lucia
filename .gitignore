@@ -1,0 +1,10 @@
+dist/
+artifacts/
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+.taste-skill/

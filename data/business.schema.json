@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Datos oficiales de Tu Gimnasio",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "foundedYear",
+    "phoneDisplay",
+    "phoneInternational",
+    "address",
+    "contacts",
+    "hours",
+    "mottos",
+    "activities",
+    "googleRating"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "const": "Tu Gimnasio" },
+    "foundedYear": { "const": 1996 },
+    "phoneDisplay": { "type": "string", "minLength": 1 },
+    "phoneInternational": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Sin +, espacios ni guiones; se usa para tel y WhatsApp."
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["street", "locality", "region", "postalCode", "country", "plusCode"],
+      "properties": {
+        "street": { "type": "string", "minLength": 1 },
+        "locality": { "type": "string", "minLength": 1 },
+        "region": { "type": "string", "minLength": 1 },
+        "postalCode": { "type": "string", "minLength": 1 },
+        "country": { "const": "AR" },
+        "plusCode": { "type": "string", "minLength": 1 }
+      }
+    },
+    "contacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instagram", "maps", "whatsappMessage"],
+      "properties": {
+        "instagram": { "type": "string", "format": "uri" },
+        "maps": { "type": "string", "format": "uri" },
+        "whatsappMessage": { "type": "string", "minLength": 1 }
+      }
+    },
+    "hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "weekdayLabel",
+        "weekendLabel",
+        "weekdays",
+        "opens",
+        "closes",
+        "weekendClosed",
+        "notice"
+      ],
+      "properties": {
+        "weekdayLabel": { "type": "string", "minLength": 1 },
+        "weekendLabel": { "type": "string", "minLength": 1 },
+        "weekdays": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+          }
+        },
+        "opens": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        "closes": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        "weekendClosed": { "type": "boolean" },
+        "notice": { "type": "string", "minLength": 1 }
+      }
+    },
+    "mottos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["equality", "returnToBasics", "yourPlace"],
+      "properties": {
+        "equality": { "const": "Todos somos iguales, la diferencia está en los detalles." },
+        "returnToBasics": { "const": "Volvamos a las bases." },
+        "yourPlace": { "const": "Tu lugar, tu gimnasio." }
+      }
+    },
+    "activities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "description", "accent"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "accent": { "enum": ["yellow", "blue", "red", "white"] }
+        }
+      }
+    },
+    "googleRating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "reviewCount", "verifiedAt", "source"],
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0, "maximum": 5 },
+        "reviewCount": { "type": "integer", "minimum": 1 },
+        "verifiedAt": { "type": "string", "format": "date" },
+        "source": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}
