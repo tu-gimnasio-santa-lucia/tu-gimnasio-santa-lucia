@@ -3,7 +3,7 @@
 Este repositorio contiene la fuente oficial. Empezar por README.md y docs/ARQUITECTURA.md; consultar sólo la documentación pertinente al pedido. Estas reglas sirven para personas y cualquier asistente, sin depender de una aplicación o modelo.
 
 1. Antes de modificar o publicar, crear un respaldo fechado y verificarlo. `node scripts/backup.mjs` conserva fuentes, archivos generados e historial. No borrar respaldos anteriores.
-2. Mantener nombre, apertura en 1996, logo, azul oscuro y los tres lemas de data/business.json. La actividad retirada no debe reaparecer en la web. La dirección principal sigue en project.json.
+2. Mantener nombre, apertura en 1996, logo, azul oscuro y los tres lemas de data/business.json. Funcional ya no se ofrece y no debe aparecer en la página pública. La dirección principal sigue en project.json.
 3. Cambiar datos reales sólo con evidencia del gimnasio o una fuente comprobada. Registrar fuente y fecha en docs/VERIFICACION.md. No inventar horarios, precios, reseñas ni actividades.
 4. Datos: data/business.json. Estructura/textos: src/index.template.html. Estilos: src/styles.css. Funciones del navegador: src/site.js. Nunca editar dist/ o site a mano.
 5. HTML, CSS y JavaScript estándar; ninguna dependencia de producción. No agregar backend, rastreadores, fuentes remotas, servicios, autenticación o frameworks sin necesidad del pedido.
