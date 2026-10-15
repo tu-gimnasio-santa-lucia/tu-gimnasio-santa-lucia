@@ -11,6 +11,20 @@
 
 ## Criterio de aprobación
 
+### Entrega 2.1.0 — aniversario y anuncio de próxima sede
+
+El propietario aportó el 15/10/2026 la dirección futura Héroes de Malvinas 150, Santa Lucía, Corrientes, Argentina, indicó que la nueva sede está en construcción y confirmó publicar el anuncio ahora. No aportó una fecha de apertura ni un nuevo enlace de Maps. Se conservan por separado la dirección actual y su ficha. La ubicación futura no aparece como sede abierta en JSON-LD ni enlaza al mapa anterior.
+
+Cifras aportadas por el propietario: 30 años, 10.957 días, 262.968 horas, 15.778.080 minutos y 946.684.800 segundos. Se usan como conmemoración fija de 2026, sin inferir el día de fundación ni simular tiempo real.
+
+La batería se amplió a 24 casos: los cuatro navegadores de la tabla inferior y seis vistas, 320×800, 390×844, 768×1024, 844×390 horizontal, 1280×800 y 1920×1080. Incluye logo completo dentro del círculo, distinción entre ambas direcciones, imágenes, texto al 200%, teclado, ausencia de JavaScript y preguntas frecuentes nativas. Se prueban además animaciones reales en los cuatro motores, su cancelación al activar movimiento reducido, tipografía local a 320/390/1280 e impresión. Se revisa alto contraste en Chromium; se desactiva la mezcla del logo en alto contraste e impresión para que no desaparezca sobre el fondo claro.
+
+Cinco grupos de pruebas de código cubren ahora también equivalencias conmemorativas y rechazo de cambios que anunciarían una apertura o Maps actualizado sin completar la migración. La fuente Anton se aloja junto con su licencia, SHA-256 y origen fijado; no se carga desde Google. La auditoría de las seis dependencias de desarrollo volvió a informar cero vulnerabilidades; no se agregaron dependencias de producción.
+
+El logo original es un JPEG que se había guardado con extensión png. Se conserva el archivo anterior intacto en la fuente y se publica una copia idéntica con extensión jpg y MIME correctos. El encuadre se corrigió con CSS, sin alterar sus píxeles. Dos intentos de extracción transparente generaron bordes defectuosos y se descartaron: ninguno se incluyó en la web ni en sus recursos publicados.
+
+Taste se usó como asesoramiento de composición y revisión, con dirección editorial de aniversario y marca conservada. Su inspector no es un criterio de seguridad o accesibilidad: señala etiquetas contextuales y exige un mínimo arbitrario de movimiento; registra entre cinco y siete elementos móviles según la vista, por debajo de su mínimo de ocho. Se conserva movimiento breve y útil. También advierte sobre ausencia de vídeo, escala tipográfica y fuente nativa; no se fabricaron vídeos del edificio ni se alteró la marca para obtener una puntuación. Los controles funcionales son independientes y los límites permanecen documentados.
+
 ### Entrega 2.0.0 — 15/10/2026
 
 | Navegador probado | Versión | Anchos en píxeles |

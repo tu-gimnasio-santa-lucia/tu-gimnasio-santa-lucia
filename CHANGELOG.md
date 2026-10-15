@@ -1,5 +1,14 @@
 # Historial de cambios
 
+## 2.1.0 — 2026-10-15
+
+- Edición aniversario de 30 años, con las cuatro equivalencias conmemorativas aportadas por el propietario y animación opcional de una sola pasada.
+- Anuncio público de la próxima sede en Héroes de Malvinas 150, Santa Lucía. Ubicación actual y Maps separados; no se supone una apertura ni una ficha actualizada.
+- Portada, jerarquía tipográfica, filas de actividades, historia, contacto, cierre y pie rediseñados; preguntas frecuentes accesibles sin JavaScript.
+- Encuadre del logo completo, sin recortar el nombre. Tipografía deportiva de respaldo Anton alojada con su licencia en el sitio, sin consultas a servidores de fuentes.
+- Animaciones nativas de entrada y respuesta al puntero, movimiento reducido y cancelación inmediata al cambiar la preferencia. Sin nuevas dependencias de producción.
+- Pruebas ampliadas para escritorio grande, móvil horizontal, encuadre del logo, aniversario, mudanza, animación real, cambio de preferencia y ausencia de APIs opcionales.
+
 ## 2.0.0 — 2026-10-15
 
 - Fuente única y portátil en main; site generado y reproducible.

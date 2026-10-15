@@ -2,6 +2,28 @@
   "$schema": "./business.schema.json",
   "name": "Tu Gimnasio",
   "foundedYear": 1996,
+  "anniversary": {
+    "years": 30,
+    "referenceYear": 2026,
+    "commemorative": true,
+    "metrics": [
+      { "id": "days", "value": 10957, "label": "días" },
+      { "id": "hours", "value": 262968, "label": "horas" },
+      { "id": "minutes", "value": 15778080, "label": "minutos" },
+      { "id": "seconds", "value": 946684800, "label": "segundos" }
+    ]
+  },
+  "relocation": {
+    "status": "announced",
+    "futureAddress": {
+      "street": "Héroes de Malvinas 150",
+      "locality": "Santa Lucía",
+      "region": "Corrientes",
+      "country": "Argentina"
+    },
+    "openingDate": null,
+    "mapsUpdated": false
+  },
   "phoneDisplay": "03777 72-3911",
   "phoneInternational": "543777723911",
   "address": {

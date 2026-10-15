@@ -13,12 +13,23 @@ const artifacts = path.join(ROOT, 'artifacts');
 await mkdir(artifacts, { recursive: true });
 const { server, url } = await startPreview(0);
 const project = JSON.parse(await readFile(path.join(ROOT, 'project.json')));
+const business = JSON.parse(await readFile(path.join(ROOT, 'data/business.json')));
+const viewports = [
+  { width: 320, height: 800 },
+  { width: 390, height: 844 },
+  { width: 768, height: 1024 },
+  { width: 844, height: 390 },
+  { width: 1280, height: 800 },
+  { width: 1920, height: 1080 },
+];
 const report = {
   status: 'failed',
   createdAt: new Date().toISOString(),
   buildManifestSha256: sha256(await readFile(path.join(ROOT, 'dist/build-manifest.json'))),
   browsers: [],
   errors: [],
+  motionChecks: [],
+  fontChecks: [],
 };
 const definitions = [
   { name: 'chromium', type: chromium },
@@ -36,9 +47,10 @@ try {
       ...(definition.channel ? { channel: definition.channel } : {}),
     });
     try {
-      for (const width of [320, 390, 768, 1280]) {
+      for (const viewport of viewports) {
+        const { width, height } = viewport;
         const context = await browser.newContext({
-          viewport: { width, height: width < 768 ? 844 : 800 },
+          viewport,
           reducedMotion: 'reduce',
         });
         const page = await context.newPage();
@@ -50,7 +62,13 @@ try {
         page.on('console', (message) => {
           if (message.type() === 'error') {
             const text = message.text();
-            if (takingScreenshot && definition.name === 'webkit' && text === "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.") captureWarnings.push(text);
+            if (
+              takingScreenshot &&
+              definition.name === 'webkit' &&
+              text ===
+                "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
+            )
+              captureWarnings.push(text);
             else errors.push(text);
           }
         });
@@ -71,7 +89,9 @@ try {
           // guarantee that below-fold lazy images have been painted by every browser engine.
           for (const image of await page.locator('img').all()) {
             await image.scrollIntoViewIfNeeded();
-            await image.evaluate(async element => { if (element.decode) await element.decode(); });
+            await image.evaluate(async (element) => {
+              if (element.decode) await element.decode();
+            });
           }
           await page.evaluate(() => window.scrollTo(0, 0));
           assert.ok(await page.locator('#share-controls').isVisible());
@@ -94,6 +114,39 @@ try {
           }));
           assert.ok(metrics.scrollWidth <= width + 1, `Desborde ${metrics.scrollWidth}/${width}`);
           assert.ok(metrics.linksSafe);
+          assert.equal(
+            await page.locator('.future-address h3').textContent(),
+            business.relocation.futureAddress.street,
+          );
+          assert.equal(
+            await page.locator('.future a[href*="maps"]').count(),
+            0,
+            'La dirección futura no debe enlazar al mapa de la sede actual.',
+          );
+          assert.ok(
+            (await page.locator('.location-panel h2').textContent()).includes(
+              business.address.street,
+            ),
+          );
+          const logoFits = await page.locator('.hero-logo').evaluate((image) => {
+            const box = image.getBoundingClientRect();
+            const frame = image.closest('.hero-logo-wrap').getBoundingClientRect();
+            const centerX = frame.x + frame.width / 2;
+            const centerY = frame.y + frame.height / 2;
+            return (
+              getComputedStyle(image).borderRadius === '0px' &&
+              [
+                [box.left, box.top],
+                [box.right, box.top],
+                [box.left, box.bottom],
+                [box.right, box.bottom],
+              ].every(([x, y]) => Math.hypot(x - centerX, y - centerY) < frame.width / 2 - 1)
+            );
+          });
+          assert.ok(
+            logoFits,
+            'El archivo completo del logo debe quedar dentro del círculo, sin cortar el nombre.',
+          );
           for (const text of [
             'desde 1996',
             'musculación',
@@ -140,6 +193,7 @@ try {
             browser: definition.name,
             version: browser.version(),
             width,
+            height,
             accessibilityViolations: 0,
             horizontalOverflow: false,
             consoleErrors: 0,
@@ -166,7 +220,101 @@ try {
       assert.ok(await plain.locator('.hero-actions a').first().isVisible());
       assert.ok(await plain.locator('.qr-card a').isVisible());
       assert.ok(await plain.locator('#share-controls').isHidden());
+      await plain.locator('.questions summary').first().click();
+      assert.equal(await plain.locator('.questions details').first().getAttribute('open'), '');
+      assert.ok(
+        (await plain.locator('.questions details').first().textContent()).includes(
+          business.relocation.futureAddress.street,
+        ),
+      );
       await noScript.close();
+
+      // Exercise real motion, not just the reduced-motion screenshots used above.
+      const motionContext = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        reducedMotion: 'no-preference',
+      });
+      const motionPage = await motionContext.newPage();
+      const motionErrors = [];
+      motionPage.on('pageerror', (error) => motionErrors.push(error.message));
+      await motionPage.goto(url, { waitUntil: 'networkidle' });
+      await motionPage.locator('.anniversary-time').scrollIntoViewIfNeeded();
+      await motionPage.waitForFunction(() =>
+        document.getAnimations().some((animation) => animation.playState === 'running'),
+      );
+      await motionPage.emulateMedia({ reducedMotion: 'reduce' });
+      await motionPage.waitForFunction(
+        () =>
+          [...document.querySelectorAll('[data-count]')].every(
+            (element) =>
+              element.textContent ===
+              new Intl.NumberFormat('es-AR').format(Number(element.dataset.count)),
+          ) && !document.getAnimations().some((animation) => animation.playState === 'running'),
+      );
+      assert.deepEqual(motionErrors, []);
+      report.motionChecks.push({
+        browser: definition.name,
+        realAnimation: 'passed',
+        preferenceChange: 'passed',
+        fixedFinalValues: 'passed',
+      });
+      await motionContext.close();
+
+      // Simulate phones without Impact: load the local font and render the real page with it.
+      const fontContext = await browser.newContext({ reducedMotion: 'reduce' });
+      const fontPage = await fontContext.newPage();
+      await fontPage.goto(url);
+      const loadedFonts = await fontPage.evaluate(async () => {
+        const fonts = await document.fonts.load('400 40px "Tu Gimnasio Display"');
+        document.documentElement.style.setProperty(
+          '--display-font',
+          '"Tu Gimnasio Display", sans-serif',
+        );
+        await document.fonts.ready;
+        return fonts.length;
+      });
+      assert.equal(loadedFonts, 1, 'La tipografía local debe poder descargarse bajo la CSP real.');
+      for (const width of [320, 390, 1280]) {
+        await fontPage.setViewportSize({ width, height: 844 });
+        assert.ok(
+          await fontPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+          'Desborde con tipografía deportiva de respaldo.',
+        );
+      }
+      await fontPage.emulateMedia({ media: 'print' });
+      assert.equal(
+        await fontPage
+          .locator('.future .button')
+          .evaluate((element) => getComputedStyle(element).color),
+        'rgb(0, 0, 0)',
+      );
+      assert.ok(await fontPage.locator('.future-address').isVisible());
+      if (definition.name === 'chromium') {
+        await fontPage.setViewportSize({ width: 390, height: 844 });
+        await fontPage.emulateMedia({ media: 'screen', forcedColors: 'active' });
+        assert.equal(
+          await fontPage
+            .locator('.hero-logo')
+            .evaluate((element) => getComputedStyle(element).mixBlendMode),
+          'normal',
+          'El logo debe conservar sus colores y visibilidad en alto contraste.',
+        );
+        assert.ok(
+          await fontPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        );
+        await fontPage.screenshot({
+          path: path.join(artifacts, 'high-contrast-390.png'),
+          caret: 'initial',
+        });
+      }
+      report.fontChecks.push({
+        browser: definition.name,
+        localFontLoaded: true,
+        widths: [320, 390, 1280],
+        status: 'passed',
+        printLayout: 'passed',
+      });
+      await fontContext.close();
       if (definition.name === 'chromium') {
         const context = await browser.newContext({
           permissions: ['clipboard-read', 'clipboard-write'],
@@ -200,6 +348,20 @@ try {
         await page.locator('#share-site').click();
         assert.ok(await page.locator('#manual-copy').isHidden());
         await context.close();
+        const fallbackContext = await browser.newContext();
+        await fallbackContext.addInitScript(() => {
+          delete window.IntersectionObserver;
+        });
+        const fallbackPage = await fallbackContext.newPage();
+        await fallbackPage.goto(url);
+        assert.equal(await fallbackPage.evaluate(() => 'IntersectionObserver' in window), false);
+        for (const metric of business.anniversary.metrics)
+          assert.equal(
+            await fallbackPage.locator(`[data-count="${metric.value}"]`).textContent(),
+            new Intl.NumberFormat('es-AR').format(metric.value),
+          );
+        assert.ok(await fallbackPage.locator('#aniversario').isVisible());
+        await fallbackContext.close();
       }
     } finally {
       await browser.close();
@@ -214,7 +376,13 @@ try {
   report.noJavaScript = 'passed in all four engines';
   report.clipboardAndFallback = 'passed';
   report.shareCancellation = 'passed';
-  if (!report.errors.length && report.browsers.length === 16) report.status = 'passed';
+  if (
+    !report.errors.length &&
+    report.browsers.length === definitions.length * viewports.length &&
+    report.motionChecks.length === definitions.length &&
+    report.fontChecks.length === definitions.length
+  )
+    report.status = 'passed';
 } catch (error) {
   report.errors.push({ message: error.stack || String(error) });
 } finally {

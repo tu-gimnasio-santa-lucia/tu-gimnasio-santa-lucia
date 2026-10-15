@@ -18,6 +18,49 @@ export const serializeJsonLd = (value) =>
 export function validateBusinessData(data, project) {
   if (data.name !== 'Tu Gimnasio' || data.foundedYear !== 1996)
     throw new Error('Revisar nombre oficial y año de apertura.');
+  const anniversary = data.anniversary;
+  if (
+    !anniversary ||
+    anniversary.commemorative !== true ||
+    !Number.isSafeInteger(anniversary.referenceYear) ||
+    !Number.isSafeInteger(anniversary.years) ||
+    anniversary.years < 1 ||
+    anniversary.referenceYear - data.foundedYear !== anniversary.years ||
+    !Array.isArray(anniversary.metrics) ||
+    anniversary.metrics.length !== 4
+  )
+    throw new Error(
+      'Aniversario conmemorativo inválido. No calcular una fecha de apertura desconocida.',
+    );
+  const metricIds = ['days', 'hours', 'minutes', 'seconds'];
+  anniversary.metrics.forEach((metric, index) => {
+    if (
+      metric.id !== metricIds[index] ||
+      !Number.isSafeInteger(metric.value) ||
+      metric.value < 1 ||
+      typeof metric.label !== 'string' ||
+      !metric.label.trim()
+    )
+      throw new Error('Cifra de aniversario inválida.');
+    if (
+      index > 0 &&
+      metric.value !== anniversary.metrics[index - 1].value * (index === 1 ? 24 : 60)
+    )
+      throw new Error('Las equivalencias conmemorativas no coinciden.');
+  });
+  if (
+    data.relocation?.status !== 'announced' ||
+    data.relocation.openingDate !== null ||
+    data.relocation.mapsUpdated !== false ||
+    !data.relocation.futureAddress
+  )
+    throw new Error('La nueva sede sigue anunciada: no inferir apertura ni Maps actualizado.');
+  for (const key of ['street', 'locality', 'region', 'country'])
+    if (
+      typeof data.relocation.futureAddress[key] !== 'string' ||
+      !data.relocation.futureAddress[key].trim()
+    )
+      throw new Error('Dirección futura incompleta.');
   if (!/^\d{10,15}$/.test(data.phoneInternational))
     throw new Error('Teléfono internacional inválido.');
   if (project.publicUrl !== 'https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/')
@@ -72,6 +115,7 @@ export function validateBusinessData(data, project) {
     data.hours.notice,
     data.contacts.whatsappMessage,
     ...Object.values(data.address),
+    ...Object.values(data.relocation.futureAddress),
     ...Object.values(data.mottos),
     ...data.activities.flatMap((a) => [a.name, a.description]),
   ]) {
@@ -84,7 +128,24 @@ export function validateBusinessData(data, project) {
 /** Restrict asset paths and types: an accidental file in assets must never be published. */
 export function validateAssetManifest(assets) {
   const names = new Set(['qr-tu-gimnasio.png']);
-  for (const key of ['logo', 'identity', 'manifesto', 'schedule', 'spinning']) {
+  const font = assets.fonts?.display;
+  if (
+    !font ||
+    !/^[a-z][a-z0-9-]*\.ttf$/.test(font.file) ||
+    !/^[a-z][a-z0-9-]*\.txt$/.test(font.license) ||
+    !/^[a-f0-9]{64}$/.test(font.sha256)
+  )
+    throw new Error('Fuente local o licencia insegura.');
+  names.add(font.file);
+  names.add(font.license);
+  for (const key of [
+    'logo',
+    'identity',
+    'manifesto',
+    'schedule',
+    'spinning',
+    ...(assets.originalLogo ? ['originalLogo'] : []),
+  ]) {
     const image = assets[key];
     if (image?.archived !== undefined && typeof image.archived !== 'boolean')
       throw new Error('Estado de archivo de imagen inválido.');
@@ -96,8 +157,10 @@ export function validateAssetManifest(assets) {
       image.height < 1
     )
       throw new Error('Dimensiones de imagen inválidas.');
-    for (const name of [image.png, image.webp].filter(Boolean)) {
-      if (!/^[a-z][a-z0-9-]*\.(png|webp)$/.test(name)) throw new Error('Ruta de recurso insegura.');
+    if (!image.png && !image.jpeg) throw new Error('Falta imagen de respaldo.');
+    for (const name of [image.png, image.jpeg, image.webp].filter(Boolean)) {
+      if (!/^[a-z][a-z0-9-]*\.(png|jpg|webp)$/.test(name))
+        throw new Error('Ruta de recurso insegura.');
       names.add(name);
     }
   }
@@ -120,6 +183,11 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   );
   const assets = JSON.parse(await readFile(path.join(ROOT, 'assets/manifest.json'), 'utf8'));
   const assetFiles = validateAssetManifest(assets);
+  if (
+    sha256(await readFile(path.join(ROOT, 'assets', assets.fonts.display.file))) !==
+    assets.fonts.display.sha256
+  )
+    throw new Error('La fuente no coincide con su versión verificada.');
   if (
     (await readdir(path.join(ROOT, 'assets'))).some(
       (name) => name !== 'manifest.json' && !assetFiles.has(name),
@@ -171,7 +239,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const csp = `default-src 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-${jsonLdHash}'; font-src 'self'; connect-src 'none'`;
   function picture(key, className, alt, eager = false) {
     const image = assets[key];
-    return `<picture>${image.webp ? `<source srcset="${escapeHtml(image.webp)}" type="image/webp">` : ''}<img class="${escapeHtml(className)}" src="${escapeHtml(image.png)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}></picture>`;
+    return `<picture>${image.webp ? `<source srcset="${escapeHtml(image.webp)}" type="image/webp">` : ''}<img class="${escapeHtml(className)}" src="${escapeHtml(image.png || image.jpeg)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}></picture>`;
   }
   const activityCards = business.activities
     .map(
@@ -179,13 +247,29 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
         `<article class="activity-card ${a.accent}" id="actividad-${a.id}"><h3>${escapeHtml(a.name)}</h3><p>${escapeHtml(a.description)}</p><a href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Consultar por ${escapeHtml(a.name)}">Consultar <span aria-hidden="true">↗</span></a></article>`,
     )
     .join('\n');
+  // Fixed owner-supplied anniversary figures; never a live clock or a guessed founding date.
+  const anniversaryMetrics = business.anniversary.metrics
+    .map((metric) => {
+      const formatted = new Intl.NumberFormat('es-AR').format(metric.value);
+      return `<div class="time-metric"><dt>${escapeHtml(metric.label)}</dt><dd><span class="metric-number" data-count="${metric.value}" aria-hidden="true">${formatted}</span><span class="sr-only">${formatted}</span></dd></div>`;
+    })
+    .join('\n');
+  const futureAddress = business.relocation.futureAddress;
+  const futureWhatsappUrl = `https://wa.me/${business.phoneInternational}?text=${encodeURIComponent(`Hola Tu Gimnasio, quisiera consultar por la apertura de la nueva sede en ${futureAddress.street}.`)}`;
   const replacements = {
     public_url: project.publicUrl,
-    site_title: `${business.name} | Desde ${business.foundedYear} en ${business.address.locality}`,
-    meta_description: `${business.name} en ${business.address.locality}, ${business.address.region}. ${business.activities.map((a) => a.name).join(', ')}. Desde ${business.foundedYear}.`,
+    site_title: `${business.name} | ${business.anniversary.years} años y una nueva sede en camino`,
+    meta_description: `${business.name}: ${business.anniversary.years} años desde ${business.foundedYear} en ${business.address.locality}. Próxima sede en ${futureAddress.street}, en construcción. Consultá actividades y novedades.`,
     share_description: `${business.name} · Desde ${business.foundedYear} en ${business.address.locality}, ${business.address.region}.`,
     name: business.name,
     founded_year: business.foundedYear,
+    logo_file: assets.logo.png || assets.logo.jpeg,
+    anniversary_years: business.anniversary.years,
+    anniversary_year: business.anniversary.referenceYear,
+    anniversary_metrics: anniversaryMetrics,
+    future_street: futureAddress.street,
+    future_locality: `${futureAddress.locality}, ${futureAddress.region}, ${futureAddress.country}`,
+    future_whatsapp_url: futureWhatsappUrl,
     phone_display: business.phoneDisplay,
     phone_href: 'tel:+' + business.phoneInternational,
     whatsapp_url: whatsappUrl,
@@ -232,6 +316,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   };
   const rawKeys = new Set([
     'activity_cards',
+    'anniversary_metrics',
     'structured_data',
     ...Object.keys(replacements).filter((key) => key.startsWith('image_')),
   ]);
@@ -266,11 +351,14 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
       ),
     ],
   ]);
-  const archivedFiles = new Set(Object.values(assets)
-    .filter((image) => image.archived)
-    .flatMap((image) => [image.png, image.webp].filter(Boolean)));
+  const archivedFiles = new Set(
+    Object.values(assets)
+      .filter((image) => image.archived)
+      .flatMap((image) => [image.png, image.jpeg, image.webp].filter(Boolean)),
+  );
   for (const file of assetFiles)
-    if (!archivedFiles.has(file)) outputs.set(file, await readFile(path.join(ROOT, 'assets', file)));
+    if (!archivedFiles.has(file))
+      outputs.set(file, await readFile(path.join(ROOT, 'assets', file)));
   const manifest = {
     formatVersion: 1,
     generator: 'tu-gimnasio-static/2',

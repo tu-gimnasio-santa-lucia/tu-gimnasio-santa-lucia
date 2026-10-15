@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,16 +10,17 @@
     <meta name="theme-color" content="#08084f" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:title" content="Tu Gimnasio | Desde {{founded_year}} en Santa Lucía" />
-    <meta
-      property="og:description"
-      content="Todos somos iguales. La diferencia está en los detalles."
-    />
+    <meta property="og:title" content="{{site_title}}" />
+    <meta property="og:description" content="{{meta_description}}" />
     <meta property="og:url" content="{{public_url}}" />
     <meta property="og:image" content="{{identity_image_url}}" />
+    <meta
+      property="og:image:alt"
+      content="Tu Gimnasio: todos somos iguales, la diferencia está en los detalles."
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="{{public_url}}" />
-    <link rel="icon" href="tu-gimnasio-logo.png" />
+    <link rel="icon" href="{{logo_file}}" />
     <link
       rel="stylesheet"
       href="{{style_file}}"
@@ -29,162 +30,171 @@
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-
     <header class="site-header">
-      <a class="brand" href="#inicio">
-        {{image_header_logo}}
-        <span>Tu Gimnasio <small>Desde {{founded_year}}</small></span>
-      </a>
+      <a class="brand" href="#inicio"
+        >{{image_header_logo}}<span>Tu Gimnasio<small>Desde {{founded_year}}</small></span></a
+      >
       <nav aria-label="Navegación principal">
-        <a href="#historia">Nosotros</a>
+        <a href="#aniversario">{{anniversary_years}} años</a>
+        <a href="#nueva-sede">Próxima sede</a>
         <a href="#actividades">Actividades</a>
-        <a href="#horarios">Horarios</a>
-        <a href="#ubicacion">Ubicación</a>
+        <a href="#ubicacion">Contacto</a>
       </nav>
-      <a class="header-cta" href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer">
-        Consultar <span aria-hidden="true">↗</span>
-      </a>
+      <a class="header-cta" href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer"
+        >Consultanos <span aria-hidden="true">↗</span></a
+      >
     </header>
 
     <main id="contenido" tabindex="-1">
-      <section class="hero" id="inicio">
-        <div class="hero-color-lines" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="hero-copy">
-          <p class="eyebrow"><span></span> Santa Lucía, Corrientes · Desde {{founded_year}}</p>
-          <h1>
-            <span class="hero-first">Todos somos</span><span class="hero-emphasis">iguales.</span>
-          </h1>
-          <p class="hero-motto">La diferencia está en los detalles.</p>
-          <p class="hero-intro">
-            Un gimnasio de Santa Lucía construido con trayectoria, cercanía y pasión por el
-            movimiento.
-          </p>
-          <div class="hero-actions">
-            <a
-              class="button button-yellow"
-              href="{{whatsapp_url}}"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Escribinos por WhatsApp <span aria-hidden="true">↗</span></a
-            >
-            <a
-              class="button button-outline-light"
-              href="{{maps_url}}"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Cómo llegar</a
-            >
+      <section class="hero" id="inicio" aria-labelledby="portada-titulo">
+        <div class="section-shell hero-layout">
+          <div class="hero-copy">
+            <p class="hero-edition">Santa Lucía · {{founded_year}}—{{anniversary_year}}</p>
+            <h1 id="portada-titulo">
+              <span>{{anniversary_years}} años.</span><span>Nueva casa.</span>
+            </h1>
+            <p class="hero-intro">
+              La misma pasión de siempre. Una nueva sede en construcción para seguir compartiéndola.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-yellow" href="#nueva-sede"
+                >Conocé lo que viene <span aria-hidden="true">↘</span></a
+              >
+              <a
+                class="hero-contact"
+                href="{{whatsapp_url}}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Hablemos por WhatsApp <span aria-hidden="true">↗</span></a
+              >
+            </div>
+            <p class="hero-motto">Todos somos iguales,<br />la diferencia está en los detalles.</p>
+          </div>
+          <div class="hero-media">
+            <div class="hero-logo-wrap">{{image_hero_logo}}</div>
+            <div class="hero-signature">
+              <span>Tu Gimnasio</span><strong>Desde {{founded_year}}...</strong>
+            </div>
+            <p class="hero-media-note">Tu historia también es parte de la nuestra.</p>
           </div>
         </div>
-        <div class="hero-media">
-          <div class="hero-brand-stage">
-            <span class="brand-orbit orbit-yellow" aria-hidden="true"></span>
-            <span class="brand-orbit orbit-green" aria-hidden="true"></span>
-            <span class="brand-orbit orbit-red" aria-hidden="true"></span>
-            <div class="hero-logo-wrap">{{image_hero_logo}}</div>
-            <p class="hero-since">
-              <small>Santa Lucía</small><strong>Desde {{founded_year}}</strong>
+        <div class="brand-track" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section
+        class="anniversary section-shell"
+        id="aniversario"
+        aria-labelledby="aniversario-titulo"
+      >
+        <div class="anniversary-heading">
+          <p class="section-note">Una vida de movimiento</p>
+          <h2 id="aniversario-titulo">El tiempo pasa.<br />La pasión queda.</h2>
+          <p>
+            Hay cosas que los números no cuentan: cada encuentro, cada esfuerzo y las ganas de
+            volver.
+          </p>
+          <div class="anniversary-seal">
+            <strong>{{anniversary_years}}</strong><span>años<br />con vos.</span>
+          </div>
+        </div>
+        <div class="anniversary-time" data-reveal="time">
+          <dl class="time-grid">{{anniversary_metrics}}</dl>
+          <p class="anniversary-caption">
+            Cifras conmemorativas de nuestros {{anniversary_years}} años. La historia sigue.
+          </p>
+        </div>
+      </section>
+
+      <section class="future" id="nueva-sede" aria-labelledby="sede-titulo">
+        <div class="section-shell future-layout">
+          <div class="future-copy" data-reveal="future">
+            <p class="future-status">
+              <span aria-hidden="true"></span> Próxima sede · En construcción
+            </p>
+            <h2 id="sede-titulo">Nueva casa.<br />Misma esencia.</h2>
+            <p>
+              Estamos construyendo el nuevo gimnasio. Otro espacio para encontrarnos, con la misma
+              esencia que nos acompaña desde {{founded_year}}.
+            </p>
+            <a
+              class="button button-navy"
+              href="{{future_whatsapp_url}}"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Consultá por la apertura <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="future-address">
+            <p>Nuestra próxima dirección</p>
+            <h3>{{future_street}}</h3>
+            <p>{{future_locality}}</p>
+            <div class="future-notice">
+              <strong>La mudanza todavía no se realizó.</strong>
+              <p>
+                La fecha de apertura se anunciará más adelante. Google Maps aún muestra la sede
+                actual; actualizaremos el enlace cuando cambie la ficha.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
+        <div class="section-shell">
+          <div class="section-heading">
+            <h2 id="actividades-titulo">Movete a tu manera.</h2>
+            <p>
+              Cuatro propuestas, un mismo lugar. Consultanos por cupos y horarios vigentes de cada
+              clase.
             </p>
           </div>
-          <div class="rating-badge">
-            <strong>{{rating_display}}</strong
-            ><span aria-label="{{rating_display}} de 5 estrellas">★★★★★</span
-            ><small>{{rating_count}} opiniones en Google</small>
-          </div>
+          <div class="activity-grid">{{activity_cards}}</div>
+          <div class="manifesto-art" data-reveal="art">{{image_manifesto}}</div>
         </div>
       </section>
 
-      <section class="trust-strip" aria-label="Datos destacados">
-        <div>
-          <strong>{{founded_year}}</strong><span>El año en que empezó nuestra historia</span>
-        </div>
-        <div><strong>{{rating_display}}/5</strong><span>Valoración pública en Google</span></div>
-        <div><strong>{{short_hours}}</strong><span>{{weekday_label}}</span></div>
-        <div><strong>{{activity_count}}</strong><span>Propuestas para moverte</span></div>
-      </section>
-
-      <section class="story section-shell" id="historia">
-        <div class="story-visual">
-          {{image_identity}}
-          <div class="story-year" aria-hidden="true">{{founded_year}}</div>
-        </div>
+      <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
+        <div class="story-visual">{{image_identity}}</div>
         <div class="story-copy">
-          <p class="section-kicker">Una historia de Santa Lucía</p>
-          <h2>Desde {{founded_year}},<br /><span>haciendo la diferencia.</span></h2>
+          <p class="section-note">De Santa Lucía. Desde {{founded_year}}.</p>
+          <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
           <p>
             Tu Gimnasio nació con una idea simple: que cada persona encuentre un lugar donde
-            entrenar, sentirse acompañada y avanzar a su manera. La experiencia se construye todos
-            los días, cuidando esos detalles que hacen que quieras volver.
+            entrenar, sentirse acompañada y avanzar a su manera.
           </p>
-          <div class="signature-line">
-            <span></span
-            ><strong>Todos somos iguales.<br />La diferencia está en los detalles.</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="activities" id="actividades">
-        <div class="section-heading section-shell">
-          <div>
-            <p class="section-kicker light">Encontrá tu forma de entrenar</p>
-            <h2>Actividades</h2>
-          </div>
           <p>
-            Distintas propuestas, un mismo lugar. Consultanos por cupos y horarios vigentes de cada
-            clase.
-          </p>
-        </div>
-        <div class="activity-grid section-shell">
-          {{activity_cards}}
-          <article class="activity-card activity-photo-card activity-manifesto-image-card">
-            {{image_manifesto}}
-          </article>
-        </div>
-      </section>
-
-      <section class="experience section-shell">
-        <div class="experience-copy">
-          <p class="section-kicker">Tu momento, tu ritmo</p>
-          <h2>Entrenar también es encontrarse.</h2>
-          <p>
-            El esfuerzo es personal, pero la energía se comparte. Vení a conocer el espacio y elegí
-            la actividad que mejor acompañe tus objetivos.
+            La experiencia se construye todos los días, cuidando esos detalles que hacen que quieras
+            volver.
           </p>
           <a class="text-link" href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
-            >Ver novedades en Instagram <span aria-hidden="true">↗</span></a
+            >Seguinos en Instagram <span aria-hidden="true">↗</span></a
           >
-        </div>
-        <div class="experience-emblem">
-          {{image_final_logo}}
-          <p>TU LUGAR,<br /><strong>TU GIMNASIO.</strong></p>
-          <span>Desde {{founded_year}} · Santa Lucía</span>
+          <p class="story-signature">Tu lugar,<br /><strong>tu gimnasio.</strong></p>
         </div>
       </section>
 
       <section class="reviews" aria-labelledby="opiniones-titulo">
         <div class="section-shell reviews-inner">
-          <div class="reviews-score">
-            <span class="score">{{rating_display}}<small>/5</small></span
+          <p class="reviews-score">
+            <strong>{{rating_display}}<span>/5</span></strong
             ><span>{{rating_count}} opiniones en Google</span>
-          </div>
+          </p>
           <div>
             <h2 id="opiniones-titulo">La comunidad también habla.</h2>
             <p>Conocé las experiencias de quienes ya pasaron por Tu Gimnasio.</p>
           </div>
-          <a
-            class="button button-navy"
-            href="{{maps_url}}"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Leer opiniones en Google <span aria-hidden="true">↗</span></a
+          <a class="text-link" href="{{maps_url}}" target="_blank" rel="noopener noreferrer"
+            >Leer opiniones <span aria-hidden="true">↗</span></a
           >
         </div>
       </section>
 
-      <section class="visit section-shell">
+      <section class="visit section-shell" aria-label="Información de la sede actual">
         <article class="schedule-panel" id="horarios">
-          <p class="section-kicker light">Horarios generales</p>
-          <h2>Tu semana<br />empieza acá.</h2>
+          <p class="section-note">Sede actual</p>
+          <h2>Hacé lugar<br />para vos.</h2>
           <div class="schedule-row">
             <span>{{weekday_label}}</span><strong>{{weekday_hours}}</strong>
           </div>
@@ -194,7 +204,7 @@
           <p class="schedule-note">{{hours_notice}}</p>
         </article>
         <article class="location-panel" id="ubicacion">
-          <p class="section-kicker">Encontranos</p>
+          <p class="section-note">Ubicación actual · Antes de la mudanza</p>
           <h2>{{street_address}}</h2>
           <p>{{postal_locality}}<br />{{region_country}}</p>
           <div class="location-actions">
@@ -203,22 +213,59 @@
               href="{{maps_url}}"
               target="_blank"
               rel="noopener noreferrer"
-              >Abrir Google Maps <span aria-hidden="true">↗</span></a
+              >Ver sede actual en Maps <span aria-hidden="true">↗</span></a
             >
             <a class="phone-link" href="{{phone_href}}">{{phone_display}}</a>
           </div>
-          <p class="location-code">Código de ubicación: {{plus_code}}</p>
+          <p class="location-code">Código de ubicación actual: {{plus_code}}</p>
+          <a class="text-link" href="#nueva-sede"
+            >Ver anuncio de la próxima sede <span aria-hidden="true">↑</span></a
+          >
         </article>
       </section>
 
-      <section class="share-section">
+      <section class="questions section-shell" aria-labelledby="preguntas-titulo">
+        <div>
+          <p class="section-note">Para que vengas con todo claro</p>
+          <h2 id="preguntas-titulo">Antes de venir.</h2>
+        </div>
+        <div class="questions-list">
+          <details>
+            <summary>¿La nueva sede ya está abierta?</summary>
+            <p>
+              Todavía está en construcción. La próxima dirección será {{future_street}},
+              {{future_locality}}. Vamos a anunciar la apertura; mientras tanto, podés consultarnos
+              por WhatsApp.
+            </p>
+          </details>
+          <details>
+            <summary>¿Por qué Maps muestra otra dirección?</summary>
+            <p>
+              La ficha todavía corresponde a {{street_address}}, la ubicación actual. El mapa de la
+              nueva sede se incorporará cuando se actualice Google Maps. El anuncio de la mudanza
+              está separado para evitar confusiones.
+            </p>
+          </details>
+          <details>
+            <summary>¿Cómo consulto horarios y actividades?</summary>
+            <p>
+              Escribinos por
+              <a href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer">WhatsApp</a>. Te
+              contamos los horarios vigentes, los cupos de cada clase y las novedades de la próxima
+              sede.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="share-section" aria-labelledby="compartir-titulo">
         <div class="section-shell share-inner">
           <div class="share-copy">
-            <p class="section-kicker light">Compartí Tu Gimnasio</p>
-            <h2>Escaneá.<br />Guardá.<br /><span>Compartí.</span></h2>
+            <p class="section-note">La historia se comparte</p>
+            <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
             <p>
-              Usá el QR en historias, estados de WhatsApp, folletos o el mostrador. Llevá siempre a
-              la página oficial.
+              Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
+              oficial, también después de la mudanza.
             </p>
             <div class="share-actions" id="share-controls" hidden>
               <button class="button button-yellow" id="share-site" type="button">
@@ -230,8 +277,8 @@
             </div>
             <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
             <div id="manual-copy" class="manual-copy" hidden>
-              <label for="official-url">Dirección oficial para copiar</label
-              ><input
+              <label for="official-url">Dirección oficial para copiar</label>
+              <input
                 id="official-url"
                 type="url"
                 readonly
@@ -254,46 +301,47 @@
                 loading="lazy"
                 decoding="async"
             /></a>
-            <p>Apuntá la cámara de tu celular</p>
+            <p>Escaneá. Guardá. Compartí.</p>
           </div>
         </div>
       </section>
 
-      <section class="final-cta">
-        {{image_final_logo}}
-        <p>Tu próximo entrenamiento</p>
-        <h2>empieza en los detalles.</h2>
-        <div>
+      <section class="final-cta" aria-labelledby="cierre-titulo">
+        <div class="section-shell">
+          <p>Volvamos a las bases.</p>
+          <h2 id="cierre-titulo">Lo que viene.<br />Con vos.</h2>
           <a
-            class="button button-yellow"
+            class="button button-navy"
             href="{{whatsapp_url}}"
             target="_blank"
             rel="noopener noreferrer"
-            >Consultar actividades</a
-          >
-          <a
-            class="button button-outline-light"
-            href="{{instagram_url}}"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Seguir en Instagram</a
+            >Nos vemos en Tu Gimnasio <span aria-hidden="true">↗</span></a
           >
         </div>
       </section>
     </main>
 
     <footer>
-      <a class="brand footer-brand" href="#inicio"
-        >{{image_footer_logo}}<span>Tu Gimnasio <small>Desde {{founded_year}}</small></span></a
-      >
-      <p>Todos somos iguales. La diferencia está en los detalles.</p>
-      <div class="footer-links">
-        <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer">Instagram</a
-        ><a href="{{maps_url}}" target="_blank" rel="noopener noreferrer">Google Maps</a
-        ><a href="{{phone_href}}">Llamar</a>
+      <div class="section-shell">
+        <div class="footer-top">
+          <a class="brand footer-brand" href="#inicio"
+            >{{image_footer_logo}}<span
+              >Tu Gimnasio<small>Desde {{founded_year}}...</small></span
+            ></a
+          >
+          <p>Todos somos iguales,<br />la diferencia está en los detalles.</p>
+          <div class="footer-links">
+            <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer">Instagram</a
+            ><a href="{{maps_url}}" target="_blank" rel="noopener noreferrer">Maps · Sede actual</a
+            ><a href="{{phone_href}}">Llamar</a>
+          </div>
+        </div>
+        <p class="footer-wordmark">Tu Gimnasio</p>
+        <p class="footer-place">
+          Santa Lucía, Corrientes · {{anniversary_years}} años de historia.
+        </p>
       </div>
     </footer>
-
     <script type="application/ld+json">
       {{structured_data}}
     </script>

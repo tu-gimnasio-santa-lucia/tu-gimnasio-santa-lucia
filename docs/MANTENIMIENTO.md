@@ -15,6 +15,8 @@ Crear y comprobar un respaldo nuevo antes de editar. Los cambios del negocio se 
 
 ## Comandos
 
+Para la próxima sede y las cifras conmemorativas, leer [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). No reemplazar la ubicación actual con el anuncio: Maps y datos estructurados deben seguir describiendo la sede vigente hasta confirmar el cambio real.
+
 Con Node.js 22 o posterior, desde la raíz del repositorio:
 
 ```text
@@ -36,7 +38,7 @@ node scripts/browser-check.mjs
 pnpm audit
 ```
 
-La batería completa de 16 casos requiere Microsoft Edge instalado, además de los tres motores descargados por Playwright. Si falta un motor, el informe falla y debe resolverse o documentarse explícitamente antes de publicar; no se omiten pruebas silenciosamente. La batería usa perfiles temporales; no conectarla a sesiones personales. Consultar `docs/VERIFICACION.md` para los motores efectivamente comprobados y cualquier diferencia del equipo. Emular un celular no sustituye todas las pruebas en dispositivos físicos.
+La batería completa de 24 casos requiere Microsoft Edge instalado, además de los tres motores descargados por Playwright. Si falta un motor, el informe falla y debe resolverse o documentarse explícitamente antes de publicar; no se omiten pruebas silenciosamente. La batería usa perfiles temporales; no conectarla a sesiones personales. Consultar `docs/VERIFICACION.md` para los motores efectivamente comprobados y cualquier diferencia del equipo. Emular un celular no sustituye todas las pruebas en dispositivos físicos.
 
 La variable opcional `TU_GIMNASIO_FIREFOX_PATH` permite seleccionar una compilación oficial de Firefox preparada para el equipo. En esta PC se probó Firefox 155 de Playwright, porque la compilación 157 descargada presentaba un fallo de inicio SideBySide/mozglue de Windows. La ruta queda en configuración local, no se fija dentro del código compartido. No se deshabilitaron medidas de seguridad ni se modificó el perfil personal.
 

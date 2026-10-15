@@ -1,5 +1,19 @@
 {
+  "fonts": {
+    "display": {
+      "file": "anton-regular.ttf",
+      "license": "anton-ofl.txt",
+      "sha256": "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab",
+      "source": "https://github.com/google/fonts/tree/cee74d7ca45d66d5c1878c828645c862f2788d2d/ofl/anton"
+    }
+  },
   "logo": {
+    "jpeg": "tu-gimnasio-logo.jpg",
+    "width": 1205,
+    "height": 1177
+  },
+  "originalLogo": {
+    "archived": true,
     "png": "tu-gimnasio-logo.png",
     "width": 1205,
     "height": 1177

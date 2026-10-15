@@ -51,6 +51,23 @@ Se usa camelCase en funciones JavaScript, nombres descriptivos en inglés y docu
 | `showManualCopy()`                                | Sin permisos de portapapeles → campo etiquetado, enfocado y seleccionable.                                       |
 | `shareOfficialPage()`                             | Clic → compartir nativo o copiar; cancelar no genera error.                                                      |
 
+## Contratos añadidos en la edición aniversario
+
+`anniversary` guarda las cifras conmemorativas y el año de referencia. `relocation` guarda el anuncio de la sede futura; `address` conserva la actual. Los estados y la migración al abrir se explican en [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). Las cuatro cifras no son un reloj ni dependen de la fecha del equipo.
+
+`assets.fonts.display` declara el archivo de fuente local, su licencia, origen fijado y SHA-256. El build comprueba la huella y publica únicamente los archivos permitidos. La licencia y la fuente viajan con el repositorio. Nunca se consulta un servidor de fuentes al visitar la página.
+
+| Función | Responsabilidad |
+| --- | --- |
+| `initializeSharing()` | Conecta los controles de compartir/copiar; no depende de la animación ni de componentes ajenos. |
+| `initializeMotion()` | Comprueba APIs y preferencia de movimiento; observa una sola entrada de cada sección. No oculta contenido al iniciar. |
+| `animateSection(element)` | Aplica entradas diferenciadas a tiempo, anuncio y gráfica, con Web Animations nativas y sin bucles. |
+| `animateMetric(element)` | Anima una cifra fija durante 1,2 segundos; no cambia su alternativa accesible ni calcula tiempo transcurrido. |
+| `restoreMetric(element)` | Restituye el valor final declarado en data-count con formato es-AR. |
+| `handleMotionPreference()` | Cancela efectos y fotogramas activos y restaura los valores al activarse movimiento reducido. |
+
+Estos métodos son privados a la mejora del navegador; el HTML generado no necesita invocarlos para mostrar datos. Preguntas frecuentes usa details/summary nativos y permanece disponible sin JavaScript. Los selectores data-reveal y data-count conectan el HTML a las mejoras; los nombres de actividad siguen siendo los IDs estables de los datos.
+
 ## Seguridad de la generación
 
 Los marcadores normales se escapan por defecto. Los únicos fragmentos raw provienen del generador, que escapa a su vez cada dato de las actividades y atributos de imágenes. El JSON-LD tiene serialización segura y su hash CSP se recalcula en cada build. CSS y JavaScript tienen nombres derivados del contenido e integridad SRI: un cambio invalida el nombre anterior y evita depender de una copia antigua en caché.

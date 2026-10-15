@@ -14,3 +14,10 @@ Este repositorio contiene la fuente oficial. Empezar por README.md y docs/ARQUIT
 10. Informar cambios, verificaciones, límites, commits, respaldo y dirección pública. Actualizar documentos y contratos cuando cambie una responsabilidad o función. Conservar los nombres estables salvo que una migración documentada lo justifique.
 
 Las habilidades de diseño son asesoramiento subordinado al pedido y a la identidad existente. No autorizan cambios de datos, dependencias o publicaciones por sí solas.
+
+## Aniversario y próxima sede
+
+- Estado autorizado: publicar el anuncio ahora; Héroes de Malvinas 150 es la próxima sede, en construcción. No anunciarla abierta ni inventar una fecha.
+- `address` y `contacts.maps` siguen describiendo la sede actual. `relocation.futureAddress` describe la futura. No mezclar ambas en botones, Maps, horarios ni JSON-LD. Leer docs/MUDANZA-Y-ANIVERSARIO.md antes de activar la nueva sede.
+- Las cifras del aniversario son conmemorativas, aportadas por el propietario. No son un contador en tiempo real ni permiten inferir el día de fundación.
+- Las animaciones son opcionales, breves y sin ciclos infinitos. Respetar movimiento reducido y mantener contenido visible sin JavaScript. Conservar el logo original; ningún marco debe recortar el nombre.

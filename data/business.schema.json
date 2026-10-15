@@ -6,6 +6,8 @@
   "required": [
     "name",
     "foundedYear",
+    "anniversary",
+    "relocation",
     "phoneDisplay",
     "phoneInternational",
     "address",
@@ -19,6 +21,53 @@
     "$schema": { "type": "string" },
     "name": { "const": "Tu Gimnasio" },
     "foundedYear": { "const": 1996 },
+    "anniversary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["years", "referenceYear", "commemorative", "metrics"],
+      "properties": {
+        "years": { "type": "integer", "minimum": 1 },
+        "referenceYear": { "type": "integer", "minimum": 1997 },
+        "commemorative": { "const": true },
+        "metrics": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "value", "label"],
+            "properties": {
+              "id": { "enum": ["days", "hours", "minutes", "seconds"] },
+              "value": { "type": "integer", "minimum": 1 },
+              "label": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "relocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Anuncio de futura sede. No cambia address ni contacts.maps. La apertura requiere una migración explícita y comprobada de dirección, Maps, horario y JSON-LD.",
+      "required": ["status", "futureAddress", "openingDate", "mapsUpdated"],
+      "properties": {
+        "status": { "const": "announced" },
+        "openingDate": { "type": "null" },
+        "mapsUpdated": { "const": false },
+        "futureAddress": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["street", "locality", "region", "country"],
+          "properties": {
+            "street": { "type": "string", "minLength": 1 },
+            "locality": { "type": "string", "minLength": 1 },
+            "region": { "type": "string", "minLength": 1 },
+            "country": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
     "phoneDisplay": { "type": "string", "minLength": 1 },
     "phoneInternational": {
       "type": "string",
