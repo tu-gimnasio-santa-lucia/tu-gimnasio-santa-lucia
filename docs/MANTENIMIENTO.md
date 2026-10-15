@@ -58,6 +58,8 @@ La rama main conserva el código y la documentación; site es una salida generad
 
 ## Compatibilidad
 
+La publicación comprueba también los bytes preparados dentro de Git antes de subirlos. No cambiar la configuración global de finales de línea para saltar un fallo: resolver la causa. La licencia original de Anton es un recurso del proveedor con huella verificada y no debe reformatearse.
+
 El sitio usa HTML semántico y CSS estándar, con mejoras opcionales. Funciona para leer datos, abrir contacto, navegar y usar el QR sin JavaScript. El portapapeles tiene alternativa manual; compartir tiene alternativa de copia. WebP tiene PNG de respaldo; el contenido respeta movimiento reducido e impresión.
 
 No se promete compatibilidad absoluta con cualquier navegador, extensión, modelo de lenguaje o dispositivo. Cada entrega enumera las pruebas realizadas. Para asistir con otro modelo, compartir este repositorio y comenzar por README.md, AGENTS.md y docs/ARQUITECTURA.md.

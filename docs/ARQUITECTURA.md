@@ -80,6 +80,8 @@ El manifiesto `build-manifest.json` contiene tamaños y SHA-256 de los archivos 
 
 ## Relación con la implementación anterior
 
+Antes de publicar, `verifyStagedOutput(checkout, outputDirectory)` compara SHA-256 de cada blob que Git va a confirmar con su archivo aprobado en dist. La preparación usa core.autocrlf=false sólo para esa operación: no cambia la configuración del usuario. Esto conserva incluso los bytes CRLF de una licencia original y detecta filtros o conversiones inesperadas antes de hacer commit/push. El recibo de publicación incluye la huella del manifiesto.
+
 La versión anterior usaba React/Vinext en una carpeta externa y una copia HTML actualizada a mano. Ese código se conserva localmente como histórico; ya no es la fuente de publicación. No se debe sincronizar de vuelta ni reconstruir la web desde ese starter. La rama main actual contiene todo lo necesario para reproducir la web sin esa carpeta.
 
 Una migración futura puede cambiar implementación, pero debe conservar o migrar de forma explícita el contrato de datos, la URL, los recursos y las pruebas de interacción. No hace falta conservar un proveedor de IA ni repetir prompts para interpretar este proyecto.

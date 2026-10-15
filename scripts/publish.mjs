@@ -13,6 +13,18 @@ const git = (...args) =>
     stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
 const project = JSON.parse(await readFile(path.join(ROOT, 'project.json')));
+
+/** Compare raw staged blobs with dist; Git's line conversion must not change approved bytes. */
+async function verifyStagedOutput(checkout, outputDirectory) {
+  for (const name of await readdir(outputDirectory)) {
+    const stagedBytes = execFileSync('git', ['-C', checkout, 'show', `:${name}`], {
+      maxBuffer: 8 * 1024 * 1024,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    if (sha256(stagedBytes) !== sha256(await readFile(path.join(outputDirectory, name))))
+      throw new Error(`Git alteró el archivo aprobado: ${name}. No se publicará.`);
+  }
+}
 if (git('branch', '--show-current') !== project.sourceBranch)
   throw new Error('Publicar desde la rama fuente main.');
 if (git('status', '--porcelain'))
@@ -45,7 +57,8 @@ try {
   if (tracked.length) stageGit('rm', '--', ...tracked);
   for (const name of await readdir(path.join(ROOT, 'dist')))
     await copyFile(path.join(ROOT, 'dist', name), path.join(checkout, name));
-  stageGit('add', '--all');
+  stageGit('-c', 'core.autocrlf=false', 'add', '--all');
+  await verifyStagedOutput(checkout, path.join(ROOT, 'dist'));
   if (stageGit('diff', '--cached', '--name-only')) {
     stageGit('commit', '-m', `Publica sitio verificado desde ${sourceCommit.slice(0, 12)}`);
     stageGit('push', 'origin', `HEAD:${project.publicationBranch}`);
@@ -61,6 +74,7 @@ try {
         backup,
         publicUrl: project.publicUrl,
         publishedAt: new Date().toISOString(),
+        buildManifestSha256: sha256(manifestBytes),
       },
       null,
       2,
