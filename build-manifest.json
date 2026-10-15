@@ -9,9 +9,19 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
+      "name": "anton-ofl.txt",
+      "bytes": 4484,
+      "sha256": "ee67e6ee22790b7929f1a3769ca2801d565c64b5a9096942c1adf5596de9c9e4"
+    },
+    {
+      "name": "anton-regular.ttf",
+      "bytes": 170812,
+      "sha256": "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab"
+    },
+    {
       "name": "index.html",
-      "bytes": 16786,
-      "sha256": "e05b821ce904bcc390a1538c36e4251ebfa98413d3c5d9419286a95b6ad1007c"
+      "bytes": 20300,
+      "sha256": "4744969af27afc497a01beba721844a0f8a598f7d440ce8588fbb7bde65677e2"
     },
     {
       "name": "qr-tu-gimnasio.png",
@@ -29,9 +39,9 @@
       "sha256": "3e78cc585da86a6ff54e3d6dfdd5995374eb02fab931adc8b6d5c85db0c1a446"
     },
     {
-      "name": "site.727a52c0ed6f.js",
-      "bytes": 2344,
-      "sha256": "727a52c0ed6fa1eefcda6cb2d85496da2e382255f57b902a48b7c88a5bcabdeb"
+      "name": "site.635edfb2a810.js",
+      "bytes": 6689,
+      "sha256": "635edfb2a8104b0667f481b46bb47d4c26ecfb28d2e0cbd5a8c88188cfdb40d4"
     },
     {
       "name": "sitemap.xml",
@@ -39,9 +49,9 @@
       "sha256": "65a80d65b9b6b43066c1ecdd346e57fffc84c55e3827ca43b9a6a2178a3462ab"
     },
     {
-      "name": "styles.9125452888b2.css",
-      "bytes": 17948,
-      "sha256": "9125452888b281b2d9a9bb11e79cf45c1d8cf646a0871339343d6d96a84ad3f3"
+      "name": "styles.47a97ee23fca.css",
+      "bytes": 23557,
+      "sha256": "47a97ee23fcaa615287cb2dbc181f3cc29b960a45d94b1ea29151129dc45911c"
     },
     {
       "name": "tu-gimnasio-actividades.png",
@@ -64,7 +74,7 @@
       "sha256": "dbb095fc00ac9255558e243be4ee635b3faf0a44bcf06f23f909422d8f1748bd"
     },
     {
-      "name": "tu-gimnasio-logo.png",
+      "name": "tu-gimnasio-logo.jpg",
       "bytes": 177784,
       "sha256": "1cb712d2d4e2ebefc9aa463b0534ade70780cdcf20bbe1ff813550fa936866cc"
     }
