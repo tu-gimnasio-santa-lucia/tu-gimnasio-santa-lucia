@@ -1,0 +1,72 @@
+{
+  "formatVersion": 1,
+  "generator": "tu-gimnasio-static/2",
+  "publicUrl": "https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/",
+  "files": [
+    {
+      "name": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "index.html",
+      "bytes": 16786,
+      "sha256": "e05b821ce904bcc390a1538c36e4251ebfa98413d3c5d9419286a95b6ad1007c"
+    },
+    {
+      "name": "qr-tu-gimnasio.png",
+      "bytes": 15602,
+      "sha256": "19f92da5366b26a2cff63b76c2ec68ec212948a341f50fb53f8d474514d15264"
+    },
+    {
+      "name": "README.md",
+      "bytes": 151,
+      "sha256": "f576356cd0538cbc5d5f8427e8c43d6e7f0ab24a5b4ad3c5dfa2e4b88c967e38"
+    },
+    {
+      "name": "robots.txt",
+      "bytes": 110,
+      "sha256": "3e78cc585da86a6ff54e3d6dfdd5995374eb02fab931adc8b6d5c85db0c1a446"
+    },
+    {
+      "name": "site.727a52c0ed6f.js",
+      "bytes": 2344,
+      "sha256": "727a52c0ed6fa1eefcda6cb2d85496da2e382255f57b902a48b7c88a5bcabdeb"
+    },
+    {
+      "name": "sitemap.xml",
+      "bytes": 197,
+      "sha256": "65a80d65b9b6b43066c1ecdd346e57fffc84c55e3827ca43b9a6a2178a3462ab"
+    },
+    {
+      "name": "styles.9125452888b2.css",
+      "bytes": 17948,
+      "sha256": "9125452888b281b2d9a9bb11e79cf45c1d8cf646a0871339343d6d96a84ad3f3"
+    },
+    {
+      "name": "tu-gimnasio-actividades.png",
+      "bytes": 401614,
+      "sha256": "952db03745f12b13cef0fa2a9b0eb8598cd0a3e779ca21e4319bb9d0c4c506e3"
+    },
+    {
+      "name": "tu-gimnasio-actividades.webp",
+      "bytes": 330288,
+      "sha256": "9eeca9e493066e68519ced393aebff3908b3a4f38c4b62a358597a6bda4be7d4"
+    },
+    {
+      "name": "tu-gimnasio-identidad.png",
+      "bytes": 1407877,
+      "sha256": "bc4d75ce3453a19a38b1b0cfcba34133e7da0fe9dc6e691207be3cd0de819b12"
+    },
+    {
+      "name": "tu-gimnasio-identidad.webp",
+      "bytes": 1017142,
+      "sha256": "dbb095fc00ac9255558e243be4ee635b3faf0a44bcf06f23f909422d8f1748bd"
+    },
+    {
+      "name": "tu-gimnasio-logo.png",
+      "bytes": 177784,
+      "sha256": "1cb712d2d4e2ebefc9aa463b0534ade70780cdcf20bbe1ff813550fa936866cc"
+    }
+  ]
+}

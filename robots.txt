@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/sitemap.xml
