@@ -3,3 +3,4 @@
 *.webp -text
 *.ttf -text
 *.jpg -text
+assets/anton-ofl.txt -text -diff

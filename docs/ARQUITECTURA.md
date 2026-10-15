@@ -74,7 +74,7 @@ Los marcadores normales se escapan por defecto. Los únicos fragmentos raw provi
 
 No hay llamadas a APIs de negocio, paneles privados, formularios, almacenamiento de usuarios, cookies de seguimiento, scripts de terceros ni fuentes externas. Las dependencias de QA son sólo de desarrollo y quedan fuera de dist.
 
-`.gitattributes` fija finales de línea LF y conserva imágenes como binarios, para que un traslado entre Windows y Linux no cambie por sí solo las huellas del build.
+`.gitattributes` fija finales de línea LF y conserva imágenes, fuente y licencia original como bytes sin normalizar, para que un traslado entre Windows y Linux no cambie por sí solo las huellas del build. La fuente y su licencia tienen SHA-256 comprobado; no formatear ni editar archivos del proveedor.
 
 El manifiesto `build-manifest.json` contiene tamaños y SHA-256 de los archivos generados. `qa-report.json` identifica la huella de ese manifiesto; una QA antigua no habilita una publicación nueva. No se incluye fecha variable en el build, por lo que el mismo contenido produce los mismos bytes.
 

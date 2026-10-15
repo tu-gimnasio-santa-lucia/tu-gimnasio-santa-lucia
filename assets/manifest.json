@@ -3,6 +3,7 @@
     "display": {
       "file": "anton-regular.ttf",
       "license": "anton-ofl.txt",
+      "licenseSha256": "ee67e6ee22790b7929f1a3769ca2801d565c64b5a9096942c1adf5596de9c9e4",
       "sha256": "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab",
       "source": "https://github.com/google/fonts/tree/cee74d7ca45d66d5c1878c828645c862f2788d2d/ofl/anton"
     }

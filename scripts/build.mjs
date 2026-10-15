@@ -133,6 +133,7 @@ export function validateAssetManifest(assets) {
     !font ||
     !/^[a-z][a-z0-9-]*\.ttf$/.test(font.file) ||
     !/^[a-z][a-z0-9-]*\.txt$/.test(font.license) ||
+    !/^[a-f0-9]{64}$/.test(font.licenseSha256) ||
     !/^[a-f0-9]{64}$/.test(font.sha256)
   )
     throw new Error('Fuente local o licencia insegura.');
@@ -183,6 +184,8 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   );
   const assets = JSON.parse(await readFile(path.join(ROOT, 'assets/manifest.json'), 'utf8'));
   const assetFiles = validateAssetManifest(assets);
+  if (sha256(await readFile(path.join(ROOT, 'assets', assets.fonts.display.license))) !== assets.fonts.display.licenseSha256)
+    throw new Error('La licencia debe conservar sus bytes originales.');
   if (
     sha256(await readFile(path.join(ROOT, 'assets', assets.fonts.display.file))) !==
     assets.fonts.display.sha256
