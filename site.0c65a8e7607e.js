@@ -1,6 +1,53 @@
+import { calculateElapsed } from './elapsed-time.a7c3b2d95282.js';
 /** Optional, independent enhancements. Facts and navigation always work without JavaScript. */
 (() => {
   'use strict';
+
+  /** Wall-clock calculation: no accumulated tick drift, work only while visible, user can pause. */
+  function initializeLiveClock() {
+    const clock = document.getElementById('live-clock');
+    const button = document.getElementById('toggle-clock');
+    const status = document.getElementById('clock-status');
+    if (!clock || !button || !status) return;
+    const format = new Intl.NumberFormat('es-AR');
+    let paused = false;
+    let timer;
+    function updateElapsed() {
+      const elapsed = calculateElapsed(clock.dataset.foundedDate);
+      for (const unit of ['days', 'hours', 'minutes', 'seconds']) {
+        const value = format.format(elapsed[unit]);
+        for (const element of clock.querySelectorAll(
+          `[data-time-unit="${unit}"], [data-time-accessible="${unit}"]`,
+        ))
+          if (element.textContent !== value) element.textContent = value;
+      }
+      document.querySelectorAll('[data-elapsed-years]').forEach((element) => {
+        element.textContent = format.format(elapsed.years);
+      });
+      document.querySelectorAll('[data-current-year]').forEach((element) => {
+        element.textContent = String(elapsed.currentYear);
+      });
+    }
+    function scheduleClock() {
+      clearTimeout(timer);
+      if (paused || document.hidden) return;
+      updateElapsed();
+      timer = setTimeout(scheduleClock, 1000 - (Date.now() % 1000) + 10);
+    }
+    button.hidden = false;
+    status.textContent = 'Actualización automática según el reloj del dispositivo.';
+    button.addEventListener('click', () => {
+      paused = !paused;
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? 'Reanudar contador' : 'Pausar contador';
+      status.textContent = paused ? 'Contador en pausa.' : 'Contador actualizado.';
+      scheduleClock();
+    });
+    document.addEventListener('visibilitychange', scheduleClock);
+    window.addEventListener('pagehide', () => clearTimeout(timer));
+    window.addEventListener('pageshow', scheduleClock);
+    scheduleClock();
+  }
 
   /** Sharing is independent from motion: removing a control never disables other features. */
   function initializeSharing() {
@@ -76,37 +123,7 @@
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const activeAnimations = new Set();
     const activeFrames = new Set();
-    const format = new Intl.NumberFormat('es-AR');
-    const metrics = [...document.querySelectorAll('[data-count]')];
     let observer;
-
-    /** Restore the fixed owner-supplied number; it is never a real-time elapsed clock. */
-    function restoreMetric(element) {
-      element.textContent = format.format(Number(element.dataset.count));
-    }
-
-    /** Count once, for at most 1.2 s. Screen readers retain the separate, fixed accessible value. */
-    function animateMetric(element) {
-      const target = Number(element.dataset.count);
-      if (!Number.isSafeInteger(target) || target < 1 || preference.matches) return;
-      const start = performance.now();
-      function tick(now) {
-        activeFrames.delete(frame);
-        if (preference.matches) {
-          restoreMetric(element);
-          return;
-        }
-        const fraction = Math.min(1, (now - start) / 1200);
-        const eased = 1 - Math.pow(1 - fraction, 3);
-        element.textContent = format.format(Math.floor(target * eased));
-        if (fraction < 1) {
-          frame = requestAnimationFrame(tick);
-          activeFrames.add(frame);
-        } else restoreMetric(element);
-      }
-      let frame = requestAnimationFrame(tick);
-      activeFrames.add(frame);
-    }
 
     /** Distinct section entrances, with only transform and opacity; no permanent hidden states. */
     function animateSection(element) {
@@ -133,7 +150,6 @@
         activeAnimations.add(animation);
         animation.onfinish = animation.oncancel = () => activeAnimations.delete(animation);
       });
-      element.querySelectorAll('[data-count]').forEach(animateMetric);
     }
 
     /** Honor a preference change immediately, including while a count is in progress. */
@@ -143,7 +159,6 @@
       activeAnimations.forEach((animation) => animation.cancel());
       activeFrames.forEach(cancelAnimationFrame);
       activeFrames.clear();
-      metrics.forEach(restoreMetric);
     }
 
     if (preference.matches) return;
@@ -167,12 +182,12 @@
         activeAnimations.forEach((animation) => animation.cancel());
         activeFrames.forEach(cancelAnimationFrame);
         activeFrames.clear();
-        metrics.forEach(restoreMetric);
       },
       { once: true },
     );
   }
 
+  initializeLiveClock();
   initializeSharing();
   initializeMotion();
 })();

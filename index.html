@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; base-uri &#39;none&#39;; object-src &#39;none&#39;; frame-src &#39;none&#39;; form-action &#39;none&#39;; img-src &#39;self&#39;; style-src &#39;self&#39;; script-src &#39;self&#39; &#39;sha256-9oaump7OXANtlKc9ALUMnEsycSmsNvzm0yL66Rpgo44=&#39;; font-src &#39;self&#39;; connect-src &#39;none&#39;" />
-    <title>Tu Gimnasio | 30 años y una nueva sede en camino</title>
-    <meta name="description" content="Tu Gimnasio: 30 años desde 1996 en Santa Lucía. Próxima sede en Héroes de Malvinas 150, en construcción. Consultá actividades y novedades." />
+    <meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; base-uri &#39;none&#39;; object-src &#39;none&#39;; frame-src &#39;none&#39;; form-action &#39;none&#39;; img-src &#39;self&#39;; style-src &#39;self&#39;; script-src &#39;self&#39; &#39;sha256-vaVrJiG2q+ydQmGrqYy4SNrgM1IaaVLjRb9MophqEzE=&#39;; font-src &#39;self&#39;; connect-src &#39;none&#39;" />
+    <title>Tu Gimnasio | Desde 1996 y una nueva sede en camino</title>
+    <meta name="description" content="Tu Gimnasio: Desde el 4 de noviembre de 1996 en Santa Lucía. Próxima sede en Héroes de Malvinas 150, en construcción. Consultá actividades y novedades." />
     <meta name="theme-color" content="#08084f" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:title" content="Tu Gimnasio | 30 años y una nueva sede en camino" />
-    <meta property="og:description" content="Tu Gimnasio: 30 años desde 1996 en Santa Lucía. Próxima sede en Héroes de Malvinas 150, en construcción. Consultá actividades y novedades." />
+    <meta property="og:title" content="Tu Gimnasio | Desde 1996 y una nueva sede en camino" />
+    <meta property="og:description" content="Tu Gimnasio: Desde el 4 de noviembre de 1996 en Santa Lucía. Próxima sede en Héroes de Malvinas 150, en construcción. Consultá actividades y novedades." />
     <meta property="og:url" content="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/" />
     <meta property="og:image" content="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/tu-gimnasio-identidad.png" />
     <meta
@@ -23,8 +23,8 @@
     <link rel="icon" href="tu-gimnasio-logo.jpg" />
     <link
       rel="stylesheet"
-      href="styles.47a97ee23fca.css"
-      integrity="sha384-WLeVWhnk+MY33UpFPnWUA1mj76/8WxI+YUTJtzK26TY5q4xsiHqZingiL4PAJyQD"
+      href="styles.c2a0ef260af7.css"
+      integrity="sha384-T6BEd9cy8VQglK9KX1kwa2h75WfAtS7Z83GhQ0YaTwakQOfFDcih6jEANsIzAKgf"
       crossorigin="anonymous"
     />
   </head>
@@ -35,7 +35,7 @@
         ><picture><img class="brand-logo" src="tu-gimnasio-logo.jpg" width="1205" height="1177" alt="" loading="eager" decoding="async" fetchpriority="high"></picture><span>Tu Gimnasio<small>Desde 1996</small></span></a
       >
       <nav aria-label="Navegación principal">
-        <a href="#aniversario">30 años</a>
+        <a href="#aniversario"><span data-elapsed-years>29</span> años</a>
         <a href="#nueva-sede">Próxima sede</a>
         <a href="#actividades">Actividades</a>
         <a href="#ubicacion">Contacto</a>
@@ -49,9 +49,12 @@
       <section class="hero" id="inicio" aria-labelledby="portada-titulo">
         <div class="section-shell hero-layout">
           <div class="hero-copy">
-            <p class="hero-edition">Santa Lucía · 1996—2026</p>
+            <p class="hero-edition">
+              Santa Lucía · 1996—<span data-current-year>2026</span>
+            </p>
             <h1 id="portada-titulo">
-              <span>30 años.</span><span>Nueva casa.</span>
+              <span><span data-elapsed-years>29</span> años.</span
+              ><span>Nueva casa.</span>
             </h1>
             <p class="hero-intro">
               La misma pasión de siempre. Una nueva sede en construcción para seguir compartiéndola.
@@ -96,16 +99,42 @@
             volver.
           </p>
           <div class="anniversary-seal">
-            <strong>30</strong><span>años<br />con vos.</span>
+            <strong><span data-elapsed-years>29</span></strong
+            ><span>años<br />con vos.</span>
           </div>
         </div>
         <div class="anniversary-time" data-reveal="time">
-          <dl class="time-grid"><div class="time-metric"><dt>días</dt><dd><span class="metric-number" data-count="10957" aria-hidden="true">10.957</span><span class="sr-only">10.957</span></dd></div>
-<div class="time-metric"><dt>horas</dt><dd><span class="metric-number" data-count="262968" aria-hidden="true">262.968</span><span class="sr-only">262.968</span></dd></div>
-<div class="time-metric"><dt>minutos</dt><dd><span class="metric-number" data-count="15778080" aria-hidden="true">15.778.080</span><span class="sr-only">15.778.080</span></dd></div>
-<div class="time-metric"><dt>segundos</dt><dd><span class="metric-number" data-count="946684800" aria-hidden="true">946.684.800</span><span class="sr-only">946.684.800</span></dd></div></dl>
+          <dl
+            class="time-grid"
+            id="live-clock"
+            data-founded-date="1996-11-04"
+            aria-live="off"
+          >
+            <div class="time-metric"><dt>días</dt><dd><span class="metric-number" data-time-unit="days" aria-hidden="true">10.937</span><span class="sr-only" data-time-accessible="days">10.937</span></dd></div>
+<div class="time-metric"><dt>horas</dt><dd><span class="metric-number" data-time-unit="hours" aria-hidden="true">262.488</span><span class="sr-only" data-time-accessible="hours">262.488</span></dd></div>
+<div class="time-metric"><dt>minutos</dt><dd><span class="metric-number" data-time-unit="minutes" aria-hidden="true">15.749.280</span><span class="sr-only" data-time-accessible="minutes">15.749.280</span></dd></div>
+<div class="time-metric"><dt>segundos</dt><dd><span class="metric-number" data-time-unit="seconds" aria-hidden="true">944.956.800</span><span class="sr-only" data-time-accessible="seconds">944.956.800</span></dd></div>
+          </dl>
+          <button
+            id="toggle-clock"
+            class="button button-navy"
+            type="button"
+            aria-pressed="false"
+            hidden
+          >
+            Pausar contador
+          </button>
+          <p id="clock-status" role="status" aria-live="polite">
+            Cifras al 15/10/2026; el contador automático requiere JavaScript.
+          </p>
+          <noscript
+            ><p>
+              Cifras al 15/10/2026. Activá JavaScript para ver el contador actualizado.
+            </p></noscript
+          >
           <p class="anniversary-caption">
-            Cifras conmemorativas de nuestros 30 años. La historia sigue.
+            Desde el 4 de noviembre de 1996. Totales calculados desde el inicio de ese día, hora
+            argentina.
           </p>
         </div>
       </section>
@@ -344,16 +373,18 @@
         </div>
         <p class="footer-wordmark">Tu Gimnasio</p>
         <p class="footer-place">
-          Santa Lucía, Corrientes · 30 años de historia.
+          Santa Lucía, Corrientes · <span data-elapsed-years>29</span> años de
+          historia.
         </p>
       </div>
     </footer>
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"ExerciseGym","name":"Tu Gimnasio","foundingDate":"1996","url":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/","image":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/tu-gimnasio-identidad.png","telephone":"+543777723911","address":{"@type":"PostalAddress","streetAddress":"Av. Italia 109","addressLocality":"Santa Lucía","addressRegion":"Corrientes","postalCode":"W3440","addressCountry":"AR"},"sameAs":["https://www.instagram.com/tugimnasio1/","https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"18"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"22:00"}]}
+      {"@context":"https://schema.org","@type":"ExerciseGym","name":"Tu Gimnasio","foundingDate":"1996-11-04","url":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/","image":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/tu-gimnasio-identidad.png","telephone":"+543777723911","address":{"@type":"PostalAddress","streetAddress":"Av. Italia 109","addressLocality":"Santa Lucía","addressRegion":"Corrientes","postalCode":"W3440","addressCountry":"AR"},"sameAs":["https://www.instagram.com/tugimnasio1/","https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"18"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"22:00"}]}
     </script>
     <script
-      src="site.635edfb2a810.js"
-      integrity="sha384-Iuv7MoSoMPWpBgPxY/Wyq1EA9k/JhmOwwXVPiSVw2IKiLfVrCAAt6IkFnnHWyelR"
+      type="module"
+      src="site.0c65a8e7607e.js"
+      integrity="sha384-p9GonAewJA3NdYQNOKI3xSMMb0lV+iJ5l/EB+2kcnKAhgUQ7727HOo9GVSrP9ytd"
       crossorigin="anonymous"
       defer
     ></script>
