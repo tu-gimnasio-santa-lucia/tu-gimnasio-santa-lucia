@@ -35,7 +35,7 @@
         >{{image_header_logo}}<span>Tu Gimnasio<small>Desde {{founded_year}}</small></span></a
       >
       <nav aria-label="Navegación principal">
-        <a href="#aniversario">{{anniversary_years}} años</a>
+        <a href="#aniversario"><span data-elapsed-years>{{anniversary_years}}</span> años</a>
         <a href="#nueva-sede">Próxima sede</a>
         <a href="#actividades">Actividades</a>
         <a href="#ubicacion">Contacto</a>
@@ -49,9 +49,12 @@
       <section class="hero" id="inicio" aria-labelledby="portada-titulo">
         <div class="section-shell hero-layout">
           <div class="hero-copy">
-            <p class="hero-edition">Santa Lucía · {{founded_year}}—{{anniversary_year}}</p>
+            <p class="hero-edition">
+              Santa Lucía · {{founded_year}}—<span data-current-year>{{anniversary_year}}</span>
+            </p>
             <h1 id="portada-titulo">
-              <span>{{anniversary_years}} años.</span><span>Nueva casa.</span>
+              <span><span data-elapsed-years>{{anniversary_years}}</span> años.</span
+              ><span>Nueva casa.</span>
             </h1>
             <p class="hero-intro">
               La misma pasión de siempre. Una nueva sede en construcción para seguir compartiéndola.
@@ -96,13 +99,39 @@
             volver.
           </p>
           <div class="anniversary-seal">
-            <strong>{{anniversary_years}}</strong><span>años<br />con vos.</span>
+            <strong><span data-elapsed-years>{{anniversary_years}}</span></strong
+            ><span>años<br />con vos.</span>
           </div>
         </div>
         <div class="anniversary-time" data-reveal="time">
-          <dl class="time-grid">{{anniversary_metrics}}</dl>
+          <dl
+            class="time-grid"
+            id="live-clock"
+            data-founded-date="{{founded_date}}"
+            aria-live="off"
+          >
+            {{anniversary_metrics}}
+          </dl>
+          <button
+            id="toggle-clock"
+            class="button button-navy"
+            type="button"
+            aria-pressed="false"
+            hidden
+          >
+            Pausar contador
+          </button>
+          <p id="clock-status" role="status" aria-live="polite">
+            Cifras al 15/10/2026; el contador automático requiere JavaScript.
+          </p>
+          <noscript
+            ><p>
+              Cifras al 15/10/2026. Activá JavaScript para ver el contador actualizado.
+            </p></noscript
+          >
           <p class="anniversary-caption">
-            Cifras conmemorativas de nuestros {{anniversary_years}} años. La historia sigue.
+            Desde el 4 de noviembre de 1996. Totales calculados desde el inicio de ese día, hora
+            argentina.
           </p>
         </div>
       </section>
@@ -338,7 +367,8 @@
         </div>
         <p class="footer-wordmark">Tu Gimnasio</p>
         <p class="footer-place">
-          Santa Lucía, Corrientes · {{anniversary_years}} años de historia.
+          Santa Lucía, Corrientes · <span data-elapsed-years>{{anniversary_years}}</span> años de
+          historia.
         </p>
       </div>
     </footer>
@@ -346,6 +376,7 @@
       {{structured_data}}
     </script>
     <script
+      type="module"
       src="{{script_file}}"
       integrity="{{script_integrity}}"
       crossorigin="anonymous"

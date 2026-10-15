@@ -19,5 +19,5 @@ Las habilidades de diseño son asesoramiento subordinado al pedido y a la identi
 
 - Estado autorizado: publicar el anuncio ahora; Héroes de Malvinas 150 es la próxima sede, en construcción. No anunciarla abierta ni inventar una fecha.
 - `address` y `contacts.maps` siguen describiendo la sede actual. `relocation.futureAddress` describe la futura. No mezclar ambas en botones, Maps, horarios ni JSON-LD. Leer docs/MUDANZA-Y-ANIVERSARIO.md antes de activar la nueva sede.
-- Las cifras del aniversario son conmemorativas, aportadas por el propietario. No son un contador en tiempo real ni permiten inferir el día de fundación.
+- Fecha de apertura confirmada: 04/11/1996. Las cifras son automáticas y los años se calculan por aniversario de calendario, hora argentina. El snapshot sin JavaScript tiene fecha explícita. No restaurar las cifras conmemorativas anteriores ni inventar la hora real de apertura.
 - Las animaciones son opcionales, breves y sin ciclos infinitos. Respetar movimiento reducido y mantener contenido visible sin JavaScript. Conservar el logo original; ningún marco debe recortar el nombre.

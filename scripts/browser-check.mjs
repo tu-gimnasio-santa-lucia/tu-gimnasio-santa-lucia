@@ -245,10 +245,8 @@ try {
       await motionPage.emulateMedia({ reducedMotion: 'reduce' });
       await motionPage.waitForFunction(
         () =>
-          [...document.querySelectorAll('[data-count]')].every(
-            (element) =>
-              element.textContent ===
-              new Intl.NumberFormat('es-AR').format(Number(element.dataset.count)),
+          [...document.querySelectorAll('[data-time-unit]')].every((element) =>
+            /[0-9]/.test(element.textContent),
           ) && !document.getAnimations().some((animation) => animation.playState === 'running'),
       );
       assert.deepEqual(motionErrors, []);
@@ -259,6 +257,38 @@ try {
         fixedFinalValues: 'passed',
       });
       await motionContext.close();
+      const clockContext = await browser.newContext({ reducedMotion: 'reduce' });
+      const clockPage = await clockContext.newPage();
+      await clockPage.clock.install({ time: new Date('2026-11-04T02:59:59Z') });
+      await clockPage.goto(url);
+      assert.equal(await clockPage.locator('[data-elapsed-years]').first().textContent(), '29');
+      const readSeconds = async () =>
+        Number(
+          (await clockPage.locator('[data-time-unit="seconds"]').textContent()).replaceAll('.', ''),
+        );
+      const beforeTick = await readSeconds();
+      await clockPage.clock.fastForward(2100);
+      assert.equal(await clockPage.locator('[data-elapsed-years]').first().textContent(), '30');
+      assert.ok((await readSeconds()) > beforeTick);
+      await clockPage.locator('#toggle-clock').click();
+      const pausedValue = await readSeconds();
+      await clockPage.clock.fastForward(5000);
+      assert.equal(await readSeconds(), pausedValue);
+      await clockPage.locator('#toggle-clock').click();
+      assert.ok((await readSeconds()) >= pausedValue + 5);
+      await clockPage.evaluate(() => {
+        Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+      const hiddenValue = await readSeconds();
+      await clockPage.clock.fastForward(5000);
+      assert.equal(await readSeconds(), hiddenValue);
+      await clockPage.evaluate(() => {
+        Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+      assert.ok((await readSeconds()) >= hiddenValue + 5);
+      await clockContext.close();
 
       // Simulate phones without Impact: load the local font and render the real page with it.
       const fontContext = await browser.newContext({ reducedMotion: 'reduce' });
@@ -357,8 +387,12 @@ try {
         assert.equal(await fallbackPage.evaluate(() => 'IntersectionObserver' in window), false);
         for (const metric of business.anniversary.metrics)
           assert.equal(
-            await fallbackPage.locator(`[data-count="${metric.value}"]`).textContent(),
-            new Intl.NumberFormat('es-AR').format(metric.value),
+            Number(
+              (
+                await fallbackPage.locator(`[data-time-unit="${metric.id}"]`).textContent()
+              ).replaceAll('.', ''),
+            ) >= metric.value,
+            true,
           );
         assert.ok(await fallbackPage.locator('#aniversario').isVisible());
         await fallbackContext.close();

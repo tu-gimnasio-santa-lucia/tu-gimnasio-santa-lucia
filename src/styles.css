@@ -303,6 +303,9 @@ h2 {
 .hero h1 span {
   display: block;
 }
+.hero h1 [data-elapsed-years] {
+  display: inline;
+}
 .hero-intro {
   max-width: 32rem;
   margin-top: 2rem;

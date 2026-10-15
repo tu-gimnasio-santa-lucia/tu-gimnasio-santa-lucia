@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { calculateElapsed } from '../src/elapsed-time.js';
 import assert from 'node:assert/strict';
 import { readFile, mkdtemp, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -156,4 +157,15 @@ test('anniversary figures remain coherent and a relocation announcement cannot i
     mutate(data);
     assert.throws(() => validateBusinessData(data, project));
   }
+});
+
+test('calendar anniversary uses Argentina midnight and elapsed totals handle leap years', () => {
+  assert.equal(calculateElapsed('1996-11-04', new Date('2026-11-04T02:59:59Z')).years, 29);
+  assert.equal(calculateElapsed('1996-11-04', new Date('2026-11-04T03:00:00Z')).years, 30);
+  const start = calculateElapsed('1996-11-04', new Date('1996-11-04T03:01:01Z'));
+  assert.equal(start.seconds, 61);
+  assert.equal(start.minutes, 1);
+  assert.equal(start.days, 0);
+  assert.equal(calculateElapsed('1996-11-04', new Date('2026-10-15T03:00:00Z')).days, 10937);
+  assert.throws(() => calculateElapsed('1996-02-31'));
 });

@@ -1,3 +1,7 @@
+# Actualización: antigüedad automática
+
+Fecha confirmada por el propietario: 4 de noviembre de 1996. La implementación vigente y sus funciones se describen en [MUDANZA-Y-ANIVERSARIO.md](MUDANZA-Y-ANIVERSARIO.md), sección inicial. Las descripciones siguientes de cifras conmemorativas fijas son históricas y quedan superadas. Se agregan pruebas del cambio de aniversario, avance por segundo, pausa y recuperación al volver a una pestaña visible.
+
 # Registro de fuentes y verificaciones
 
 ## Datos del negocio

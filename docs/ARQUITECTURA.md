@@ -1,3 +1,7 @@
+# Actualización: antigüedad automática
+
+Fecha confirmada por el propietario: 4 de noviembre de 1996. La implementación vigente y sus funciones se describen en [MUDANZA-Y-ANIVERSARIO.md](MUDANZA-Y-ANIVERSARIO.md), sección inicial. Las descripciones siguientes de cifras conmemorativas fijas son históricas y quedan superadas. Se agregan pruebas del cambio de aniversario, avance por segundo, pausa y recuperación al volver a una pestaña visible.
+
 # Arquitectura y mapa del código
 
 Identificador estable del proyecto: `tu-gimnasio-santa-lucia`. Versión de esta arquitectura: 2. El repositorio es la unidad de trabajo portátil; no requiere los chats, plugins o rutas de la PC del autor.

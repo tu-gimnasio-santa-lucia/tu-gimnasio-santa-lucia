@@ -1,3 +1,4 @@
+import { calculateElapsed } from '../src/elapsed-time.js';
 /** Deterministic static-site build. No network, external packages or platform APIs. */
 import { readFile, writeFile, mkdir, readdir, copyFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -18,24 +19,29 @@ export const serializeJsonLd = (value) =>
 export function validateBusinessData(data, project) {
   if (data.name !== 'Tu Gimnasio' || data.foundedYear !== 1996)
     throw new Error('Revisar nombre oficial y año de apertura.');
+  if (data.foundedDate !== '1996-11-04')
+    throw new Error('Conservar la fecha confirmada por el propietario.');
   const anniversary = data.anniversary;
   if (
     !anniversary ||
-    anniversary.commemorative !== true ||
+    anniversary.commemorative !== false ||
     !Number.isSafeInteger(anniversary.referenceYear) ||
     !Number.isSafeInteger(anniversary.years) ||
     anniversary.years < 1 ||
-    anniversary.referenceYear - data.foundedYear !== anniversary.years ||
+    calculateElapsed(data.foundedDate, new Date(anniversary.snapshotDate + 'T00:00:00-03:00'))
+      .years !== anniversary.years ||
     !Array.isArray(anniversary.metrics) ||
     anniversary.metrics.length !== 4
   )
-    throw new Error(
-      'Aniversario conmemorativo inválido. No calcular una fecha de apertura desconocida.',
-    );
+    throw new Error('Snapshot de antigüedad inválido; revisar fecha de fundación y de referencia.');
   const metricIds = ['days', 'hours', 'minutes', 'seconds'];
   anniversary.metrics.forEach((metric, index) => {
     if (
       metric.id !== metricIds[index] ||
+      metric.value !==
+        calculateElapsed(data.foundedDate, new Date(anniversary.snapshotDate + 'T00:00:00-03:00'))[
+          metric.id
+        ] ||
       !Number.isSafeInteger(metric.value) ||
       metric.value < 1 ||
       typeof metric.label !== 'string' ||
@@ -184,7 +190,10 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   );
   const assets = JSON.parse(await readFile(path.join(ROOT, 'assets/manifest.json'), 'utf8'));
   const assetFiles = validateAssetManifest(assets);
-  if (sha256(await readFile(path.join(ROOT, 'assets', assets.fonts.display.license))) !== assets.fonts.display.licenseSha256)
+  if (
+    sha256(await readFile(path.join(ROOT, 'assets', assets.fonts.display.license))) !==
+    assets.fonts.display.licenseSha256
+  )
     throw new Error('La licencia debe conservar sus bytes originales.');
   if (
     sha256(await readFile(path.join(ROOT, 'assets', assets.fonts.display.file))) !==
@@ -202,8 +211,11 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
       readFile(path.join(ROOT, file), 'utf8'),
     ),
   );
+  const timeSource = await readFile(path.join(ROOT, 'src/elapsed-time.js'), 'utf8');
+  const timeFile = `elapsed-time.${sha256(timeSource).slice(0, 12)}.js`;
+  const browserScript = script.replace("'./elapsed-time.js'", `'./${timeFile}'`);
   const styleFile = `styles.${sha256(css).slice(0, 12)}.css`;
-  const scriptFile = `site.${sha256(script).slice(0, 12)}.js`;
+  const scriptFile = `site.${sha256(browserScript).slice(0, 12)}.js`;
   const sri = (text) => 'sha384-' + createHash('sha384').update(text).digest('base64');
   const whatsappUrl = `https://wa.me/${business.phoneInternational}?text=${encodeURIComponent(business.contacts.whatsappMessage)}`;
   const ratingDisplay = String(business.googleRating.value).replace('.', ',');
@@ -211,7 +223,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     '@context': 'https://schema.org',
     '@type': 'ExerciseGym',
     name: business.name,
-    foundingDate: String(business.foundedYear),
+    foundingDate: business.foundedDate,
     url: project.publicUrl,
     image: new URL(assets.identity.png, project.publicUrl).href,
     telephone: '+' + business.phoneInternational,
@@ -254,18 +266,19 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const anniversaryMetrics = business.anniversary.metrics
     .map((metric) => {
       const formatted = new Intl.NumberFormat('es-AR').format(metric.value);
-      return `<div class="time-metric"><dt>${escapeHtml(metric.label)}</dt><dd><span class="metric-number" data-count="${metric.value}" aria-hidden="true">${formatted}</span><span class="sr-only">${formatted}</span></dd></div>`;
+      return `<div class="time-metric"><dt>${escapeHtml(metric.label)}</dt><dd><span class="metric-number" data-time-unit="${metric.id}" aria-hidden="true">${formatted}</span><span class="sr-only" data-time-accessible="${metric.id}">${formatted}</span></dd></div>`;
     })
     .join('\n');
   const futureAddress = business.relocation.futureAddress;
   const futureWhatsappUrl = `https://wa.me/${business.phoneInternational}?text=${encodeURIComponent(`Hola Tu Gimnasio, quisiera consultar por la apertura de la nueva sede en ${futureAddress.street}.`)}`;
   const replacements = {
     public_url: project.publicUrl,
-    site_title: `${business.name} | ${business.anniversary.years} años y una nueva sede en camino`,
-    meta_description: `${business.name}: ${business.anniversary.years} años desde ${business.foundedYear} en ${business.address.locality}. Próxima sede en ${futureAddress.street}, en construcción. Consultá actividades y novedades.`,
+    site_title: `${business.name} | Desde 1996 y una nueva sede en camino`,
+    meta_description: `${business.name}: Desde el 4 de noviembre de 1996 en ${business.address.locality}. Próxima sede en ${futureAddress.street}, en construcción. Consultá actividades y novedades.`,
     share_description: `${business.name} · Desde ${business.foundedYear} en ${business.address.locality}, ${business.address.region}.`,
     name: business.name,
     founded_year: business.foundedYear,
+    founded_date: business.foundedDate,
     logo_file: assets.logo.png || assets.logo.jpeg,
     anniversary_years: business.anniversary.years,
     anniversary_year: business.anniversary.referenceYear,
@@ -300,7 +313,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     style_file: styleFile,
     script_file: scriptFile,
     style_integrity: sri(css),
-    script_integrity: sri(script),
+    script_integrity: sri(browserScript),
     identity_image_url: new URL(assets.identity.png, project.publicUrl).href,
     image_header_logo: picture('logo', 'brand-logo', '', true),
     image_footer_logo: picture('logo', 'brand-logo', '', false),
@@ -333,7 +346,8 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const outputs = new Map([
     ['index.html', Buffer.from(html)],
     [styleFile, Buffer.from(css)],
-    [scriptFile, Buffer.from(script)],
+    [scriptFile, Buffer.from(browserScript)],
+    [timeFile, Buffer.from(timeSource)],
     ['.nojekyll', Buffer.from('')],
     [
       'robots.txt',
@@ -377,7 +391,8 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   if (
     existing.some(
       (name) =>
-        !outputs.has(name) && !/^styles\.[a-f0-9]{12}\.css$|^site\.[a-f0-9]{12}\.js$/.test(name),
+        !outputs.has(name) &&
+        !/^styles\.[a-f0-9]{12}\.css$|^(?:site|elapsed-time)\.[a-f0-9]{12}\.js$/.test(name),
     )
   )
     throw new Error(

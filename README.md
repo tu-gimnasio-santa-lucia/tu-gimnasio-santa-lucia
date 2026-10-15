@@ -2,7 +2,7 @@
 
 Web informativa de Tu Gimnasio, Santa Lucía, Corrientes. Conserva la identidad original y “Desde 1996”.
 
-Edición aniversario: 30 años en 2026 y anuncio de la próxima sede, todavía en construcción. La nueva dirección no reemplaza la ubicación actual ni el enlace de Maps hasta confirmar la mudanza. Leer [mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md) antes de actualizar esos datos.
+Antigüedad automática desde el 4 de noviembre de 1996: 30 años a partir del 4/11/2026 y anuncio de la próxima sede, todavía en construcción. La nueva dirección no reemplaza la ubicación actual ni el enlace de Maps hasta confirmar la mudanza. Leer [mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md) antes de actualizar esos datos.
 
 **Página pública:** https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/
 

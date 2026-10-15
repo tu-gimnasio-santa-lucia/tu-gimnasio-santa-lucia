@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { ROOT, buildSite } from './build.mjs';
 for (const file of [
   'src/site.js',
+  'src/elapsed-time.js',
   'scripts/build.mjs',
   'scripts/preview.mjs',
   'scripts/backup.mjs',

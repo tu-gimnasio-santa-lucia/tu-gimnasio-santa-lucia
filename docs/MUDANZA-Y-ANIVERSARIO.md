@@ -1,3 +1,15 @@
+# Actualización vigente — contador automático
+
+El propietario confirmó el 4 de noviembre de 1996. foundedDate es 1996-11-04. Los años cumplidos cambian al aniversario en Argentina: el 15/10/2026 son 29; el 04/11/2026 pasan a 30. Días, horas, minutos y segundos son totales desde el inicio de esa fecha (00:00 UTC-3, convención de cálculo, no hora real de apertura confirmada).
+
+src/elapsed-time.js define calculateElapsed(), compartida por build y navegador. Se publica como módulo con nombre derivado del contenido. initializeLiveClock() calcula desde el reloj del dispositivo, actualiza cada segundo sólo si la pestaña está visible, permite pausar y recupera el tiempo real al reanudar; no acumula ticks ni usa servicios externos. El contador no es una animación de entrada y no se reinicia por movimiento reducido. No se anuncia cada segundo al lector de pantalla.
+
+anniversary conserva un snapshotDate fijo para el respaldo sin JavaScript y un build reproducible; se identifica su fecha en un aviso noscript. Con JavaScript, todos los años y cifras visibles se recalculan al visitar, sin publicación anual. Los metadatos usan la fecha de fundación, evitando una edad estática que envejezca. El reloj depende de que el dispositivo tenga fecha/hora correctas.
+
+Lo siguiente conserva decisiones anteriores; las cifras conmemorativas y la afirmación de fecha desconocida quedan superadas por esta confirmación.
+
+---
+
 # Mudanza y aniversario: datos y estados
 
 El propietario autorizó el 15/10/2026 publicar ahora el rediseño anunciando la próxima sede. El gimnasio nuevo sigue en construcción. No hay fecha de apertura confirmada ni ubicación de Google Maps actualizada.

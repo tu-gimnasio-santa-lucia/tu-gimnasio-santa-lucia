@@ -3,15 +3,32 @@
   "name": "Tu Gimnasio",
   "foundedYear": 1996,
   "anniversary": {
-    "years": 30,
+    "years": 29,
     "referenceYear": 2026,
-    "commemorative": true,
+    "commemorative": false,
     "metrics": [
-      { "id": "days", "value": 10957, "label": "días" },
-      { "id": "hours", "value": 262968, "label": "horas" },
-      { "id": "minutes", "value": 15778080, "label": "minutos" },
-      { "id": "seconds", "value": 946684800, "label": "segundos" }
-    ]
+      {
+        "id": "days",
+        "value": 10937,
+        "label": "días"
+      },
+      {
+        "id": "hours",
+        "value": 262488,
+        "label": "horas"
+      },
+      {
+        "id": "minutes",
+        "value": 15749280,
+        "label": "minutos"
+      },
+      {
+        "id": "seconds",
+        "value": 944956800,
+        "label": "segundos"
+      }
+    ],
+    "snapshotDate": "2026-10-15"
   },
   "relocation": {
     "status": "announced",
@@ -84,5 +101,6 @@
     "reviewCount": 18,
     "verifiedAt": "2026-10-15",
     "source": "https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"
-  }
+  },
+  "foundedDate": "1996-11-04"
 }

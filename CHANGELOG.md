@@ -1,3 +1,10 @@
+# Fecha confirmada y contador automático — 15/10/2026
+
+- Apertura confirmada: 4 de noviembre de 1996. Años cumplidos por calendario argentino; 29 hasta el 03/11/2026 y 30 desde el 04/11/2026.
+- Totales en vivo de días, horas, minutos y segundos desde el inicio de esa fecha, con pausa manual y suspensión en pestaña oculta. No hay nuevas dependencias ni servicios.
+- Módulo compartido de cálculo, importación con nombre derivado del contenido, respaldo fechado sin JavaScript y metadatos con fecha permanente.
+- Pruebas del aniversario, años bisiestos, avance por segundo, pausa y recuperación al volver a ver la página; nueva autorización acotada del propietario.
+
 # Historial de cambios
 
 ## 2.1.0 — 2026-10-15
