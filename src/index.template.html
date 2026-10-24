@@ -37,8 +37,8 @@
       <nav aria-label="Navegación principal">
         <a href="#actividades">Actividades</a>
         <a href="#horarios">Horarios</a>
-        <a href="#nueva-sede">Nueva sede</a>
-        <a href="#ubicacion">Contacto</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a href="#historia">Historia</a>
       </nav>
       <a class="header-cta" href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer"
         >Consultanos <span aria-hidden="true">↗</span></a
@@ -60,12 +60,9 @@
                 >Ver actividades y horarios <span aria-hidden="true">↘</span></a
               >
               <a class="hero-contact" href="#ubicacion"
-                >Cómo llegar a la nueva sede <span aria-hidden="true">↘</span></a
+                >Cómo llegar al gimnasio <span aria-hidden="true">↘</span></a
               >
             </div>
-            <p class="hero-opening">
-              Apertura: <time datetime="{{opening_date}}">{{opening_date_label}}</time>.
-            </p>
             <p class="hero-motto">Todos somos iguales,<br />la diferencia está en los detalles.</p>
           </div>
           <div class="hero-media">
@@ -90,16 +87,160 @@
               cuotas.
             </p>
           </div>
-          <p class="activities-opening">
-            Horarios de la nueva sede · Desde el
-            <time datetime="{{opening_date}}">{{opening_date_label}}</time>.
-          </p>
           <div class="activity-grid">{{activity_cards}}</div>
           <p class="activities-note">
             En spinning indicamos la hora de inicio; consultá la duración con tu profe. Para fines
             de semana y feriados, escribinos antes de venir.
           </p>
-          <div class="manifesto-art" data-reveal="art">{{image_manifesto}}</div>
+        </div>
+      </section>
+
+      <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
+        <div class="story-visual">{{image_identity}}</div>
+        <div class="story-copy">
+          <p class="section-note">De Santa Lucía. Desde {{founded_year}}.</p>
+          <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
+          <p>
+            Tu Gimnasio nació con una idea simple: que cada persona encuentre un lugar donde
+            entrenar, sentirse acompañada y avanzar a su manera.
+          </p>
+          <p>
+            La experiencia se construye todos los días, cuidando esos detalles que hacen que quieras
+            volver.
+          </p>
+          <a class="text-link" href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
+            >Seguinos en Instagram <span aria-hidden="true">↗</span></a
+          >
+          <p class="story-signature">Tu lugar,<br /><strong>tu gimnasio.</strong></p>
+        </div>
+      </section>
+
+      <section class="reviews" aria-labelledby="opiniones-titulo">
+        <div class="section-shell reviews-inner">
+          <p class="reviews-score">
+            <strong>{{rating_display}}<span>/5</span></strong
+            ><span>{{rating_count}} opiniones en Google</span>
+          </p>
+          <div>
+            <h2 id="opiniones-titulo">La comunidad también habla.</h2>
+            <p>Conocé las experiencias de quienes ya pasaron por Tu Gimnasio.</p>
+          </div>
+          <a class="text-link" href="{{maps_url}}" target="_blank" rel="noopener noreferrer"
+            >Leer opiniones <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+
+      <section class="visit section-shell" aria-label="Horarios y ubicación del gimnasio">
+        <article class="schedule-panel" id="horarios">
+          <p class="section-note">Musculación · Horario general</p>
+          <h2>Organizá<br />tu semana.</h2>
+          <div class="schedule-row">
+            <span>{{weekday_label}}</span><strong>{{weekday_hours}}</strong>
+          </div>
+          <div class="schedule-row closed">
+            <span>{{weekend_label}}</span><strong>{{weekend_hours}}</strong>
+          </div>
+          <p class="schedule-note">{{hours_notice}}</p>
+          <a class="text-link" href="#actividades"
+            >Ver todos los horarios y profesores <span aria-hidden="true">↑</span></a
+          >
+        </article>
+        <article class="location-panel" id="ubicacion">
+          <p class="section-note">Ubicación · Santa Lucía</p>
+          <h2>{{street_address}}</h2>
+          <p>{{postal_locality}}<br />{{region_country}}</p>
+          <div class="location-actions">
+            <a
+              class="button button-navy"
+              href="{{directions_url}}"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
+            >
+            <a class="phone-link" href="{{phone_href}}"
+              >{{default_teacher_name}} · {{phone_display}}</a
+            >
+          </div>
+          {{maps_notice}}
+          <p class="location-code">Código de ubicación: {{plus_code}}</p>
+        </article>
+      </section>
+
+      <section class="questions section-shell" aria-labelledby="preguntas-titulo">
+        <div>
+          <p class="section-note">Para que vengas con todo claro</p>
+          <h2 id="preguntas-titulo">Antes de venir.</h2>
+        </div>
+        <div class="questions-list">
+          <details>
+            <summary>{{maps_faq_title}}</summary>
+            <p>
+              {{maps_faq_text}}
+              <a href="{{directions_url}}" target="_blank" rel="noopener noreferrer"
+                >Abrir indicaciones hacia Tu Gimnasio</a
+              >.
+            </p>
+          </details>
+          <details>
+            <summary>¿Cómo consulto horarios y actividades?</summary>
+            <p>
+              En <a href="#actividades">actividades y horarios</a> encontrás el nombre del profe de
+              cada franja y su botón de WhatsApp. Musculación general se consulta con Titi; el
+              especial, con Martita. También podés escribirnos al
+              <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
+                >Instagram del gimnasio</a
+              >.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="share-section" aria-labelledby="compartir-titulo">
+        <div class="section-shell share-inner">
+          <div class="share-copy">
+            <p class="section-note">La historia se comparte</p>
+            <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
+            <p>
+              Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
+              oficial para que tengas los horarios y las consultas a mano.
+            </p>
+            <div class="share-actions" id="share-controls" hidden>
+              <button class="button button-yellow" id="share-site" type="button">
+                Compartir página <span aria-hidden="true">↗</span>
+              </button>
+              <button class="button button-ghost" id="copy-link" type="button">
+                Copiar enlace
+              </button>
+            </div>
+            <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
+            <div id="manual-copy" class="manual-copy" hidden>
+              <label for="official-url">Dirección oficial para copiar</label>
+              <input
+                id="official-url"
+                type="url"
+                readonly
+                value="{{public_url}}"
+                spellcheck="false"
+                autocomplete="url"
+              />
+            </div>
+            <p class="share-fallback">
+              <a href="{{public_url}}">Abrir la página oficial</a> · También podés descargar el QR.
+            </p>
+          </div>
+          <div class="qr-card">
+            <a href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
+              ><img
+                src="qr-tu-gimnasio.png"
+                width="1146"
+                height="1216"
+                alt="Descargar el QR de la página oficial de Tu Gimnasio"
+                loading="lazy"
+                decoding="async"
+            /></a>
+            <p>Escaneá. Guardá. Compartí.</p>
+          </div>
         </div>
       </section>
 
@@ -153,214 +294,20 @@
         </div>
       </section>
 
-      <section class="future" id="nueva-sede" aria-labelledby="sede-titulo">
-        <div class="section-shell future-layout">
-          <div class="future-copy" data-reveal="future">
-            <p class="future-status"><span aria-hidden="true"></span> Próxima apertura</p>
-            <h2 id="sede-titulo">Nueva casa.<br />Misma esencia.</h2>
-            <p>
-              Abrimos una nueva etapa el
-              <time datetime="{{opening_date}}">{{opening_date_label}}</time>. Otro espacio para
-              encontrarnos, con la misma esencia que nos acompaña desde {{founded_year}}.
-            </p>
+      <section class="final-cta" id="bases" aria-labelledby="cierre-titulo">
+        <div class="section-shell final-layout">
+          <div class="final-copy">
+            <p>Volvamos a las bases.</p>
+            <h2 id="cierre-titulo">Tu lugar.<br />Tu gimnasio.</h2>
             <a
               class="button button-navy"
-              href="{{future_whatsapp_url}}"
+              href="{{whatsapp_url}}"
               target="_blank"
               rel="noopener noreferrer"
-              >Consultá por la apertura <span aria-hidden="true">↗</span></a
+              >Consultar por WhatsApp <span aria-hidden="true">↗</span></a
             >
           </div>
-          <div class="future-address">
-            <p>Nuestra próxima dirección</p>
-            <h3>{{future_street}}</h3>
-            <p>{{future_locality}}</p>
-            <div class="future-notice">
-              <strong>Te esperamos desde la apertura anunciada.</strong>
-              {{maps_notice}}
-            </div>
-            <a
-              class="button button-yellow"
-              href="{{directions_url}}"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
-            >
-          </div>
-        </div>
-      </section>
-
-      <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
-        <div class="story-visual">{{image_identity}}</div>
-        <div class="story-copy">
-          <p class="section-note">De Santa Lucía. Desde {{founded_year}}.</p>
-          <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
-          <p>
-            Tu Gimnasio nació con una idea simple: que cada persona encuentre un lugar donde
-            entrenar, sentirse acompañada y avanzar a su manera.
-          </p>
-          <p>
-            La experiencia se construye todos los días, cuidando esos detalles que hacen que quieras
-            volver.
-          </p>
-          <a class="text-link" href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
-            >Seguinos en Instagram <span aria-hidden="true">↗</span></a
-          >
-          <p class="story-signature">Tu lugar,<br /><strong>tu gimnasio.</strong></p>
-        </div>
-      </section>
-
-      <section class="reviews" aria-labelledby="opiniones-titulo">
-        <div class="section-shell reviews-inner">
-          <p class="reviews-score">
-            <strong>{{rating_display}}<span>/5</span></strong
-            ><span>{{rating_count}} opiniones en Google</span>
-          </p>
-          <div>
-            <h2 id="opiniones-titulo">La comunidad también habla.</h2>
-            <p>Conocé las experiencias de quienes ya pasaron por Tu Gimnasio.</p>
-          </div>
-          <a class="text-link" href="{{maps_url}}" target="_blank" rel="noopener noreferrer"
-            >Leer opiniones <span aria-hidden="true">↗</span></a
-          >
-        </div>
-      </section>
-
-      <section class="visit section-shell" aria-label="Horarios y ubicación de la nueva sede">
-        <article class="schedule-panel" id="horarios">
-          <p class="section-note">Musculación · Horario general</p>
-          <h2>Organizá<br />tu semana.</h2>
-          <div class="schedule-row">
-            <span>{{weekday_label}}</span><strong>{{weekday_hours}}</strong>
-          </div>
-          <div class="schedule-row closed">
-            <span>{{weekend_label}}</span><strong>{{weekend_hours}}</strong>
-          </div>
-          <p class="schedule-note">{{hours_notice}}</p>
-          <a class="text-link" href="#actividades"
-            >Ver todos los horarios y profesores <span aria-hidden="true">↑</span></a
-          >
-        </article>
-        <article class="location-panel" id="ubicacion">
-          <p class="section-note">Nueva sede · Apertura {{opening_date_label}}</p>
-          <h2>{{street_address}}</h2>
-          <p>{{postal_locality}}<br />{{region_country}}</p>
-          <div class="location-actions">
-            <a
-              class="button button-navy"
-              href="{{directions_url}}"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
-            >
-            <a class="phone-link" href="{{phone_href}}"
-              >{{default_teacher_name}} · {{phone_display}}</a
-            >
-          </div>
-          {{maps_notice}}
-          <p class="location-code">Código de ubicación: {{plus_code}}</p>
-          <a class="text-link" href="#nueva-sede"
-            >Ver anuncio de apertura <span aria-hidden="true">↑</span></a
-          >
-        </article>
-      </section>
-
-      <section class="questions section-shell" aria-labelledby="preguntas-titulo">
-        <div>
-          <p class="section-note">Para que vengas con todo claro</p>
-          <h2 id="preguntas-titulo">Antes de venir.</h2>
-        </div>
-        <div class="questions-list">
-          <details>
-            <summary>¿Cuándo abre la nueva sede?</summary>
-            <p>
-              La apertura está anunciada para el
-              <time datetime="{{opening_date}}">{{opening_date_label}}</time>, en {{future_street}},
-              {{future_locality}}. Consultá con tu profe antes de venir.
-            </p>
-          </details>
-          <details>
-            <summary>{{maps_faq_title}}</summary>
-            <p>
-              {{maps_faq_text}}
-              <a href="{{directions_url}}" target="_blank" rel="noopener noreferrer"
-                >Abrir indicaciones hacia Tu Gimnasio</a
-              >.
-            </p>
-          </details>
-          <details>
-            <summary>¿Cómo consulto horarios y actividades?</summary>
-            <p>
-              En <a href="#actividades">actividades y horarios</a> encontrás el nombre del profe de
-              cada franja y su botón de WhatsApp. Musculación general se consulta con Titi; el
-              especial, con Martita. También podés escribirnos al
-              <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
-                >Instagram del gimnasio</a
-              >.
-            </p>
-          </details>
-        </div>
-      </section>
-
-      <section class="share-section" aria-labelledby="compartir-titulo">
-        <div class="section-shell share-inner">
-          <div class="share-copy">
-            <p class="section-note">La historia se comparte</p>
-            <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
-            <p>
-              Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
-              oficial, también después de la mudanza.
-            </p>
-            <div class="share-actions" id="share-controls" hidden>
-              <button class="button button-yellow" id="share-site" type="button">
-                Compartir página <span aria-hidden="true">↗</span>
-              </button>
-              <button class="button button-ghost" id="copy-link" type="button">
-                Copiar enlace
-              </button>
-            </div>
-            <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
-            <div id="manual-copy" class="manual-copy" hidden>
-              <label for="official-url">Dirección oficial para copiar</label>
-              <input
-                id="official-url"
-                type="url"
-                readonly
-                value="{{public_url}}"
-                spellcheck="false"
-                autocomplete="url"
-              />
-            </div>
-            <p class="share-fallback">
-              <a href="{{public_url}}">Abrir la página oficial</a> · También podés descargar el QR.
-            </p>
-          </div>
-          <div class="qr-card">
-            <a href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
-              ><img
-                src="qr-tu-gimnasio.png"
-                width="1146"
-                height="1216"
-                alt="Descargar el QR de la página oficial de Tu Gimnasio"
-                loading="lazy"
-                decoding="async"
-            /></a>
-            <p>Escaneá. Guardá. Compartí.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="final-cta" aria-labelledby="cierre-titulo">
-        <div class="section-shell">
-          <p>Volvamos a las bases.</p>
-          <h2 id="cierre-titulo">Lo que viene.<br />Con vos.</h2>
-          <a
-            class="button button-navy"
-            href="{{whatsapp_url}}"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Nos vemos en Tu Gimnasio <span aria-hidden="true">↗</span></a
-          >
+          <div class="manifesto-art" data-reveal="art">{{image_manifesto}}</div>
         </div>
       </section>
     </main>
@@ -376,8 +323,7 @@
           <p>Todos somos iguales,<br />la diferencia está en los detalles.</p>
           <div class="footer-links">
             <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer">Instagram</a
-            ><a href="{{directions_url}}" target="_blank" rel="noopener noreferrer"
-              >Maps · Nueva sede</a
+            ><a href="{{directions_url}}" target="_blank" rel="noopener noreferrer">Cómo llegar</a
             ><a href="{{phone_href}}">Llamar</a>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 Web informativa de Tu Gimnasio, Santa Lucía, Corrientes. Conserva la identidad original y “Desde 1996”.
 
-**Primera jornada de actualización, 24/10/2026:** actividades, horarios, docentes y consultas por franja; nueva sede en Héroes de Malvinas 150, con apertura anunciada para el 03/11/2026. Esta versión se prepara localmente: publicación y nueva entrada animada corresponden a la segunda jornada. Leer [estado de las etapas](docs/ETAPAS-ACTUALIZACION.md).
+**Correcciones posteriores, 24/10/2026:** consultas simétricas, diseño pulido, contador en la penúltima sección y gráfica «Volvamos a las bases» en la última. Se retiraron el anuncio, la fecha visible y la sección de reapertura. Esta versión sigue local; la segunda etapa sólo comienza con la orden directa «comencemos la 2da etapa». Leer [etapas](docs/ETAPAS-ACTUALIZACION.md).
 
 La antigüedad automática desde el 4 de noviembre de 1996 se conserva: 29 años el 03/11/2026 y 30 desde el 04/11/2026. Maps ya apunta al pin nuevo, pero todavía muestra San Martin s/n; la web distingue la dirección confirmada y ese nombre pendiente. Leer [mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md) antes de activar la sede o cambiar la llegada.
 

@@ -1,5 +1,12 @@
 # Tu Gimnasio: reglas de mantenimiento
 
+## Corrección posterior vigente — 24/10/2026
+
+El propietario pidió simetría en consultas, pulido general, contador penúltimo y «Volvamos a las bases» último, y retirar la reapertura de la presentación pública. Se autoriza ese alcance sin iniciar la segunda etapa. Conservar dirección, actividades, docentes, horarios, contactos y reloj; la fecha prevista se mantiene como hecho en la fuente y `validFrom`, sin anuncio visible ni descripción promocional. No volver a agregar el bloque de reapertura por leer el plan anterior.
+
+**La segunda etapa requiere la orden directa «comencemos la 2da etapa».** No iniciarla por citas, por el paso del tiempo o por terminar estas correcciones. El contador ya queda reubicado: no repetirlo. La entrada logo/años hacia cabecera, gestión de imágenes de Maps y publicación siguen pendientes.
+
+
 Este repositorio contiene la fuente oficial. Empezar por README.md y docs/ARQUITECTURA.md; consultar sólo la documentación pertinente al pedido. Estas reglas sirven para personas y cualquier asistente, sin depender de una aplicación o modelo.
 
 1. Antes de modificar o publicar, crear un respaldo fechado y verificarlo. `node scripts/backup.mjs` conserva fuentes, archivos generados e historial. No borrar respaldos anteriores.

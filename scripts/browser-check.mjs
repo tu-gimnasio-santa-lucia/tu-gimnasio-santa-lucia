@@ -116,11 +116,7 @@ try {
           assert.ok(metrics.scrollWidth <= width + 1, `Desborde ${metrics.scrollWidth}/${width}`);
           assert.ok(metrics.linksSafe);
           assert.equal(
-            await page.locator('.future-address h3').textContent(),
-            business.address.street,
-          );
-          assert.equal(
-            await page.locator('.future-address a[href*="maps/dir/"]').getAttribute('href'),
+            await page.locator('.location-panel a[href*="maps/dir/"]').getAttribute('href'),
             buildDirectionsUrl(business),
             'La llegada debe conservar el identificador y el pin del gimnasio comprobado.',
           );
@@ -130,6 +126,42 @@ try {
             ),
           );
           assert.equal(await page.locator('.activity-session').count(), 10);
+          assert.deepEqual(
+            await page
+              .locator('main > section')
+              .evaluateAll((sections) => sections.slice(-2).map((section) => section.id)),
+            ['aniversario', 'bases'],
+            'El contador es penúltimo y Volvamos a las bases cierra el contenido.',
+          );
+          assert.equal(await page.locator('#bases .manifesto-art').count(), 1);
+          assert.equal(await page.locator('.future, #nueva-sede').count(), 0);
+          assert.ok(!/reapertura|apertura|3 de noviembre/i.test(metrics.text));
+          const consultationButtons = await page
+            .locator('.teacher-contact, .activity-instagram')
+            .evaluateAll((buttons) =>
+              buttons.map((button) => {
+                const { width, height } = button.getBoundingClientRect();
+                return { width, height };
+              }),
+            );
+          assert.equal(consultationButtons.length, 14);
+          for (const dimension of ['width', 'height']) {
+            const sizes = consultationButtons.map((button) => button[dimension]);
+            assert.ok(
+              Math.max(...sizes) - Math.min(...sizes) < 1,
+              `Las consultas deben tener ${dimension} uniforme: ${sizes.join(', ')}`,
+            );
+          }
+          assert.ok(consultationButtons.every((button) => button.height >= 44));
+          const actionHeights = await page
+            .locator('main .button')
+            .evaluateAll((buttons) =>
+              buttons.map((button) => button.getBoundingClientRect().height),
+            );
+          assert.ok(
+            Math.max(...actionHeights) - Math.min(...actionHeights) < 1,
+            `Las acciones principales deben mantener la altura estándar: ${actionHeights.join(', ')}`,
+          );
           for (const activity of business.activities) {
             const card = page.locator(`#actividad-${activity.id}`);
             assert.equal(
@@ -224,6 +256,11 @@ try {
               path: path.join(artifacts, `spinning-${width}.png`),
               caret: 'initial',
             });
+            for (const id of ['inicio', 'aniversario', 'bases'])
+              await page.locator(`#${id}`).screenshot({
+                path: path.join(artifacts, `${id}-${width}.png`),
+                caret: 'initial',
+              });
           }
           if (width === 320) {
             await page.evaluate(() => {
@@ -360,11 +397,11 @@ try {
       await fontPage.emulateMedia({ media: 'print' });
       assert.equal(
         await fontPage
-          .locator('.future-copy .button')
+          .locator('.location-panel .button')
           .evaluate((element) => getComputedStyle(element).color),
         'rgb(0, 0, 0)',
       );
-      assert.ok(await fontPage.locator('.future-address').isVisible());
+      assert.ok(await fontPage.locator('.location-panel').isVisible());
       if (definition.name === 'chromium') {
         await fontPage.setViewportSize({ width: 390, height: 844 });
         await fontPage.emulateMedia({ media: 'screen', forcedColors: 'active' });

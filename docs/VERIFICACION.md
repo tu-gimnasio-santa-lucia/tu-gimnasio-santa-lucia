@@ -1,5 +1,17 @@
 # Fuentes y verificaciones
 
+## Correcciones posteriores a la primera jornada — 24/10/2026
+
+Pedido directo: consultas simétricas, pulido general, contador penúltimo y «Volvamos a las bases» último, retirando la reapertura. Implementado como corrección independiente; **segunda etapa y publicación pendientes hasta la orden «comencemos la 2da etapa»**.
+
+Se retiraron anuncio, fecha visible, sección, consulta promocional y descripción de reapertura. La fecha confirmada se conserva como antecedente de la fuente y `validFrom` técnico; no se afirma apertura efectiva. Se preservaron horarios, docentes, números, Maps, originales y cálculo de antigüedad.
+
+**Resultado nuevo: nueve grupos de código y 24 casos de navegador aprobados.** Además de los controles inferiores, se midieron las 14 consultas de WhatsApp/Instagram: mismas dimensiones por vista; también altura uniforme de todas las acciones principales. Se verificaron orden real de las últimas secciones, gráfica única al cierre, ausencia de reapertura, texto al 200%, teclado, ausencia de JavaScript, reloj y movimiento reducido. Capturas de escritorio/móvil y tablet revisadas; se ajustó el título del contador de tablet para evitar cuatro líneas.
+
+Manifiesto final: `12f784cdd0e84742fa6001c08413bc70cf14087d856528f417c6aadacbdbc1ee`. Reporte local: `artifacts/qa-report.json`. Sin infracciones detectadas por axe, desbordamientos horizontales, errores de aplicación o solicitudes remotas al cargar. No equivale a certificación ni prueba física de todos los dispositivos. No se instalaron dependencias ni se publicaron cambios. Se preservaron el fallo de altura de Maps y las inspecciones previas; se corrigieron y repitieron las pruebas, sin relajar criterios. La auditoría de dependencias se renovará antes de publicar.
+
+Las preferencias de Taste se usan como asesoramiento subordinado a la marca y accesibilidad: etiquetas reales, separadores de horarios, foco visible y ausencia de video pendiente no se retiran para obtener una puntuación. La nueva entrada animada no se implementó. Los resultados inferiores de la primera jornada son históricos respecto de este build.
+
 ## Primera jornada — 24/10/2026, versión local sin publicar
 
 Orden directa: «comenza con la primera etapa». Se completan datos, consultas, ubicación y prioridad de actividades. Nueva presentación animada, logo/fotos de Maps, publicación y comprobación pública quedan para una segunda jornada solicitada posteriormente. Ver [etapas](ETAPAS-ACTUALIZACION.md).

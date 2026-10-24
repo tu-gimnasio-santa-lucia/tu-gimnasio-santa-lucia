@@ -11,7 +11,6 @@ import {
   formatScheduleDays,
   formatSchedulePeriods,
   formatScheduleTime,
-  formatOpeningDate,
   getGeneralSchedule,
 } from './business-data.mjs';
 export { validateBusinessData } from './business-data.mjs';
@@ -116,7 +115,6 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const whatsappUrl = buildWhatsAppUrl(defaultTeacher, business.contacts.whatsappMessage);
   const directionsUrl = buildDirectionsUrl(business);
   const generalSchedule = getGeneralSchedule(business);
-  const openingDateLabel = formatOpeningDate(business.relocation.openingDate);
   const mapNotice = business.relocation.maps.streetNameUpdated
     ? ''
     : `En Google Maps, esta calle todavía aparece como ${business.relocation.maps.displayedStreet}. La dirección es ${business.address.street} y el punto indicado corresponde al gimnasio. La actualización del nombre está en trámite.`;
@@ -128,7 +126,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     foundingDate: business.foundedDate,
     url: project.publicUrl,
     image: new URL(assets.identity.png, project.publicUrl).href,
-    description: `Nueva sede de ${business.name}. Apertura anunciada para el ${openingDateLabel}.`,
+    description: `${business.name} en ${business.address.locality}. Actividades, horarios y consultas con tu profe.`,
     telephone: '+' + defaultTeacher.phoneInternational,
     address: {
       '@type': 'PostalAddress',
@@ -193,15 +191,10 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
       return `<div class="time-metric"><dt>${escapeHtml(metric.label)}</dt><dd><span class="metric-number" data-time-unit="${metric.id}" aria-hidden="true">${formatted}</span><span class="sr-only" data-time-accessible="${metric.id}">${formatted}</span></dd></div>`;
     })
     .join('\n');
-  const futureAddress = business.address;
-  const futureWhatsappUrl = buildWhatsAppUrl(
-    defaultTeacher,
-    `Hola Tu Gimnasio, quisiera consultar por la apertura de la nueva sede en ${futureAddress.street}, anunciada para el ${openingDateLabel}.`,
-  );
   const replacements = {
     public_url: project.publicUrl,
-    site_title: `${business.name} | Actividades, horarios y nueva sede`,
-    meta_description: `${business.name} en ${business.address.locality}: musculación, spinning, gimnasia grupal y pilates en colchoneta. Nueva sede en ${futureAddress.street}. Apertura: ${openingDateLabel}.`,
+    site_title: `${business.name} | Actividades y horarios en ${business.address.locality}`,
+    meta_description: `${business.name} en ${business.address.locality}: musculación, spinning, gimnasia grupal y pilates en colchoneta. Horarios, profesores y consultas en ${business.address.street}.`,
     share_description: `${business.name} · Desde ${business.foundedYear} en ${business.address.locality}, ${business.address.region}.`,
     name: business.name,
     founded_year: business.foundedYear,
@@ -210,18 +203,11 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     anniversary_years: business.anniversary.years,
     anniversary_year: business.anniversary.referenceYear,
     anniversary_metrics: anniversaryMetrics,
-    future_street: futureAddress.street,
-    future_locality: `${futureAddress.locality}, ${futureAddress.region}, Argentina`,
-    future_whatsapp_url: futureWhatsappUrl,
-    opening_date: business.relocation.openingDate,
-    opening_date_label: openingDateLabel,
     maps_notice: mapNotice ? `<p class="maps-notice">${escapeHtml(mapNotice)}</p>` : '',
-    maps_faq_title: mapNotice
-      ? '¿Por qué Maps muestra San Martín?'
-      : '¿Cómo llego a la nueva sede?',
+    maps_faq_title: mapNotice ? '¿Por qué Maps muestra San Martín?' : '¿Cómo llego al gimnasio?',
     maps_faq_text:
       mapNotice ||
-      `El botón Cómo llegar con Google Maps abre las indicaciones hacia el punto de nuestra nueva sede en ${futureAddress.street}.`,
+      `El botón Cómo llegar con Google Maps abre las indicaciones hacia Tu Gimnasio en ${business.address.street}.`,
     directions_url: directionsUrl,
     phone_display: defaultTeacher.phoneDisplay,
     phone_href: 'tel:+' + defaultTeacher.phoneInternational,

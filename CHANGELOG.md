@@ -1,3 +1,10 @@
+# Correcciones posteriores — 24/10/2026, sin publicar
+
+- Consultas de WhatsApp e Instagram con ancho/altura y columna alineados; acciones principales de altura uniforme sin recortar texto ni limitar su crecimiento al ampliar.
+- Contador automático como penúltima sección; gráfica original «Volvamos a las bases» en la última. Pulido de portada, espaciado, contador, preguntas frecuentes y cierre, conservando la marca y los datos.
+- Anuncio, fecha visible, sección y consulta promocional de reapertura retirados por pedido posterior; fecha confirmada conservada en fuente/registro y `validFrom` de horarios.
+- La segunda etapa sigue pendiente hasta la orden directa «comencemos la 2da etapa». No se implementó la transición nueva del logo ni se publicó o cargaron imágenes en Maps.
+
 # En preparación — primera jornada, 24/10/2026
 
 - Horarios completos y docentes de cuatro actividades; especial de Martita confirmado de lunes a viernes, 8:00–9:00 y 20:00–21:00; pausa de musculación 11:00–13:30 y horas de spinning sin duración inventada.

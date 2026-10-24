@@ -12,15 +12,15 @@ La marca existente prevalece sobre preferencias de una habilidad o modelo. La di
 
 ## Composición
 
-La actualización en dos jornadas prioriza actividades, días, horarios, docentes y consultas. El azul profundo ocupa portada y capítulos deportivos; amarillo identifica el anuncio, las acciones y el cierre; superficies claras dan pausa a las cifras y a la historia. Ningún marco redondo se aplica directamente al archivo del logo: la imagen completa queda dentro del marco, con aire alrededor.
+La actualización en dos jornadas prioriza actividades, días, horarios, docentes y consultas. El azul profundo ocupa portada y capítulos deportivos; amarillo identifica las acciones y el cierre; superficies claras dan pausa a las cifras y a la historia. Ningún marco redondo se aplica directamente al archivo del logo: la imagen completa queda dentro del marco, con aire alrededor.
 
 La navegación permanece visible en móviles. Las cuatro actividades se sitúan después de la portada, con listas semánticas de horarios, teléfono y consulta del docente correspondiente e Instagram en cada actividad. La antigüedad es real y automática, no una cifra conmemorativa fija. Los afiches antiguos siguen archivados y fuera de la publicación. No se inventan fotografías del nuevo edificio.
 
-La primera jornada no implementa la nueva entrada animada: en la segunda se preparará la transición breve de logo y años hacia una esquina de la cabecera y el contador completo cerca del final. Conservar el cálculo, pausa, accesibilidad y progresividad existentes al hacer ese cambio.
+Las correcciones posteriores a la primera jornada unifican las consultas: columna de 18rem en escritorio, ancho disponible en móvil y altura mínima de 3,25rem con crecimiento al ampliar texto. WhatsApp e Instagram se alinean por actividad. El contador ya es la penúltima sección; la gráfica original «Volvamos a las bases» cierra el contenido. No repetir esa reubicación en la segunda etapa. Se retiró el bloque promocional de reapertura. La transición nueva de logo/años hacia la cabecera sigue pendiente hasta «comencemos la 2da etapa».
 
 “Todos somos iguales, la diferencia está en los detalles.”, “Volvamos a las bases.” y “Tu lugar, tu gimnasio.” son lemas oficiales. No inventar precios, horarios de clases o fotografías del interior.
 
-Espaciados fluidos, contenedores con min-width cero, áreas táctiles amplias y tipografía adaptable. Animación: entrada breve de portada, cifras que cuentan una vez y tres composiciones de sección. Sin bucles, parallax ni contenido oculto permanentemente. El contenido nunca depende de una animación. Mantener foco visible, movimiento reducido, ampliación del texto y alternativa de impresión.
+Espaciados fluidos, contenedores con min-width cero, áreas táctiles amplias y tipografía adaptable. El reloj muestra antigüedad real y no se anima desde cero. Las entradas visuales existentes son opcionales; su revisión amplia y la nueva presentación siguen pendientes para la segunda etapa. Sin bucles, parallax ni contenido oculto permanentemente. El contenido nunca depende de una animación. Mantener foco visible, movimiento reducido, ampliación del texto y alternativa de impresión.
 
 WebP se usa sólo para versiones sin pérdida que pesan menos; PNG original sirve de alternativa. El QR conserva su matriz y margen; no modificarlo por estética.
 

@@ -1,6 +1,6 @@
 # Arquitectura y mapa del código
 
-Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/2026 (arquitectura 3). La fuente portátil es este repositorio: no requiere un chat, proveedor de IA, plugin o ruta de una PC. La primera jornada está implementada localmente; publicación y nueva presentación animada quedan para la segunda. Leer [etapas](ETAPAS-ACTUALIZACION.md).
+Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/2026 (arquitectura 3). La fuente portátil es este repositorio: no requiere un chat, proveedor de IA, plugin o ruta de una PC. La primera jornada y las correcciones visuales posteriores están implementadas localmente. El contador ya es penúltimo y el cierre «Volvamos a las bases» es último; anuncio/fecha visible de reapertura retirados. Publicación y nueva presentación animada esperan la orden «comencemos la 2da etapa». Leer [etapas](ETAPAS-ACTUALIZACION.md).
 
 ## Responsabilidades
 
@@ -11,7 +11,7 @@ Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/202
 | `data/business.schema.json` | Tipos y restricciones para edición. El generador también valida relaciones y coherencia con JavaScript. |
 | `scripts/business-data.mjs` | Validación y funciones puras para días, franjas, mensajes e indicaciones. Sin red, DOM ni reloj del equipo. |
 | `assets/manifest.json` | Recursos originales, dimensiones, roles, origen y huellas de la fuente local. Los recursos `archived: true` se conservan, pero no se publican. |
-| `src/index.template.html` | Estructura semántica y textos editoriales; marcadores `{{nombre}}` resueltos al generar. Actividades antes del contador. |
+| `src/index.template.html` | Estructura semántica y textos editoriales; marcadores `{{nombre}}` resueltos al generar. Actividades primero; contador penúltimo y `#bases` último dentro de `main`. |
 | `src/styles.css` | Identidad, diseño adaptable, foco, impresión y movimiento reducido. |
 | `src/elapsed-time.js` | Cálculo compartido de antigüedad, a partir de fundación e instante de consulta. |
 | `src/site.js` | Mejoras independientes de reloj, compartir/copiar y movimiento; información y enlaces ya existen en HTML. |
@@ -32,7 +32,7 @@ Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/202
 - Cada período tiene `start` y `end`. `end: null` significa que sólo se conoce el inicio; no equivale a duración cero ni permite inventar un final. Es el caso de las seis franjas de spinning.
 - Las franjas de una modalidad deben estar ordenadas y no superponerse. Actividades diferentes pueden coincidir: no inventar suplentes ni cancelar horarios confirmados.
 - `hours.generalActivityId` y `hours.generalScheduleId` referencian el horario general de musculación. Horarios y JSON-LD se generan desde esa misma fuente: 07:00–11:00 y 13:30–22:00, respetando la pausa.
-- `address` contiene la dirección de la **sede anunciada**, Héroes de Malvinas 150. `relocation.status: "scheduled"` y `openingDate: "2026-11-03"` distinguen próxima apertura de apertura efectiva. El reloj no cambia ese estado. No se confirmó una hora de inauguración.
+- `address` contiene la dirección de la **sede anunciada**, Héroes de Malvinas 150. `relocation.status: "scheduled"` y `openingDate: "2026-11-03"` distinguen próxima apertura de apertura efectiva. El reloj no cambia ese estado. No se confirmó una hora de inauguración. La fecha confirmada se conserva en la fuente y en `validFrom` de los horarios; por el pedido posterior, no se genera un anuncio, fecha visible, descripción promocional o sección de reapertura.
 - `relocation.maps` distingue pin actualizado y nombre de calle actualizado. Conserva fecha de consulta, referencia del propietario, coordenadas de la ficha y Place ID. El botón usa ese Place ID; una cámara de Street View o coordenadas solas no son un destino validado. Ver [mudanza](MUDANZA-Y-ANIVERSARIO.md).
 - `foundedDate: "1996-11-04"` es la fundación original. `anniversary` conserva un snapshot fechado coherente para HTML sin JavaScript; los años reales se actualizan por aniversario argentino.
 

@@ -104,7 +104,6 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
     '03777 72-3911',
     '03777 47-2060',
     'Pilates en colchoneta',
-    'martes 3 de noviembre de 2026',
     'Volvamos a las bases',
     'Tu lugar,',
   ])
@@ -124,10 +123,11 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
   assert.equal(
     JSON.parse(jsonLd).address.streetAddress,
     business.address.street,
-    'Los datos estructurados deben describir la sede anunciada, con apertura futura explícita.',
+    'Los datos estructurados conservan la dirección confirmada.',
   );
   const structured = JSON.parse(jsonLd);
-  assert.ok(html.includes('Próxima apertura'));
+  assert.doesNotMatch(html, /reapertura|próxima apertura|apertura anunciada|3 de noviembre/i);
+  assert.doesNotMatch(structured.description, /apertura|inauguraci[oó]n/i);
   assert.deepEqual(
     structured.openingHoursSpecification.map(({ opens, closes, validFrom }) => [
       opens,
@@ -146,6 +146,15 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
     html.indexOf('id="actividades"') < html.indexOf('id="aniversario"'),
     'Las actividades deben estar antes que el contador detallado.',
   );
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  const sectionIds = [...main.matchAll(/<section\b[^>]*\bid="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(sectionIds.slice(-2), ['aniversario', 'bases']);
+  assert.ok(
+    main.indexOf('class="manifesto-art"') > main.indexOf('id="bases"'),
+    'La gráfica original de Volvamos a las bases debe cerrar el contenido.',
+  );
+  assert.equal((main.match(/class="manifesto-art"/g) || []).length, 1);
+  assert.doesNotMatch(main, /id="nueva-sede"|class="future"|opening_date/);
   assert.equal((html.match(/class="activity-session"/g) || []).length, 10);
   assert.equal((html.match(/class="activity-instagram"/g) || []).length, 4);
   assert.deepEqual(

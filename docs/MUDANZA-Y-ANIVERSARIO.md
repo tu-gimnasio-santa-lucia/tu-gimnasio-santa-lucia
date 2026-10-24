@@ -1,6 +1,6 @@
 # Mudanza, apertura y antigüedad
 
-Estado de la fuente al 24/10/2026: primera jornada implementada localmente, todavía sin publicar. Nueva sede anunciada para el **martes 3 de noviembre de 2026**, en **Héroes de Malvinas 150, Santa Lucía, Corrientes, Argentina**. El propietario autorizó anunciar dirección y fecha sin «en construcción». No hay hora de inauguración confirmada ni confirmación de apertura efectiva.
+Estado al 24/10/2026: primera jornada y correcciones posteriores implementadas localmente, sin publicar. El propietario pidió después **retirar la reapertura de la presentación pública**. No se genera su sección, anuncio, fecha visible, consulta promocional ni descripción de apertura en metadatos. La dirección Héroes de Malvinas 150 se conserva. La fecha prevista 03/11/2026 queda como dato confirmado de la fuente y `validFrom` de los horarios, sin declarar apertura efectiva ni inventar hora de inauguración.
 
 La apertura de esta sede y la fundación del gimnasio son hechos distintos: se fundó el **4 de noviembre de 1996**. El 03/11/2026 tiene 29 años; el 04/11/2026 cumple 30.
 
@@ -18,7 +18,7 @@ La apertura de esta sede y la fundación del gimnasio son hechos distintos: se f
 | `relocation.maps.coordinateSource` | `business-profile`: coordenadas de la ficha, no de una cámara o centro de mapa. |
 | `relocation.maps.placeId` | `ChIJ97NG_pRjTpQRJB6lqKeqmWU`, identidad comprobada en las indicaciones. |
 
-Los campos antiguos `relocation.futureAddress` y `relocation.mapsUpdated` fueron sustituidos. No mantener dos direcciones activas o un indicador ambiguo. Descripción, anuncio y horarios distinguen próxima apertura. Las dos franjas generales de JSON-LD llevan `validFrom: "2026-11-03"`. Fines de semana y feriados se consultan: el cierre antiguo no es una confirmación nueva.
+Los campos antiguos `relocation.futureAddress` y `relocation.mapsUpdated` fueron sustituidos. No mantener dos direcciones activas o un indicador ambiguo. La descripción y los textos no anuncian reapertura. Las dos franjas generales de JSON-LD llevan `validFrom: "2026-11-03"`. Fines de semana y feriados se consultan: el cierre antiguo no es una confirmación nueva.
 
 El calendario no cambia automáticamente `scheduled` a abierto. Después de esa fecha, confirmar apertura efectiva y migrar coherentemente validación, esquema, textos y pruebas. No agregar una hora de inauguración a partir de musculación.
 
@@ -44,7 +44,7 @@ Días, horas, minutos y segundos son **totales transcurridos**, no partes restan
 
 `anniversary.snapshotDate` y sus valores son un respaldo fechado coherente para HTML sin JavaScript y un build reproducible. `noscript` identifica la fecha. Con JavaScript, años y totales se recalculan al visitar sin publicación anual. Los metadatos usan la fundación sin fijar una edad que envejezca.
 
-No restaurar cifras conmemorativas antiguas ni animar totales desde cero. La nueva entrada visual y la ubicación definitiva del contador cerca del final corresponden a la segunda jornada, conservando cálculo, pausa y alternativa sin JavaScript.
+No restaurar cifras conmemorativas antiguas ni animar totales desde cero. El contador ya se reubicó como penúltima sección en las correcciones posteriores, antes de `#bases`, conservando cálculo, pausa y alternativa sin JavaScript. La nueva entrada visual sigue pendiente y sólo se inicia con la orden directa «comencemos la 2da etapa».
 
 ## Logo, fuente y movimiento
 
