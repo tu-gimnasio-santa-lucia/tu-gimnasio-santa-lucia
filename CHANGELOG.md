@@ -1,3 +1,11 @@
+# En preparación — primera jornada, 24/10/2026
+
+- Horarios completos y docentes de cuatro actividades; especial de Martita confirmado de lunes a viernes, 8:00–9:00 y 20:00–21:00; pausa de musculación 11:00–13:30 y horas de spinning sin duración inventada.
+- Teléfonos centralizados y consultas por franja/profesor, con mensaje específico e Instagram por actividad. Actividades antes del contador, listas semánticas y adaptación al ancho disponible.
+- Nueva sede en Héroes de Malvinas 150 y apertura anunciada para el 03/11/2026. Pin de Maps actualizado, nombre San Martin s/n aún pendiente; llegada con Place ID para evitar que se identifique un comercio cercano.
+- Datos estructurados con dos franjas y `validFrom` en la fecha de apertura. Contrato de datos documentado en módulo puro, esquema y arquitectura.
+- Verificación local de código y navegador. Esta entrada no afirma publicación: animación inicial, refinamiento final, fotos/logo de Maps y publicación siguen en la segunda jornada.
+
 # Fecha confirmada y contador automático — 15/10/2026
 
 - Apertura confirmada: 4 de noviembre de 1996. Años cumplidos por calendario argentino; 29 hasta el 03/11/2026 y 30 desde el 04/11/2026.

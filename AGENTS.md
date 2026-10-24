@@ -17,7 +17,9 @@ Las habilidades de diseño son asesoramiento subordinado al pedido y a la identi
 
 ## Aniversario y próxima sede
 
-- Estado autorizado: publicar el anuncio ahora; Héroes de Malvinas 150 es la próxima sede, en construcción. No anunciarla abierta ni inventar una fecha.
-- `address` y `contacts.maps` siguen describiendo la sede actual. `relocation.futureAddress` describe la futura. No mezclar ambas en botones, Maps, horarios ni JSON-LD. Leer docs/MUDANZA-Y-ANIVERSARIO.md antes de activar la nueva sede.
+- Primera jornada autorizada el 24/10/2026: actividades, horarios, docentes, consultas y ubicación, con respaldo y pruebas. La publicación y la nueva presentación animada quedan para la segunda jornada; esperar el pedido posterior del propietario. Leer docs/ETAPAS-ACTUALIZACION.md.
+- Apertura anunciada de la nueva sede: 03/11/2026, sin hora de inauguración confirmada. `relocation.status` es `scheduled`; no afirmar que ya está abierta ni activarla automáticamente por el reloj.
+- `address` es Héroes de Malvinas 150, dirección de la sede anunciada. La ficha de Maps ya se movió al pin nuevo pero muestra San Martin s/n; distinguir `locationUpdated` y `streetNameUpdated`. El botón de llegada conserva el Place ID comprobado, no sólo coordenadas ni la cámara de Street View. Leer docs/MUDANZA-Y-ANIVERSARIO.md y volver a comprobar Maps antes de publicar.
+- Horarios y contactos se definen en `activities[].schedules` y `teachers`, con referencias por ID. El especial de Martita es de lunes a viernes 8:00–9:00 y 20:00–21:00. No inventar duración de spinning ni alterar horarios por su coincidencia con otras actividades. No publicar precios ni recuperar el horario general continuo anterior.
 - Fecha de apertura confirmada: 04/11/1996. Las cifras son automáticas y los años se calculan por aniversario de calendario, hora argentina. El snapshot sin JavaScript tiene fecha explícita. No restaurar las cifras conmemorativas anteriores ni inventar la hora real de apertura.
 - Las animaciones son opcionales, breves y sin ciclos infinitos. Respetar movimiento reducido y mantener contenido visible sin JavaScript. Conservar el logo original; ningún marco debe recortar el nombre.

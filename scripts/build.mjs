@@ -1,9 +1,20 @@
-import { calculateElapsed } from '../src/elapsed-time.js';
 /** Deterministic static-site build. No network, external packages or platform APIs. */
 import { readFile, writeFile, mkdir, readdir, copyFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import {
+  validateBusinessData,
+  buildWhatsAppUrl,
+  buildScheduleMessage,
+  buildDirectionsUrl,
+  formatScheduleDays,
+  formatSchedulePeriods,
+  formatScheduleTime,
+  formatOpeningDate,
+  getGeneralSchedule,
+} from './business-data.mjs';
+export { validateBusinessData } from './business-data.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -14,122 +25,6 @@ export const escapeHtml = (value) =>
   );
 export const serializeJsonLd = (value) =>
   JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
-
-/** Validate edited business data before it can reach HTML or executable markup. */
-export function validateBusinessData(data, project) {
-  if (data.name !== 'Tu Gimnasio' || data.foundedYear !== 1996)
-    throw new Error('Revisar nombre oficial y año de apertura.');
-  if (data.foundedDate !== '1996-11-04')
-    throw new Error('Conservar la fecha confirmada por el propietario.');
-  const anniversary = data.anniversary;
-  if (
-    !anniversary ||
-    anniversary.commemorative !== false ||
-    !Number.isSafeInteger(anniversary.referenceYear) ||
-    !Number.isSafeInteger(anniversary.years) ||
-    anniversary.years < 1 ||
-    calculateElapsed(data.foundedDate, new Date(anniversary.snapshotDate + 'T00:00:00-03:00'))
-      .years !== anniversary.years ||
-    !Array.isArray(anniversary.metrics) ||
-    anniversary.metrics.length !== 4
-  )
-    throw new Error('Snapshot de antigüedad inválido; revisar fecha de fundación y de referencia.');
-  const metricIds = ['days', 'hours', 'minutes', 'seconds'];
-  anniversary.metrics.forEach((metric, index) => {
-    if (
-      metric.id !== metricIds[index] ||
-      metric.value !==
-        calculateElapsed(data.foundedDate, new Date(anniversary.snapshotDate + 'T00:00:00-03:00'))[
-          metric.id
-        ] ||
-      !Number.isSafeInteger(metric.value) ||
-      metric.value < 1 ||
-      typeof metric.label !== 'string' ||
-      !metric.label.trim()
-    )
-      throw new Error('Cifra de aniversario inválida.');
-    if (
-      index > 0 &&
-      metric.value !== anniversary.metrics[index - 1].value * (index === 1 ? 24 : 60)
-    )
-      throw new Error('Las equivalencias conmemorativas no coinciden.');
-  });
-  if (
-    data.relocation?.status !== 'announced' ||
-    data.relocation.openingDate !== null ||
-    data.relocation.mapsUpdated !== false ||
-    !data.relocation.futureAddress
-  )
-    throw new Error('La nueva sede sigue anunciada: no inferir apertura ni Maps actualizado.');
-  for (const key of ['street', 'locality', 'region', 'country'])
-    if (
-      typeof data.relocation.futureAddress[key] !== 'string' ||
-      !data.relocation.futureAddress[key].trim()
-    )
-      throw new Error('Dirección futura incompleta.');
-  if (!/^\d{10,15}$/.test(data.phoneInternational))
-    throw new Error('Teléfono internacional inválido.');
-  if (project.publicUrl !== 'https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/')
-    throw new Error('La dirección pública principal debe conservarse.');
-  for (const key of ['instagram', 'maps']) {
-    const url = new URL(data.contacts[key]);
-    const allowed =
-      key === 'instagram'
-        ? ['www.instagram.com', 'instagram.com']
-        : ['maps.app.goo.gl', 'www.google.com'];
-    if (
-      url.protocol !== 'https:' ||
-      !allowed.includes(url.hostname) ||
-      url.username ||
-      url.password
-    )
-      throw new Error(`Enlace ${key} inválido.`);
-  }
-  for (const key of ['opens', 'closes'])
-    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(data.hours[key])) throw new Error('Horario inválido.');
-  const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  if (
-    !Array.isArray(data.hours.weekdays) ||
-    !data.hours.weekdays.length ||
-    data.hours.weekdays.some((day) => !validDays.includes(day)) ||
-    typeof data.hours.weekendClosed !== 'boolean'
-  )
-    throw new Error('Días de atención inválidos.');
-  if (!Array.isArray(data.activities) || !data.activities.length)
-    throw new Error('Faltan las actividades.');
-  const ids = new Set();
-  for (const activity of data.activities) {
-    if (!/^[a-z][a-z0-9-]*$/.test(activity.id) || ids.has(activity.id))
-      throw new Error('Identificador de actividad inválido o duplicado.');
-    ids.add(activity.id);
-    if (!['yellow', 'blue', 'red', 'white'].includes(activity.accent))
-      throw new Error('Acento visual desconocido.');
-  }
-  if (/\bFuncional\b/i.test(JSON.stringify(data)))
-    throw new Error('Los datos incluyen una actividad retirada.');
-  if (!(
-    data.googleRating.value > 0 &&
-    data.googleRating.value <= 5 &&
-    Number.isInteger(data.googleRating.reviewCount) &&
-    data.googleRating.reviewCount > 0
-  ))
-    throw new Error('Valoración de Google inválida.');
-  for (const value of [
-    data.phoneDisplay,
-    data.hours.weekdayLabel,
-    data.hours.weekendLabel,
-    data.hours.notice,
-    data.contacts.whatsappMessage,
-    ...Object.values(data.address),
-    ...Object.values(data.relocation.futureAddress),
-    ...Object.values(data.mottos),
-    ...data.activities.flatMap((a) => [a.name, a.description]),
-  ]) {
-    if (typeof value !== 'string' || !value.trim() || value.length > 1000)
-      throw new Error('Dato obligatorio vacío o demasiado largo.');
-  }
-  return data;
-}
 
 /** Restrict asset paths and types: an accidental file in assets must never be published. */
 export function validateAssetManifest(assets) {
@@ -217,7 +112,14 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const styleFile = `styles.${sha256(css).slice(0, 12)}.css`;
   const scriptFile = `site.${sha256(browserScript).slice(0, 12)}.js`;
   const sri = (text) => 'sha384-' + createHash('sha384').update(text).digest('base64');
-  const whatsappUrl = `https://wa.me/${business.phoneInternational}?text=${encodeURIComponent(business.contacts.whatsappMessage)}`;
+  const defaultTeacher = business.teachers[business.contacts.defaultTeacherId];
+  const whatsappUrl = buildWhatsAppUrl(defaultTeacher, business.contacts.whatsappMessage);
+  const directionsUrl = buildDirectionsUrl(business);
+  const generalSchedule = getGeneralSchedule(business);
+  const openingDateLabel = formatOpeningDate(business.relocation.openingDate);
+  const mapNotice = business.relocation.maps.streetNameUpdated
+    ? ''
+    : `En Google Maps, esta calle todavía aparece como ${business.relocation.maps.displayedStreet}. La dirección es ${business.address.street} y el punto indicado corresponde al gimnasio. La actualización del nombre está en trámite.`;
   const ratingDisplay = String(business.googleRating.value).replace('.', ',');
   const jsonLd = serializeJsonLd({
     '@context': 'https://schema.org',
@@ -226,7 +128,8 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     foundingDate: business.foundedDate,
     url: project.publicUrl,
     image: new URL(assets.identity.png, project.publicUrl).href,
-    telephone: '+' + business.phoneInternational,
+    description: `Nueva sede de ${business.name}. Apertura anunciada para el ${openingDateLabel}.`,
+    telephone: '+' + defaultTeacher.phoneInternational,
     address: {
       '@type': 'PostalAddress',
       streetAddress: business.address.street,
@@ -236,19 +139,24 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
       addressCountry: business.address.country,
     },
     sameAs: [business.contacts.instagram, business.contacts.maps],
+    hasMap: directionsUrl,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: business.relocation.maps.latitude,
+      longitude: business.relocation.maps.longitude,
+    },
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: String(business.googleRating.value),
       reviewCount: String(business.googleRating.reviewCount),
     },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: business.hours.weekdays,
-        opens: business.hours.opens,
-        closes: business.hours.closes,
-      },
-    ],
+    openingHoursSpecification: generalSchedule.periods.map((period) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: generalSchedule.days,
+      opens: period.start,
+      closes: period.end,
+      validFrom: business.relocation.openingDate,
+    })),
   });
   const jsonLdHash = createHash('sha256').update(jsonLd).digest('base64');
   const csp = `default-src 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-${jsonLdHash}'; font-src 'self'; connect-src 'none'`;
@@ -257,24 +165,43 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     return `<picture>${image.webp ? `<source srcset="${escapeHtml(image.webp)}" type="image/webp">` : ''}<img class="${escapeHtml(className)}" src="${escapeHtml(image.png || image.jpeg)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}></picture>`;
   }
   const activityCards = business.activities
-    .map(
-      (a) =>
-        `<article class="activity-card ${a.accent}" id="actividad-${a.id}"><h3>${escapeHtml(a.name)}</h3><p>${escapeHtml(a.description)}</p><a href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Consultar por ${escapeHtml(a.name)}">Consultar <span aria-hidden="true">↗</span></a></article>`,
-    )
+    .map((activity) => {
+      const schedules = activity.schedules
+        .map((schedule) => {
+          const teacher = business.teachers[schedule.teacherId];
+          const days = formatScheduleDays(schedule.days);
+          const periods = schedule.periods
+            .map(
+              ({ start, end }) =>
+                `<span class="schedule-period">${end === null ? '<span class="time-label">Inicio </span>' : ''}<time datetime="${start}">${formatScheduleTime(start)}</time>${end === null ? '' : ` a <time datetime="${end}">${formatScheduleTime(end)}</time>`}</span>`,
+            )
+            .join('<span class="period-separator"> y </span>');
+          const contact = buildWhatsAppUrl(
+            teacher,
+            buildScheduleMessage(activity, schedule, teacher),
+          );
+          return `<li class="activity-session" id="horario-${activity.id}-${schedule.id}" data-schedule-id="${schedule.id}" data-teacher-id="${schedule.teacherId}"><div class="session-information">${schedule.label ? `<h4>${escapeHtml(schedule.label)}</h4>` : ''}<p class="schedule-days">${escapeHtml(days)}</p><p class="schedule-times">${periods}</p></div><div class="session-contact"><p>Profe <strong>${escapeHtml(teacher.name)}</strong><span class="teacher-phone">${escapeHtml(teacher.phoneDisplay)}</span></p><a class="button button-yellow teacher-contact" href="${escapeHtml(contact)}" target="_blank" rel="noopener noreferrer" aria-label="Consultar con ${escapeHtml(teacher.name)} por ${escapeHtml(activity.name)}, ${escapeHtml(days.toLowerCase())}, ${escapeHtml(formatSchedulePeriods(schedule.periods))}">Consultar con ${escapeHtml(teacher.name)} <span aria-hidden="true">↗</span></a></div></li>`;
+        })
+        .join('\n');
+      return `<article class="activity-card ${activity.accent}" id="actividad-${activity.id}" data-activity-id="${activity.id}" aria-labelledby="titulo-${activity.id}"><header class="activity-card-header"><div><h3 id="titulo-${activity.id}">${escapeHtml(activity.name)}</h3><p class="activity-description">${escapeHtml(activity.description)}</p></div><a class="activity-instagram" href="${escapeHtml(business.contacts.instagram)}" target="_blank" rel="noopener noreferrer" aria-label="Consultar en Instagram por ${escapeHtml(activity.name)} de Tu Gimnasio">Consultar en Instagram <span aria-hidden="true">↗</span></a></header><ul class="activity-schedules" aria-label="Horarios y profesores de ${escapeHtml(activity.name)}">${schedules}</ul></article>`;
+    })
     .join('\n');
-  // Fixed owner-supplied anniversary figures; never a live clock or a guessed founding date.
+  // Dated fallback totals; the existing browser clock refreshes them without annual publication.
   const anniversaryMetrics = business.anniversary.metrics
     .map((metric) => {
       const formatted = new Intl.NumberFormat('es-AR').format(metric.value);
       return `<div class="time-metric"><dt>${escapeHtml(metric.label)}</dt><dd><span class="metric-number" data-time-unit="${metric.id}" aria-hidden="true">${formatted}</span><span class="sr-only" data-time-accessible="${metric.id}">${formatted}</span></dd></div>`;
     })
     .join('\n');
-  const futureAddress = business.relocation.futureAddress;
-  const futureWhatsappUrl = `https://wa.me/${business.phoneInternational}?text=${encodeURIComponent(`Hola Tu Gimnasio, quisiera consultar por la apertura de la nueva sede en ${futureAddress.street}.`)}`;
+  const futureAddress = business.address;
+  const futureWhatsappUrl = buildWhatsAppUrl(
+    defaultTeacher,
+    `Hola Tu Gimnasio, quisiera consultar por la apertura de la nueva sede en ${futureAddress.street}, anunciada para el ${openingDateLabel}.`,
+  );
   const replacements = {
     public_url: project.publicUrl,
-    site_title: `${business.name} | Desde 1996 y una nueva sede en camino`,
-    meta_description: `${business.name}: Desde el 4 de noviembre de 1996 en ${business.address.locality}. Próxima sede en ${futureAddress.street}, en construcción. Consultá actividades y novedades.`,
+    site_title: `${business.name} | Actividades, horarios y nueva sede`,
+    meta_description: `${business.name} en ${business.address.locality}: musculación, spinning, gimnasia grupal y pilates en colchoneta. Nueva sede en ${futureAddress.street}. Apertura: ${openingDateLabel}.`,
     share_description: `${business.name} · Desde ${business.foundedYear} en ${business.address.locality}, ${business.address.region}.`,
     name: business.name,
     founded_year: business.foundedYear,
@@ -284,10 +211,21 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     anniversary_year: business.anniversary.referenceYear,
     anniversary_metrics: anniversaryMetrics,
     future_street: futureAddress.street,
-    future_locality: `${futureAddress.locality}, ${futureAddress.region}, ${futureAddress.country}`,
+    future_locality: `${futureAddress.locality}, ${futureAddress.region}, Argentina`,
     future_whatsapp_url: futureWhatsappUrl,
-    phone_display: business.phoneDisplay,
-    phone_href: 'tel:+' + business.phoneInternational,
+    opening_date: business.relocation.openingDate,
+    opening_date_label: openingDateLabel,
+    maps_notice: mapNotice ? `<p class="maps-notice">${escapeHtml(mapNotice)}</p>` : '',
+    maps_faq_title: mapNotice
+      ? '¿Por qué Maps muestra San Martín?'
+      : '¿Cómo llego a la nueva sede?',
+    maps_faq_text:
+      mapNotice ||
+      `El botón Cómo llegar con Google Maps abre las indicaciones hacia el punto de nuestra nueva sede en ${futureAddress.street}.`,
+    directions_url: directionsUrl,
+    phone_display: defaultTeacher.phoneDisplay,
+    phone_href: 'tel:+' + defaultTeacher.phoneInternational,
+    default_teacher_name: defaultTeacher.name,
     whatsapp_url: whatsappUrl,
     instagram_url: business.contacts.instagram,
     maps_url: business.contacts.maps,
@@ -295,12 +233,11 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     postal_locality: `${business.address.postalCode} ${business.address.locality}`,
     region_country: `${business.address.region}, Argentina`,
     plus_code: business.address.plusCode,
-    weekday_hours: `${business.hours.opens} — ${business.hours.closes}`,
+    weekday_hours: formatSchedulePeriods(generalSchedule.periods),
     hours_notice: business.hours.notice,
-    weekday_label: business.hours.weekdayLabel,
+    weekday_label: formatScheduleDays(generalSchedule.days),
     weekend_label: business.hours.weekendLabel,
-    short_hours: `${business.hours.opens.endsWith(':00') ? business.hours.opens.slice(0, 2) : business.hours.opens}–${business.hours.closes.endsWith(':00') ? business.hours.closes.slice(0, 2) : business.hours.closes} h`,
-    weekend_hours: business.hours.weekendClosed ? 'Cerrado' : 'Consultar por WhatsApp',
+    weekend_hours: business.hours.weekendNotice,
     activity_count: business.activities.length,
     motto_main: business.mottos.equality,
     motto_return: business.mottos.returnToBasics,
@@ -333,6 +270,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const rawKeys = new Set([
     'activity_cards',
     'anniversary_metrics',
+    'maps_notice',
     'structured_data',
     ...Object.keys(replacements).filter((key) => key.startsWith('image_')),
   ]);

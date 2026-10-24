@@ -7,6 +7,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { PNG } from 'pngjs';
 import jsQR from 'jsqr';
 import { ROOT, sha256 } from './build.mjs';
+import { buildDirectionsUrl, formatScheduleDays } from './business-data.mjs';
 import { startPreview } from './preview.mjs';
 
 const artifacts = path.join(ROOT, 'artifacts');
@@ -116,17 +117,52 @@ try {
           assert.ok(metrics.linksSafe);
           assert.equal(
             await page.locator('.future-address h3').textContent(),
-            business.relocation.futureAddress.street,
+            business.address.street,
           );
           assert.equal(
-            await page.locator('.future a[href*="maps"]').count(),
-            0,
-            'La dirección futura no debe enlazar al mapa de la sede actual.',
+            await page.locator('.future-address a[href*="maps/dir/"]').getAttribute('href'),
+            buildDirectionsUrl(business),
+            'La llegada debe conservar el identificador y el pin del gimnasio comprobado.',
           );
           assert.ok(
             (await page.locator('.location-panel h2').textContent()).includes(
               business.address.street,
             ),
+          );
+          assert.equal(await page.locator('.activity-session').count(), 10);
+          for (const activity of business.activities) {
+            const card = page.locator(`#actividad-${activity.id}`);
+            assert.equal(
+              await card.locator('.activity-instagram').getAttribute('href'),
+              business.contacts.instagram,
+            );
+            for (const schedule of activity.schedules) {
+              const row = card.locator(`[data-schedule-id="${schedule.id}"]`);
+              const teacher = business.teachers[schedule.teacherId];
+              assert.equal(await row.getAttribute('data-teacher-id'), schedule.teacherId);
+              assert.equal(
+                (await row.locator('.schedule-days').textContent()).trim(),
+                formatScheduleDays(schedule.days),
+              );
+              const contact = row.locator('.teacher-contact');
+              assert.ok(await contact.isVisible());
+              const target = new URL(await contact.getAttribute('href'));
+              assert.equal(target.origin, 'https://wa.me');
+              assert.equal(target.pathname, '/' + teacher.phoneInternational);
+              const message = target.searchParams.get('text');
+              assert.ok(message.includes(teacher.name) && message.includes(activity.name));
+              assert.ok(message.includes(formatScheduleDays(schedule.days).toLowerCase()));
+              for (const period of schedule.periods) {
+                assert.ok(message.includes(period.start.replace(/^0/, '')));
+                if (period.end) assert.ok(message.includes(period.end.replace(/^0/, '')));
+              }
+            }
+          }
+          assert.ok(!/Av\. Italia|En construcción|\$\s*\d/i.test(metrics.text));
+          const mapsText = await page.locator('.location-panel').textContent();
+          assert.equal(
+            mapsText.includes('San Martin'),
+            !business.relocation.maps.streetNameUpdated,
           );
           const logoFits = await page.locator('.hero-logo').evaluate((image) => {
             const box = image.getBoundingClientRect();
@@ -179,6 +215,16 @@ try {
             caret: 'initial',
           });
           takingScreenshot = false;
+          if (definition.name === 'chromium' && [390, 1280].includes(width)) {
+            await page.locator('#actividad-musculacion').screenshot({
+              path: path.join(artifacts, `musculacion-${width}.png`),
+              caret: 'initial',
+            });
+            await page.locator('#actividad-spinning').screenshot({
+              path: path.join(artifacts, `spinning-${width}.png`),
+              caret: 'initial',
+            });
+          }
           if (width === 320) {
             await page.evaluate(() => {
               document.documentElement.style.fontSize = '200%';
@@ -224,7 +270,7 @@ try {
       assert.equal(await plain.locator('.questions details').first().getAttribute('open'), '');
       assert.ok(
         (await plain.locator('.questions details').first().textContent()).includes(
-          business.relocation.futureAddress.street,
+          business.address.street,
         ),
       );
       await noScript.close();
@@ -314,7 +360,7 @@ try {
       await fontPage.emulateMedia({ media: 'print' });
       assert.equal(
         await fontPage
-          .locator('.future .button')
+          .locator('.future-copy .button')
           .evaluate((element) => getComputedStyle(element).color),
         'rgb(0, 0, 0)',
       );

@@ -5,6 +5,7 @@ for (const file of [
   'src/site.js',
   'src/elapsed-time.js',
   'scripts/build.mjs',
+  'scripts/business-data.mjs',
   'scripts/preview.mjs',
   'scripts/backup.mjs',
   'scripts/publish.mjs',

@@ -15,7 +15,7 @@ Crear y comprobar un respaldo nuevo antes de editar. Los cambios del negocio se 
 
 ## Comandos
 
-Para la próxima sede y las cifras conmemorativas, leer [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). No reemplazar la ubicación actual con el anuncio: Maps y datos estructurados deben seguir describiendo la sede vigente hasta confirmar el cambio real.
+Para la próxima apertura y el contador automático, leer [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). `address` describe la sede anunciada y los horarios estructurados usan `validFrom` con la fecha confirmada; `scheduled` no significa abierto. `activities[].schedules` y `teachers` son las fuentes únicas de franjas y teléfonos. La primera jornada se guarda localmente; publicar corresponde al cierre de la segunda, después de otro pedido del propietario.
 
 Con Node.js 22 o posterior, desde la raíz del repositorio:
 

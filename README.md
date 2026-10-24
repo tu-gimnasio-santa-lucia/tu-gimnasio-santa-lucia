@@ -2,7 +2,9 @@
 
 Web informativa de Tu Gimnasio, Santa Lucía, Corrientes. Conserva la identidad original y “Desde 1996”.
 
-Antigüedad automática desde el 4 de noviembre de 1996: 30 años a partir del 4/11/2026 y anuncio de la próxima sede, todavía en construcción. La nueva dirección no reemplaza la ubicación actual ni el enlace de Maps hasta confirmar la mudanza. Leer [mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md) antes de actualizar esos datos.
+**Primera jornada de actualización, 24/10/2026:** actividades, horarios, docentes y consultas por franja; nueva sede en Héroes de Malvinas 150, con apertura anunciada para el 03/11/2026. Esta versión se prepara localmente: publicación y nueva entrada animada corresponden a la segunda jornada. Leer [estado de las etapas](docs/ETAPAS-ACTUALIZACION.md).
+
+La antigüedad automática desde el 4 de noviembre de 1996 se conserva: 29 años el 03/11/2026 y 30 desde el 04/11/2026. Maps ya apunta al pin nuevo, pero todavía muestra San Martin s/n; la web distingue la dirección confirmada y ese nombre pendiente. Leer [mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md) antes de activar la sede o cambiar la llegada.
 
 **Página pública:** https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/
 
@@ -11,7 +13,7 @@ Antigüedad automática desde el 4 de noviembre de 1996: 30 años a partir del 4
 1. Leer [AGENTS.md](AGENTS.md) y [arquitectura](docs/ARQUITECTURA.md).
 2. Usar Node.js 22 o posterior. No hace falta instalar paquetes para generar la web.
 3. Crear un respaldo: `node scripts/backup.mjs`.
-4. Editar datos en `data/business.json`, estructura en `src/index.template.html`, estilos en `src/styles.css` o funciones en `src/site.js`.
+4. Editar datos en `data/business.json`: teléfonos en `teachers`, franjas en `activities[].schedules`. La atención general referencia una de esas franjas; no duplicar horarios. Estructura en `src/index.template.html`, estilos en `src/styles.css` y mejoras del navegador en `src/site.js`.
 5. Ejecutar `node scripts/check.mjs` y `node scripts/preview.mjs`.
 6. Consultar [mantenimiento y publicación](docs/MANTENIMIENTO.md) para las pruebas de navegador y publicación.
 

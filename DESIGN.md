@@ -12,9 +12,11 @@ La marca existente prevalece sobre preferencias de una habilidad o modelo. La di
 
 ## Composición
 
-La edición aniversario presenta 30 años y una nueva sede en camino. El azul profundo ocupa portada y capítulos deportivos; amarillo identifica el anuncio, las acciones y el cierre; superficies claras dan pausa a las cifras y a la historia. Ningún marco redondo se aplica directamente al archivo del logo: la imagen completa queda dentro del marco, con aire alrededor.
+La actualización en dos jornadas prioriza actividades, días, horarios, docentes y consultas. El azul profundo ocupa portada y capítulos deportivos; amarillo identifica el anuncio, las acciones y el cierre; superficies claras dan pausa a las cifras y a la historia. Ningún marco redondo se aplica directamente al archivo del logo: la imagen completa queda dentro del marco, con aire alrededor.
 
-La navegación permanece visible en móviles. Las cifras conmemorativas, cuatro actividades, identidad, opiniones, horario actual y QR mantienen su propio lugar. Los afiches con horarios antiguos siguen archivados y fuera de la publicación. No se inventan fotografías del nuevo edificio.
+La navegación permanece visible en móviles. Las cuatro actividades se sitúan después de la portada, con listas semánticas de horarios, teléfono y consulta del docente correspondiente e Instagram en cada actividad. La antigüedad es real y automática, no una cifra conmemorativa fija. Los afiches antiguos siguen archivados y fuera de la publicación. No se inventan fotografías del nuevo edificio.
+
+La primera jornada no implementa la nueva entrada animada: en la segunda se preparará la transición breve de logo y años hacia una esquina de la cabecera y el contador completo cerca del final. Conservar el cálculo, pausa, accesibilidad y progresividad existentes al hacer ese cambio.
 
 “Todos somos iguales, la diferencia está en los detalles.”, “Volvamos a las bases.” y “Tu lugar, tu gimnasio.” son lemas oficiales. No inventar precios, horarios de clases o fotografías del interior.
 

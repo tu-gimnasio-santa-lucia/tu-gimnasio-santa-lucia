@@ -1,52 +1,53 @@
-# Actualización vigente — contador automático
+# Mudanza, apertura y antigüedad
 
-El propietario confirmó el 4 de noviembre de 1996. foundedDate es 1996-11-04. Los años cumplidos cambian al aniversario en Argentina: el 15/10/2026 son 29; el 04/11/2026 pasan a 30. Días, horas, minutos y segundos son totales desde el inicio de esa fecha (00:00 UTC-3, convención de cálculo, no hora real de apertura confirmada).
+Estado de la fuente al 24/10/2026: primera jornada implementada localmente, todavía sin publicar. Nueva sede anunciada para el **martes 3 de noviembre de 2026**, en **Héroes de Malvinas 150, Santa Lucía, Corrientes, Argentina**. El propietario autorizó anunciar dirección y fecha sin «en construcción». No hay hora de inauguración confirmada ni confirmación de apertura efectiva.
 
-src/elapsed-time.js define calculateElapsed(), compartida por build y navegador. Se publica como módulo con nombre derivado del contenido. initializeLiveClock() calcula desde el reloj del dispositivo, actualiza cada segundo sólo si la pestaña está visible, permite pausar y recupera el tiempo real al reanudar; no acumula ticks ni usa servicios externos. El contador no es una animación de entrada y no se reinicia por movimiento reducido. No se anuncia cada segundo al lector de pantalla.
+La apertura de esta sede y la fundación del gimnasio son hechos distintos: se fundó el **4 de noviembre de 1996**. El 03/11/2026 tiene 29 años; el 04/11/2026 cumple 30.
 
-anniversary conserva un snapshotDate fijo para el respaldo sin JavaScript y un build reproducible; se identifica su fecha en un aviso noscript. Con JavaScript, todos los años y cifras visibles se recalculan al visitar, sin publicación anual. Los metadatos usan la fecha de fundación, evitando una edad estática que envejezca. El reloj depende de que el dispositivo tenga fecha/hora correctas.
+## Sede anunciada
 
-Lo siguiente conserva decisiones anteriores; las cifras conmemorativas y la afirmación de fecha desconocida quedan superadas por esta confirmación.
-
----
-
-# Mudanza y aniversario: datos y estados
-
-El propietario autorizó el 15/10/2026 publicar ahora el rediseño anunciando la próxima sede. El gimnasio nuevo sigue en construcción. No hay fecha de apertura confirmada ni ubicación de Google Maps actualizada.
-
-## Dos direcciones con funciones diferentes
-
-| Dato | Estado y uso |
+| Campo | Significado vigente |
 | --- | --- |
-| `address` | Sede actual: Av. Italia 109. Alimenta contacto, código de ubicación y JSON-LD. |
-| `contacts.maps` | Ficha de la sede actual, conservada. Los enlaces indican expresamente sede actual. |
-| `relocation.futureAddress` | Próxima sede: Héroes de Malvinas 150, Santa Lucía, Corrientes, Argentina. Sólo se presenta como anuncio. |
-| `relocation.status` | `announced`: evita tratar el anuncio como una mudanza ya realizada. |
-| `relocation.openingDate` | `null`: no se inventa una fecha ni una cuenta regresiva. |
-| `relocation.mapsUpdated` | `false`: ningún botón de la nueva dirección apunta al mapa viejo. |
+| `address` | Dirección autorizada de la sede anunciada; alimenta anuncio, contacto y JSON-LD. Ya no representa Av. Italia 109. |
+| `relocation.status` | `scheduled`: apertura prevista; no implica funcionamiento efectivo. |
+| `relocation.openingDate` | `2026-11-03`, fecha sin hora. |
+| `contacts.maps` | Ficha persistente de Tu Gimnasio; comprobada nuevamente, ya apunta al pin nuevo. |
+| `relocation.maps.locationUpdated` | `true`: el perfil cambió al punto nuevo. |
+| `relocation.maps.streetNameUpdated` | `false`: la ficha aún dice `San Martin s/n`. |
+| `relocation.maps.verifiedAt` | `2026-10-24`, fecha de consulta, no promesa de que Maps no cambiará. |
+| `relocation.maps.coordinateSource` | `business-profile`: coordenadas de la ficha, no de una cámara o centro de mapa. |
+| `relocation.maps.placeId` | `ChIJ97NG_pRjTpQRJB6lqKeqmWU`, identidad comprobada en las indicaciones. |
 
-La validación rechaza un cambio aislado de esos indicadores que deje el anuncio incoherente. La futura apertura es un cambio editorial y de datos completo, no sólo un reemplazo de enlace.
+Los campos antiguos `relocation.futureAddress` y `relocation.mapsUpdated` fueron sustituidos. No mantener dos direcciones activas o un indicador ambiguo. Descripción, anuncio y horarios distinguen próxima apertura. Las dos franjas generales de JSON-LD llevan `validFrom: "2026-11-03"`. Fines de semana y feriados se consultan: el cierre antiguo no es una confirmación nueva.
 
-## Cuando el propietario confirme la apertura y envíe Maps
+El calendario no cambia automáticamente `scheduled` a abierto. Después de esa fecha, confirmar apertura efectiva y migrar coherentemente validación, esquema, textos y pruebas. No agregar una hora de inauguración a partir de musculación.
 
-1. Crear y verificar otro respaldo antes de editar.
-2. Abrir y comprobar el enlace nuevo: dirección, nombre, teléfono, ubicación y vigencia. No inferir código postal, plus code o coordenadas a partir de la sede anterior.
-3. Confirmar fecha de apertura, horarios y actividades vigentes; la construcción no demuestra que el gimnasio ya haya abierto.
-4. Migrar los datos a la ubicación actual nueva en `address` y `contacts.maps`. Actualizar de forma explícita el contrato de `relocation`, su esquema y la validación para admitir el estado confirmado.
-5. Revisar portada, anuncio, contacto y preguntas frecuentes. Retirar frases sobre construcción o Maps pendiente que hayan dejado de ser ciertas. Eliminar o identificar como histórica la dirección anterior.
-6. El JSON-LD se genera desde `address`; comprobar que ya no describa la sede anterior. Actualizar la prueba que actualmente exige mantener separados anuncio y sede actual, con una expectativa veraz para el nuevo estado.
-7. Verificar enlaces, móvil, escritorio, animaciones, QR y dirección pública; publicar por el procedimiento normal, comprobar la página real y crear respaldo final.
+## Maps: punto correcto y nombre pendiente
 
-No reemplazar la dirección pública del sitio ni el QR: ambos siguen sirviendo después de la mudanza.
+Referencia del propietario: <https://maps.app.goo.gl/p6qmCQExy6iP9ZMV8>. Abre Street View, cámara en `-28.9769495, -59.0984732`, imágenes de septiembre de 2024. No es un enlace de indicaciones ni el pin del negocio.
 
-## Cifras del aniversario
+Ficha comprobada: <https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8>. Mostró Tu Gimnasio, teléfono `03777 72-3911`, web oficial, `San Martin s/n, W3440ABB Santa Lucía, Corrientes`, plus code `2WF2+5J` y pin `-28.9770634, -59.0984372`. Estos datos proceden de la ficha nueva, no del mapa anterior. El nombre autorizado de la calle proviene del propietario; no se auditó un registro legal.
 
-El propietario aportó estas cifras exactas: 30 años, 10.957 días, 262.968 horas, 15.778.080 minutos y 946.684.800 segundos. Se guardan en `anniversary`, con año de referencia 2026 y `commemorative: true`.
+**«Cómo llegar con Google Maps»** usa Maps URLs con `api=1`, **`destination=Tu Gimnasio, Santa Lucía, Corrientes, Argentina`** y **`destination_place_id`**. Se comprobó el enlace exacto: las indicaciones identificaron **Tu Gimnasio, San Martin s/n**. Google resolvía un comercio vecino al recibir coordenadas como destino, incluso en una prueba con el Place ID; esa variante se descartó. Conservar el nombre del negocio como fallback, sin sustituirlo por la cámara ni las coordenadas. No fijar el origen privado de la persona.
 
-Las equivalencias días→horas→minutos→segundos se validan. No se conoce una fecha completa de fundación: no se deriva una de estas cifras, no se recalcula con el reloj del equipo ni se presenta una precisión temporal falsa. La animación de 1,2 segundos termina en el valor fijo aportado. El texto accesible conserva ese valor sin anunciar cada fotograma.
+Mientras `streetNameUpdated` sea `false`, se explica la diferencia de nombres. Antes de publicar en la segunda jornada, comprobar otra vez ficha y destino. Si aparece el nombre correcto, actualizar `displayedStreet`, `streetNameUpdated` y `verifiedAt`, retirar el aviso obsoleto y ejecutar las pruebas pertinentes. La solicitud del propietario no demuestra aprobación de Google.
 
-## Tipografía y movimiento
+La URL pública y el QR se conservan. Logo y fotos del perfil pertenecen a la segunda jornada, con acceso al perfil correcto, originales conservados y registro de carga, revisión y visibilidad.
 
-Impact conserva prioridad en equipos que la tienen. Anton es el respaldo deportivo local, alias CSS `Tu Gimnasio Display`, servido con font-display swap y sin solicitudes a Google. Fuente y licencia provienen del [repositorio oficial de Google Fonts](https://github.com/google/fonts/tree/cee74d7ca45d66d5c1878c828645c862f2788d2d/ofl/anton); versión y SHA-256 quedan fijados en assets/manifest.json. No se instala ninguna fuente en el sistema del usuario.
+## Antigüedad automática: contrato conservado
 
-`initializeSharing()` y `initializeMotion()` son independientes. Sin JavaScript, IntersectionObserver o Web Animations, se leen las cifras completas y funcionan navegación, contacto, preguntas frecuentes y QR. La preferencia de movimiento reducido evita las animaciones; al activarla durante una animación, se cancelan los efectos y se restauran todos los valores finales. No se guardan preferencias ni datos personales.
+`foundedDate` es `1996-11-04`. `calculateElapsed()` en `src/elapsed-time.js` se comparte entre generador y navegador. Calcula años cumplidos por calendario con `America/Argentina/Buenos_Aires`, incluyendo bisiestos; no divide días por 365.
+
+Días, horas, minutos y segundos son **totales transcurridos**, no partes restantes. Origen convencional: `1996-11-04T00:00:00-03:00`. Medianoche es una convención, **no una hora real de apertura confirmada**. La exactitud depende del reloj del dispositivo.
+
+`initializeLiveClock()` recalcula cada segundo sólo con la pestaña visible, sin acumular ticks. Permite pausar y recupera el tiempo real al reanudar o volver a la pestaña. No necesita servidor, tarea anual o API externa; no anuncia cada segundo al lector de pantalla.
+
+`anniversary.snapshotDate` y sus valores son un respaldo fechado coherente para HTML sin JavaScript y un build reproducible. `noscript` identifica la fecha. Con JavaScript, años y totales se recalculan al visitar sin publicación anual. Los metadatos usan la fundación sin fijar una edad que envejezca.
+
+No restaurar cifras conmemorativas antiguas ni animar totales desde cero. La nueva entrada visual y la ubicación definitiva del contador cerca del final corresponden a la segunda jornada, conservando cálculo, pausa y alternativa sin JavaScript.
+
+## Logo, fuente y movimiento
+
+Logo original completo; encuadre circular mediante CSS. Impact tiene prioridad donde existe; Anton es el respaldo deportivo local, alias `Tu Gimnasio Display`, con `font-display: swap`, origen fijado, licencia y SHA-256 en `assets/manifest.json`. No se instala una fuente del sistema ni se consulta un servidor de fuentes al visitar.
+
+`initializeMotion()` realiza entradas una vez y respeta movimiento reducido también al cambiar la preferencia durante la visita. La información empieza visible y permanece sin JavaScript, IntersectionObserver o Web Animations. Las animaciones no reinician el reloj ni se confunden con sus cifras. No se guardan preferencias ni datos personales.

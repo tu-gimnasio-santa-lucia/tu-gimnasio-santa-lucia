@@ -1,53 +1,53 @@
-# Actualización: antigüedad automática
+# Fuentes y verificaciones
 
-Fecha confirmada por el propietario: 4 de noviembre de 1996. La implementación vigente y sus funciones se describen en [MUDANZA-Y-ANIVERSARIO.md](MUDANZA-Y-ANIVERSARIO.md), sección inicial. Las descripciones siguientes de cifras conmemorativas fijas son históricas y quedan superadas. Se agregan pruebas del cambio de aniversario, avance por segundo, pausa y recuperación al volver a una pestaña visible.
+## Primera jornada — 24/10/2026, versión local sin publicar
 
-# Registro de fuentes y verificaciones
+Orden directa: «comenza con la primera etapa». Se completan datos, consultas, ubicación y prioridad de actividades. Nueva presentación animada, logo/fotos de Maps, publicación y comprobación pública quedan para una segunda jornada solicitada posteriormente. Ver [etapas](ETAPAS-ACTUALIZACION.md).
 
-## Datos del negocio
+### Datos y procedencia
 
-- Fuente del propietario y documentación del proyecto: nombre Tu Gimnasio, apertura 1996, cuatro actividades, identidad y lemas.
-- Google Maps consultado el 15/10/2026: dirección Av. Italia 109, W3440 Santa Lucía, Corrientes; teléfono 03777 72-3911; valoración 4,8/5 y 18 opiniones. La ficha mostraba cierre a las 22:00 en la consulta. Fuente: https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8
-- El horario completo de lunes a viernes 07:00–22:00 y cierre de fin de semana proviene del registro oficial anterior; confirmar con el gimnasio al cambiarlo. Las clases se consultan por WhatsApp y los feriados pueden variar.
-- Instagram oficial conservado: https://www.instagram.com/tugimnasio1/ . La identidad del perfil fue comprobada anteriormente; una limitación de acceso automático no se debe interpretar como eliminación del perfil.
-- Se retiraron las citas editoriales de reseñas para evitar presentar paráfrasis como citas literales. Se conserva la valoración comprobada y un enlace a las opiniones originales.
-- Los dos afiches de horarios y spinning incluyen horas de publicaciones anteriores. Se conservaron intactos en assets, marcados archived en el manifiesto y excluidos de la página y de dist. La sección de experiencia conserva el lema y el logo mediante HTML/CSS, sin inventar fotografías ni clases actuales.
+- **Propietario:** Tu Gimnasio, fundación 04/11/1996, nueva sede Héroes de Malvinas 150, apertura prevista 03/11/2026 sin hora de inauguración. Autorizó el anuncio sin «en construcción». No se certificó la dirección mediante documentos legales.
+- **Horarios confirmados:** musculación general con Titi de lunes a viernes 07:00–11:00 y 13:30–22:00; especial con Martita de lunes a viernes 08:00–09:00 y 20:00–21:00. La última confirmación comprende ambas franjas. Gimnasia grupal lunes a viernes 14:00–15:00 y pilates en colchoneta martes/jueves 19:00–20:00, con Martita.
+- **Spinning, seis inicios:** martes/jueves 08:00 Martita; lunes a viernes 09:00 Titi, 14:00 Titi y 15:00 Martita; lunes/miércoles/viernes 19:00 Martita; lunes a jueves 20:00 Titi. La duración no se confirmó: `end: null`. No se inventaron fines de semana o feriados.
+- **Titi:** `03777 72-3911`; móvil internacional `5493777723911`. La correspondencia se contrastó nuevamente con «Titi F» en Google Contacts y con el teléfono de la ficha del negocio. Se conservaron sólo datos de contacto necesarios, sin campos privados.
+- **Martita:** número `3777472060` aportado por el propietario; móvil internacional `5493777472060`. No se enviaron mensajes de prueba.
+- **Instagram oficial:** <https://www.instagram.com/tugimnasio1/>, confirmado por el propietario. Se comprobaron el destino y los cuatro enlaces de la web; no se presume sesión iniciada ni entrega de mensajes.
+- **Maps, consulta nueva del 24/10/2026:** [ficha de Tu Gimnasio](https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8). Ya muestra el pin `-28.9770634, -59.0984372`, pero conserva `San Martin s/n, W3440ABB Santa Lucía, Corrientes`. Se comprobaron nombre, teléfono, web, plus code `2WF2+5J`, valoración 4,8/5 y 18 opiniones. Se conserva el aviso del nombre pendiente.
+- **Referencia del propietario:** [Street View](https://maps.app.goo.gl/p6qmCQExy6iP9ZMV8), cámara diferente del pin. Las indicaciones con Place ID `ChIJ97NG_pRjTpQRJB6lqKeqmWU` identificaron Tu Gimnasio. Coordenadas solas elegían un comercio vecino y se descartaron. El enlace sigue la [documentación oficial de Maps URLs](https://developers.google.com/maps/documentation/urls/get-started), sin clave API.
+- **Identidad:** logo original, azul oscuro, colores deportivos y tres lemas conservados. Afiches antiguos archivados y excluidos del sitio. Sin Funcional o precios publicados; QR y URL canónica conservados.
 
-## Criterio de aprobación
+La coincidencia del especial de Martita con spinning martes/jueves 08:00 queda como observación operativa, sin cancelar horarios ni inventar suplentes. Las reseñas no se reescriben como citas: se muestra valoración comprobada y enlace a las originales.
 
-### Entrega 2.1.0 — aniversario y anuncio de próxima sede
+### Resultado ejecutado
 
-El propietario aportó el 15/10/2026 la dirección futura Héroes de Malvinas 150, Santa Lucía, Corrientes, Argentina, indicó que la nueva sede está en construcción y confirmó publicar el anuncio ahora. No aportó una fecha de apertura ni un nuevo enlace de Maps. Se conservan por separado la dirección actual y su ficha. La ubicación futura no aparece como sede abierta en JSON-LD ni enlaza al mapa anterior.
+`node scripts/check.mjs`: **9 grupos aprobados**: sintaxis, recursos permitidos, escapado/inyección, relaciones de horarios/docentes, enlaces, snapshot, aniversario argentino y generación reproducible. La salida contiene 16 archivos declarados y su manifiesto (17 en total), con CSP/SRI y fuente local verificados.
 
-Cifras aportadas por el propietario: 30 años, 10.957 días, 262.968 horas, 15.778.080 minutos y 946.684.800 segundos. Se usan como conmemoración fija de 2026, sin inferir el día de fundación ni simular tiempo real.
+`node scripts/browser-check.mjs`: **24 casos aprobados**, cuatro navegadores y seis vistas: 320×800, 390×844, 768×1024, 844×390, 1280×800 y 1920×1080.
 
-La batería se amplió a 24 casos: los cuatro navegadores de la tabla inferior y seis vistas, 320×800, 390×844, 768×1024, 844×390 horizontal, 1280×800 y 1920×1080. Incluye logo completo dentro del círculo, distinción entre ambas direcciones, imágenes, texto al 200%, teclado, ausencia de JavaScript y preguntas frecuentes nativas. Se prueban además animaciones reales en los cuatro motores, su cancelación al activar movimiento reducido, tipografía local a 320/390/1280 e impresión. Se revisa alto contraste en Chromium; se desactiva la mezcla del logo en alto contraste e impresión para que no desaparezca sobre el fondo claro.
+| Navegador | Versión |
+| --- | --- |
+| Chromium de Playwright | 156.0.8078.4 |
+| Firefox de Playwright | 155.0 |
+| WebKit de Playwright | 27.2 |
+| Microsoft Edge instalado | 156.0.4314.42 |
 
-Cinco grupos de pruebas de código cubren ahora también equivalencias conmemorativas y rechazo de cambios que anunciarían una apertura o Maps actualizado sin completar la migración. La fuente Anton se aloja junto con su licencia, SHA-256 y origen fijado; no se carga desde Google. La auditoría de las seis dependencias de desarrollo volvió a informar cero vulnerabilidades; no se agregaron dependencias de producción.
+Sin desbordamiento horizontal, imágenes rotas, errores de la aplicación, solicitudes remotas al cargar ni infracciones detectadas por axe con las reglas configuradas. Se comprobaron diez filas, docente y teléfono de cada enlace, mensaje codificado y franjas, cuatro accesos a Instagram, dirección, Place ID y ausencia de datos anteriores contradictorios.
 
-El logo original es un JPEG que se había guardado con extensión png. Se conserva el archivo anterior intacto en la fuente y se publica una copia idéntica con extensión jpg y MIME correctos. El encuadre se corrigió con CSS, sin alterar sus píxeles. Dos intentos de extracción transparente generaron bordes defectuosos y se descartaron: ninguno se incluyó en la web ni en sus recursos publicados.
+También aprobaron teclado/salto al contenido, texto al 200%, ausencia de JavaScript en los cuatro motores, logo completo, movimiento real/reducido y cambio de preferencia durante la visita, fuente local, impresión y alto contraste en Chromium. Se comprobaron aniversario, avance del reloj, pausa/reanudación, pestaña oculta/visible, compartir/cancelación, portapapeles/alternativa y decodificación del QR. Capturas de musculación y spinning revisadas visualmente en móvil y escritorio.
 
-Taste se usó como asesoramiento de composición y revisión, con dirección editorial de aniversario y marca conservada. Su inspector no es un criterio de seguridad o accesibilidad: señala etiquetas contextuales y exige un mínimo arbitrario de movimiento; registra entre cinco y siete elementos móviles según la vista, por debajo de su mínimo de ocho. Se conserva movimiento breve y útil. También advierte sobre ausencia de vídeo, escala tipográfica y fuente nativa; no se fabricaron vídeos del edificio ni se alteró la marca para obtener una puntuación. Los controles funcionales son independientes y los límites permanecen documentados.
+La primera ejecución detectó cuatro nombres accesibles de Instagram que no incluían en orden la etiqueta visible. Se corrigió `aria-label` para comenzar por «Consultar en Instagram» y se repitió toda la batería: aprobó. Se preservó el informe fallido en la auditoría local; no se debilitó la regla.
 
-### Entrega 2.0.0 — 15/10/2026
+`artifacts/qa-report.json` identifica el SHA-256 del manifiesto aprobado: `e0697023205eb77b0e3f3c312f1a059392e12dfddd60013b8f3bc553e401fa91`. No se añadieron ni actualizaron dependencias; cero dependencias de producción. Renovar la auditoría de dependencias antes de publicar en la segunda jornada; un resultado antiguo no equivale a una consulta nueva.
 
-| Navegador probado | Versión | Anchos en píxeles |
-| --- | --- | --- |
-| Chromium | 156.0.8078.4 | 320, 390, 768, 1280 |
-| Firefox de Playwright | 155.0 | 320, 390, 768, 1280 |
-| WebKit de Playwright | 27.2 | 320, 390, 768, 1280 |
-| Microsoft Edge instalado | 155.0.4283.45 | 320, 390, 768, 1280 |
+### Alcance y límites
 
-Resultado: 16 casos aprobados, sin desbordamiento horizontal, imágenes rotas, solicitudes remotas al cargar, errores de la aplicación ni infracciones detectadas por axe con reglas WCAG 2/2.1 A/AA. Texto al 200% en 320 px, salto al contenido, funcionamiento sin JavaScript en los cuatro motores, copia real al portapapeles, alternativa con permiso denegado, cancelación de compartir y decodificación del QR aprobados. Capturas móvil/escritorio revisadas visualmente. WebKit es un motor automatizado; no representa una prueba física en todos los iPhone o Safari.
+- Resultados de la versión local en los motores/versiones indicados. No certifican WCAG, seguridad absoluta, todos los dispositivos ni pruebas físicas en iPhone/Safari o Android.
+- Se verificaron correspondencia de contactos, enlaces y mensajes sin enviarlos. No se probó recepción de mensajes ni se modificó una cuenta ajena.
+- Maps identifica negocio y pin; no se inspeccionó físicamente el acceso. Comprobar el nombre de calle otra vez antes de publicar. La fecha anunciada no demuestra apertura efectiva.
+- Durante la captura, WebKit registra el bloqueo CSP de un estilo auxiliar de Playwright. Se distingue de errores de la aplicación; carga y accesibilidad se comprueban antes de capturar. No se agregó `unsafe-inline` para silenciarlo.
+- En WebKit se comprueba foco y activación del salto con Enter; la preferencia de plataforma puede limitar Tab. No se modificó esa preferencia.
+- No se publicó ni se comparó esta versión con la web pública. No se cargaron imágenes en Maps. El respaldo previo se recuperó en una carpeta aislada y reconstruyó una salida idéntica. Evidencia de cierre y respaldos finales: registro local de continuidad, fuera del sitio.
 
-Cuatro grupos de pruebas de código aprobados: rutas y archivos públicos, inyección HTML/JSON-LD, validación de datos, reproducción idéntica y hashes CSP/SRI. Auditoría de las seis dependencias de desarrollo: cero vulnerabilidades informadas al momento de la consulta; cero dependencias de producción. No implica ausencia de vulnerabilidades futuras.
+## Verificaciones históricas
 
-Las reglas genéricas de Taste son asesoramiento visual. Se conservaron la identidad deportiva, las etiquetas y los indicadores de foco accesible aunque no coincidan con todas sus preferencias estéticas. Los controles de accesibilidad y seguridad tienen prioridad sobre esa puntuación editorial.
-
-El informe de navegador está en artifacts/qa-report.json y corresponde a la huella del build. Las pruebas automáticas no certifican WCAG ni todos los dispositivos físicos. Registrar aquí el resultado final de cada publicación y sus límites.
-
-Las huellas de archivos, CSP, SRI y la determinación de salida se prueban sin red. La comprobación pública posterior debe comparar la publicación real con dist y comprobar contacto/QR.
-
-En WebKit se prueba el foco del enlace para saltar al contenido y su activación con Enter; la preferencia de la plataforma puede limitar Tab a controles. En Chromium, Firefox y Edge se comprueba además que sea el primer destino de Tab. No se modifica la preferencia del usuario.
-
-La captura de Playwright en WebKit intenta aplicar un estilo auxiliar que la CSP bloquea. El informe separa ese aviso exacto de la herramienta —sólo durante la captura— de los errores de la página. Se conserva la política restrictiva; no se agrega unsafe-inline para ocultar ese aviso. La carga y la auditoría de accesibilidad se comprueban antes de capturar, sin errores de la aplicación.
+Las entregas anteriores se conservan en Git, respaldos y auditorías locales. Av. Italia 109, horario continuo, días especiales desconocidos, apertura sin fecha y cifras conmemorativas fijas quedan superados por los datos actuales. No reutilizar QA histórica para una salida nueva. Originales, fuente y licencia se conservan intactos.

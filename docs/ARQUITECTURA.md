@@ -1,91 +1,76 @@
-# Actualización: antigüedad automática
-
-Fecha confirmada por el propietario: 4 de noviembre de 1996. La implementación vigente y sus funciones se describen en [MUDANZA-Y-ANIVERSARIO.md](MUDANZA-Y-ANIVERSARIO.md), sección inicial. Las descripciones siguientes de cifras conmemorativas fijas son históricas y quedan superadas. Se agregan pruebas del cambio de aniversario, avance por segundo, pausa y recuperación al volver a una pestaña visible.
-
 # Arquitectura y mapa del código
 
-Identificador estable del proyecto: `tu-gimnasio-santa-lucia`. Versión de esta arquitectura: 2. El repositorio es la unidad de trabajo portátil; no requiere los chats, plugins o rutas de la PC del autor.
+Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/2026 (arquitectura 3). La fuente portátil es este repositorio: no requiere un chat, proveedor de IA, plugin o ruta de una PC. La primera jornada está implementada localmente; publicación y nueva presentación animada quedan para la segunda. Leer [etapas](ETAPAS-ACTUALIZACION.md).
 
-```mermaid
-flowchart LR
-  A[data/business.json] --> C[scripts/build.mjs]
-  B[src y assets] --> C
-  P[project.json] --> C
-  C --> D[dist]
-  D --> Q[pruebas y QA]
-  Q --> S[rama site]
-  S --> G[GitHub Pages]
-```
+## Responsabilidades
 
-| Parte                       | Responsabilidad y contrato                                                                                                               |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `project.json`              | Identidad técnica, URL oficial, repositorio y nombres de ramas. No contiene credenciales.                                                |
-| `data/business.json`        | Datos del negocio y actividades. Fuente única para contacto, horario, valoración y JSON-LD.                                              |
-| `data/business.schema.json` | Ayuda de edición JSON Schema; documenta campos, tipos y restricciones. El build valida además los contratos necesarios en JavaScript.    |
-| `assets/manifest.json`      | Nombres, dimensiones y rol de los originales. WebP sólo cuando la conversión sin pérdida es más liviana. PNG permanece como alternativa. |
-| `src/index.template.html`   | Estructura semántica y textos editoriales. Los marcadores `{{nombre}}` se resuelven al generar.                                          |
-| `src/styles.css`            | Tokens y reglas agrupadas por sección; diseño fluido, accesibilidad, impresión y movimiento reducido.                                    |
-| `src/site.js`               | Mejoras opcionales de compartir y copiar. Nunca contiene los datos del negocio: toma la URL del enlace canónico generado.                |
-| `scripts/build.mjs`         | Valida, escapa, genera JSON-LD/CSP/SRI y produce únicamente archivos públicos.                                                           |
-| `scripts/check.mjs`         | Sintaxis, pruebas de contratos, generación reproducible y límites de publicación. No requiere instalar dependencias.                     |
-| `scripts/browser-check.mjs` | Navegadores, vistas, accesibilidad, teclado, texto ampliado, ausencia de JS, portapapeles y QR. Requiere dependencias de desarrollo.     |
-| `scripts/preview.mjs`       | Servidor local de lectura en 127.0.0.1. Sólo sirve archivos de dist. Al abrir la portada, regenera la salida.                            |
-| `scripts/backup.mjs`        | Respaldo fuera del repositorio, copia verificada e historial Git en bundle.                                                              |
-| `scripts/publish.mjs`       | Publicación explícita sin force-push. Comprueba origen, ramas, limpieza, backup y QA exacto antes de actualizar site.                    |
-| `dist/`                     | Resultado generado, ignorado por Git en main; no editar manualmente.                                                                     |
-| `artifacts/`                | Capturas e informes de la PC actual; ignorados por Git y nunca publicados.                                                               |
-
-## Funciones y nombres estables
-
-Los recursos con `archived: true` se conservan en la fuente para recuperar los originales, pero nunca se copian a la publicación. No reutilizar afiches con horarios antiguos como información vigente.
-
-Se usa camelCase en funciones JavaScript, nombres descriptivos en inglés y documentación explicativa en español. Las etiquetas visibles permanecen en español rioplatense. Los identificadores de actividad son ASCII en kebab-case, por ejemplo `gimnasia-grupal`; no dependen del texto traducido ni del orden.
-
-| Función                                           | Entrada → salida; efectos                                                                                        |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `validateBusinessData(data, project)`             | Objetos JSON → datos válidos; lanza error para información inválida o enlaces inseguros.                         |
-| `validateAssetManifest(assets)` | Manifiesto → conjunto de archivos declarados; rechaza rutas inseguras y dimensiones o estados inválidos. |
-| `escapeHtml(value)`                               | Valor → texto seguro para un marcador HTML/atributo.                                                             |
-| `serializeJsonLd(value)`                          | Objeto → JSON que no puede cerrar su etiqueta script.                                                            |
-| `renderTemplate(template, replacements, rawKeys)` | Texto y mapa → HTML; falla si un marcador no tiene valor. Sólo el generador define los fragmentos raw admitidos. |
-| `buildSite(outputDirectory)`                      | Ruta opcional → manifiesto de salida; escribe artefactos públicos deterministas.                                 |
-| `startPreview(port)`                              | Puerto → `{server,url}`; el llamador es responsable de cerrar el servidor.                                       |
-| `createBackup()`                                  | Configuración opcional por entorno → ruta del respaldo verificado.                                               |
-| `copyOfficialUrl()`                               | Clic → copia canónica o campo manual; anuncia el resultado.                                                      |
-| `showManualCopy()`                                | Sin permisos de portapapeles → campo etiquetado, enfocado y seleccionable.                                       |
-| `shareOfficialPage()`                             | Clic → compartir nativo o copiar; cancelar no genera error.                                                      |
-
-## Contratos añadidos en la edición aniversario
-
-`anniversary` guarda las cifras conmemorativas y el año de referencia. `relocation` guarda el anuncio de la sede futura; `address` conserva la actual. Los estados y la migración al abrir se explican en [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). Las cuatro cifras no son un reloj ni dependen de la fecha del equipo.
-
-`assets.fonts.display` declara el archivo de fuente local, su licencia, origen fijado y SHA-256. El build comprueba la huella y publica únicamente los archivos permitidos. La licencia y la fuente viajan con el repositorio. Nunca se consulta un servidor de fuentes al visitar la página.
-
-| Función | Responsabilidad |
+| Archivo o carpeta | Responsabilidad |
 | --- | --- |
-| `initializeSharing()` | Conecta los controles de compartir/copiar; no depende de la animación ni de componentes ajenos. |
-| `initializeMotion()` | Comprueba APIs y preferencia de movimiento; observa una sola entrada de cada sección. No oculta contenido al iniciar. |
-| `animateSection(element)` | Aplica entradas diferenciadas a tiempo, anuncio y gráfica, con Web Animations nativas y sin bucles. |
-| `animateMetric(element)` | Anima una cifra fija durante 1,2 segundos; no cambia su alternativa accesible ni calcula tiempo transcurrido. |
-| `restoreMetric(element)` | Restituye el valor final declarado en data-count con formato es-AR. |
-| `handleMotionPreference()` | Cancela efectos y fotogramas activos y restaura los valores al activarse movimiento reducido. |
+| `project.json` | Identidad técnica, URL canónica, repositorio, ramas, idioma y zona horaria; sin credenciales. |
+| `data/business.json` | Datos del negocio: docentes, actividades, horarios, consultas, dirección anunciada y estado comprobado de Maps. |
+| `data/business.schema.json` | Tipos y restricciones para edición. El generador también valida relaciones y coherencia con JavaScript. |
+| `scripts/business-data.mjs` | Validación y funciones puras para días, franjas, mensajes e indicaciones. Sin red, DOM ni reloj del equipo. |
+| `assets/manifest.json` | Recursos originales, dimensiones, roles, origen y huellas de la fuente local. Los recursos `archived: true` se conservan, pero no se publican. |
+| `src/index.template.html` | Estructura semántica y textos editoriales; marcadores `{{nombre}}` resueltos al generar. Actividades antes del contador. |
+| `src/styles.css` | Identidad, diseño adaptable, foco, impresión y movimiento reducido. |
+| `src/elapsed-time.js` | Cálculo compartido de antigüedad, a partir de fundación e instante de consulta. |
+| `src/site.js` | Mejoras independientes de reloj, compartir/copiar y movimiento; información y enlaces ya existen en HTML. |
+| `scripts/build.mjs` | Valida datos/recursos, escapa HTML, genera JSON-LD/CSP/SRI y archivos públicos deterministas. |
+| `scripts/check.mjs`, `tests/site.test.mjs` | Sintaxis, contratos, seguridad de generación y reproducibilidad; sólo necesitan Node. |
+| `scripts/browser-check.mjs` | Navegadores, horarios/contactos, accesibilidad, reloj, enlaces, imágenes, compartir y QR; usa dependencias de desarrollo. |
+| `scripts/preview.mjs` | Servidor de lectura en `127.0.0.1`; sólo sirve la lista pública de `dist/` y regenera al abrir la portada. Reiniciar si cambian los módulos del generador. |
+| `scripts/backup.mjs` | Respaldo fechado fuera del repositorio, SHA-256 e historial Git en bundle. |
+| `scripts/publish.mjs` | Publicación explícita sin force-push, con origen, ramas, limpieza, respaldo y QA del build exacto comprobados. |
+| `dist/` | Salida generada e ignorada en `main`; no editar a mano. |
+| `artifacts/` | Informes/capturas locales, ignorados y excluidos de publicación. |
 
-Estos métodos son privados a la mejora del navegador; el HTML generado no necesita invocarlos para mostrar datos. Preguntas frecuentes usa details/summary nativos y permanece disponible sin JavaScript. Los selectores data-reveal y data-count conectan el HTML a las mejoras; los nombres de actividad siguen siendo los IDs estables de los datos.
+## Contratos y relaciones
 
-## Seguridad de la generación
+- `teachers` es un diccionario por ID (`titi`, `martita`): nombre, teléfono visible e internacional. `contacts.defaultTeacherId` elige el contacto general; no duplicar teléfonos en actividades.
+- `activities[].id` es estable y ASCII, por ejemplo `gimnasia-grupal`. El nombre visible puede ampliarse sin cambiar ID: `pilates` se muestra como «Pilates en colchoneta».
+- `activities[].schedules[]` define `id`, `label` opcional, `days`, `teacherId` y `periods`. Los días usan nombres de Schema.org en inglés, ordenados de lunes a domingo; las horas locales usan `HH:mm`.
+- Cada período tiene `start` y `end`. `end: null` significa que sólo se conoce el inicio; no equivale a duración cero ni permite inventar un final. Es el caso de las seis franjas de spinning.
+- Las franjas de una modalidad deben estar ordenadas y no superponerse. Actividades diferentes pueden coincidir: no inventar suplentes ni cancelar horarios confirmados.
+- `hours.generalActivityId` y `hours.generalScheduleId` referencian el horario general de musculación. Horarios y JSON-LD se generan desde esa misma fuente: 07:00–11:00 y 13:30–22:00, respetando la pausa.
+- `address` contiene la dirección de la **sede anunciada**, Héroes de Malvinas 150. `relocation.status: "scheduled"` y `openingDate: "2026-11-03"` distinguen próxima apertura de apertura efectiva. El reloj no cambia ese estado. No se confirmó una hora de inauguración.
+- `relocation.maps` distingue pin actualizado y nombre de calle actualizado. Conserva fecha de consulta, referencia del propietario, coordenadas de la ficha y Place ID. El botón usa ese Place ID; una cámara de Street View o coordenadas solas no son un destino validado. Ver [mudanza](MUDANZA-Y-ANIVERSARIO.md).
+- `foundedDate: "1996-11-04"` es la fundación original. `anniversary` conserva un snapshot fechado coherente para HTML sin JavaScript; los años reales se actualizan por aniversario argentino.
 
-Los marcadores normales se escapan por defecto. Los únicos fragmentos raw provienen del generador, que escapa a su vez cada dato de las actividades y atributos de imágenes. El JSON-LD tiene serialización segura y su hash CSP se recalcula en cada build. CSS y JavaScript tienen nombres derivados del contenido e integridad SRI: un cambio invalida el nombre anterior y evita depender de una copia antigua en caché.
+Cada fila tiene ID DOM `horario-{activity.id}-{schedule.id}`, atributos `data-schedule-id` y `data-teacher-id` y su propio WhatsApp. Las cuatro actividades incluyen Instagram. Son contratos comprobables sin depender de posición o traducción.
 
-No hay llamadas a APIs de negocio, paneles privados, formularios, almacenamiento de usuarios, cookies de seguimiento, scripts de terceros ni fuentes externas. Las dependencias de QA son sólo de desarrollo y quedan fuera de dist.
+La migración retiró `phoneDisplay`/`phoneInternational` de la raíz, `relocation.futureAddress`, `relocation.mapsUpdated` y la cadena duplicada del horario general. Sus reemplazos son `teachers`, `address`, `relocation.maps` y la referencia al horario canónico. No recrear ambos contratos.
 
-`.gitattributes` fija finales de línea LF y conserva imágenes, fuente y licencia original como bytes sin normalizar, para que un traslado entre Windows y Linux no cambie por sí solo las huellas del build. La fuente y su licencia tienen SHA-256 comprobado; no formatear ni editar archivos del proveedor.
+## Funciones estables
 
-El manifiesto `build-manifest.json` contiene tamaños y SHA-256 de los archivos generados. `qa-report.json` identifica la huella de ese manifiesto; una QA antigua no habilita una publicación nueva. No se incluye fecha variable en el build, por lo que el mismo contenido produce los mismos bytes.
+| Función y módulo | Entrada, salida y efecto |
+| --- | --- |
+| `validateBusinessData(data, project)` — `business-data.mjs` | Valida relaciones, fechas, docentes, períodos y enlaces; devuelve datos válidos o lanza error. Se reexporta desde `build.mjs` para conservar su API. |
+| `formatScheduleDays(days)` | Días ordenados → etiqueta en español. |
+| `formatScheduleTime(time)`, `formatSchedulePeriods(periods)` | Horarios → texto legible; marca «inicio» si falta final. |
+| `formatOpeningDate(date)` | Fecha → texto en español con zona argentina; no agrega hora real de apertura. |
+| `getGeneralSchedule(data)` | Resuelve las referencias del horario general sin duplicarlo. |
+| `buildScheduleMessage(activity, schedule, teacher)` | Mensaje con docente, actividad, días y franjas; consulta disponibilidad y cuota sin publicar importes. |
+| `buildWhatsAppUrl(teacher, message)` | Móvil argentino internacional y mensaje → enlace `wa.me` con texto codificado. No envía mensajes. |
+| `buildDirectionsUrl(data)` | Negocio, localidad/provincia y Place ID comprobado → Maps Directions con `api=1`, destino con nombre y `destination_place_id`. Las coordenadas quedan en datos/JSON-LD; no se usan como fallback de la ruta. |
+| `validateAssetManifest(assets)` — `build.mjs` | Rechaza rutas inseguras, recursos o dimensiones incoherentes. |
+| `escapeHtml(value)`, `serializeJsonLd(value)` | HTML escapado y JSON que no puede cerrar su etiqueta `script`. |
+| `renderTemplate(template, replacements, rawKeys)` | Resuelve marcadores; falla si faltan valores. Sólo el generador permite fragmentos ya construidos y escapados. |
+| `buildSite(outputDirectory)` | Genera salida pública determinista y devuelve su manifiesto. |
+| `calculateElapsed(foundedDate, now)` — `elapsed-time.js` | Instante → años por calendario argentino y totales de días, horas, minutos y segundos. |
+| `startPreview(port)` — `preview.mjs` | Devuelve `{server, url}`; el llamador cierra el servidor. |
+| `createBackup()` — `backup.mjs` | Crea copia y bundle verificados; devuelve su ruta. |
+| `verifyStagedOutput(checkout, outputDirectory)` — `publish.mjs` | Compara SHA-256 de los blobs que Git confirmará con la salida aprobada. |
 
-## Relación con la implementación anterior
+Funciones privadas del navegador: `initializeLiveClock()`, `initializeSharing()` e `initializeMotion()`. El reloj usa `updateElapsed()` y `scheduleClock()`; compartir dispone de `copyOfficialUrl()`, `showManualCopy()` y `shareOfficialPage()`; el movimiento utiliza `animateSection()` y `handleMotionPreference()`. Ya no existe una animación numérica `animateMetric()` ni se reinicia el contador desde cero.
 
-Antes de publicar, `verifyStagedOutput(checkout, outputDirectory)` compara SHA-256 de cada blob que Git va a confirmar con su archivo aprobado en dist. La preparación usa core.autocrlf=false sólo para esa operación: no cambia la configuración del usuario. Esto conserva incluso los bytes CRLF de una licencia original y detecta filtros o conversiones inesperadas antes de hacer commit/push. El recibo de publicación incluye la huella del manifiesto.
+`data-elapsed-years`, `data-time-unit`, `data-time-accessible`, `live-clock`, `toggle-clock` y `clock-status` conectan HTML y reloj. `data-reveal` conecta las entradas opcionales. Conservar o migrar explícitamente estos contratos en la segunda jornada. Las preguntas frecuentes usan `details/summary` nativos.
 
-La versión anterior usaba React/Vinext en una carpeta externa y una copia HTML actualizada a mano. Ese código se conserva localmente como histórico; ya no es la fuente de publicación. No se debe sincronizar de vuelta ni reconstruir la web desde ese starter. La rama main actual contiene todo lo necesario para reproducir la web sin esa carpeta.
+## Generación, seguridad y portabilidad
 
-Una migración futura puede cambiar implementación, pero debe conservar o migrar de forma explícita el contrato de datos, la URL, los recursos y las pruebas de interacción. No hace falta conservar un proveedor de IA ni repetir prompts para interpretar este proyecto.
+Los datos se escapan por defecto. Los fragmentos HTML permitidos sólo provienen del generador, que escapa valores y atributos. JSON-LD tiene su hash CSP; CSS/JavaScript usan nombres derivados del contenido e integridad SRI. El manifiesto incluye tamaños y SHA-256; `qa-report.json` identifica su huella. Una QA anterior no valida un build nuevo.
+
+La generación no depende de la fecha actual ni de servicios remotos; el snapshot es explícito. No hay backend, formularios de usuarios, rastreadores, cookies, scripts de terceros ni fuentes remotas. Las dependencias son de desarrollo y no llegan a `dist/`. Los enlaces externos se abren por iniciativa de la persona.
+
+`.gitattributes` fija LF para código y conserva bytes originales de imágenes, fuente y licencia. No formatear recursos del proveedor. La publicación también compara los bytes preparados por Git, usando `core.autocrlf=false` sólo en esa operación. Ver [seguridad](SEGURIDAD.md), [mantenimiento](MANTENIMIENTO.md) y [recuperación](RECUPERACION.md).
+
+React/Vinext y las copias HTML históricas están fuera de esta fuente; no sincronizarlas de vuelta. Una migración futura debe conservar o trasladar explícitamente datos, identificadores, recursos, URL canónica y pruebas, sin reconstruir decisiones desde prompts.

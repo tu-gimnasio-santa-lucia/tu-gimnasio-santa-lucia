@@ -31,39 +31,40 @@
     "snapshotDate": "2026-10-15"
   },
   "relocation": {
-    "status": "announced",
-    "futureAddress": {
-      "street": "Héroes de Malvinas 150",
-      "locality": "Santa Lucía",
-      "region": "Corrientes",
-      "country": "Argentina"
-    },
-    "openingDate": null,
-    "mapsUpdated": false
+    "status": "scheduled",
+    "openingDate": "2026-11-03",
+    "maps": {
+      "locationUpdated": true,
+      "streetNameUpdated": false,
+      "displayedStreet": "San Martin s/n",
+      "verifiedAt": "2026-10-24",
+      "referenceUrl": "https://maps.app.goo.gl/p6qmCQExy6iP9ZMV8",
+      "coordinateSource": "business-profile",
+      "latitude": -28.9770634,
+      "longitude": -59.0984372,
+      "placeId": "ChIJ97NG_pRjTpQRJB6lqKeqmWU"
+    }
   },
-  "phoneDisplay": "03777 72-3911",
-  "phoneInternational": "543777723911",
   "address": {
-    "street": "Av. Italia 109",
+    "street": "Héroes de Malvinas 150",
     "locality": "Santa Lucía",
     "region": "Corrientes",
-    "postalCode": "W3440",
+    "postalCode": "W3440ABB",
     "country": "AR",
-    "plusCode": "2W73+W9"
+    "plusCode": "2WF2+5J"
   },
   "contacts": {
     "instagram": "https://www.instagram.com/tugimnasio1/",
     "maps": "https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8",
-    "whatsappMessage": "Hola Tu Gimnasio, quisiera consultar por las actividades."
+    "whatsappMessage": "Hola Tu Gimnasio, quisiera consultar por las actividades.",
+    "defaultTeacherId": "titi"
   },
   "hours": {
-    "weekdayLabel": "Lunes a viernes",
-    "weekendLabel": "Sábado y domingo",
-    "weekdays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    "opens": "07:00",
-    "closes": "22:00",
-    "weekendClosed": true,
-    "notice": "Las clases tienen horarios específicos. Consultá disponibilidad por WhatsApp. En feriados el horario puede variar."
+    "generalActivityId": "musculacion",
+    "generalScheduleId": "general",
+    "weekendLabel": "Fines de semana y feriados",
+    "weekendNotice": "Consultá disponibilidad con tu profe.",
+    "notice": "Horarios de la nueva sede desde su apertura el 3 de noviembre. Consultá cupos por actividad."
   },
   "mottos": {
     "equality": "Todos somos iguales, la diferencia está en los detalles.",
@@ -75,32 +76,180 @@
       "id": "musculacion",
       "name": "Musculación",
       "description": "Tu espacio para construir fuerza y entrenar con constancia.",
-      "accent": "yellow"
+      "accent": "yellow",
+      "schedules": [
+        {
+          "id": "general",
+          "label": "Horario general",
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "teacherId": "titi",
+          "periods": [
+            {
+              "start": "07:00",
+              "end": "11:00"
+            },
+            {
+              "start": "13:30",
+              "end": "22:00"
+            }
+          ]
+        },
+        {
+          "id": "especial-martita",
+          "label": "Horario especial",
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "teacherId": "martita",
+          "periods": [
+            {
+              "start": "08:00",
+              "end": "09:00"
+            },
+            {
+              "start": "20:00",
+              "end": "21:00"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "spinning",
       "name": "Spinning",
       "description": "Energía en grupo y ritmo sobre la bici para superarte.",
-      "accent": "blue"
+      "accent": "blue",
+      "schedules": [
+        {
+          "id": "martes-jueves-0800",
+          "label": null,
+          "days": ["Tuesday", "Thursday"],
+          "teacherId": "martita",
+          "periods": [
+            {
+              "start": "08:00",
+              "end": null
+            }
+          ]
+        },
+        {
+          "id": "manana-titi",
+          "label": null,
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "teacherId": "titi",
+          "periods": [
+            {
+              "start": "09:00",
+              "end": null
+            }
+          ]
+        },
+        {
+          "id": "mediodia-titi",
+          "label": null,
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "teacherId": "titi",
+          "periods": [
+            {
+              "start": "14:00",
+              "end": null
+            }
+          ]
+        },
+        {
+          "id": "tarde-martita",
+          "label": null,
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "teacherId": "martita",
+          "periods": [
+            {
+              "start": "15:00",
+              "end": null
+            }
+          ]
+        },
+        {
+          "id": "lunes-miercoles-viernes-1900",
+          "label": null,
+          "days": ["Monday", "Wednesday", "Friday"],
+          "teacherId": "martita",
+          "periods": [
+            {
+              "start": "19:00",
+              "end": null
+            }
+          ]
+        },
+        {
+          "id": "noche-titi",
+          "label": null,
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+          "teacherId": "titi",
+          "periods": [
+            {
+              "start": "20:00",
+              "end": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "gimnasia-grupal",
       "name": "Gimnasia grupal",
       "description": "Clases para moverte, compartir y disfrutar el proceso.",
-      "accent": "red"
+      "accent": "red",
+      "schedules": [
+        {
+          "id": "general",
+          "label": null,
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "teacherId": "martita",
+          "periods": [
+            {
+              "start": "14:00",
+              "end": "15:00"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "pilates",
-      "name": "Pilates",
+      "name": "Pilates en colchoneta",
       "description": "Control, movilidad y equilibrio para sentirte mejor.",
-      "accent": "white"
+      "accent": "white",
+      "schedules": [
+        {
+          "id": "general",
+          "label": null,
+          "days": ["Tuesday", "Thursday"],
+          "teacherId": "martita",
+          "periods": [
+            {
+              "start": "19:00",
+              "end": "20:00"
+            }
+          ]
+        }
+      ]
     }
   ],
   "googleRating": {
     "value": 4.8,
     "reviewCount": 18,
-    "verifiedAt": "2026-10-15",
+    "verifiedAt": "2026-10-24",
     "source": "https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"
   },
-  "foundedDate": "1996-11-04"
+  "foundedDate": "1996-11-04",
+  "teachers": {
+    "titi": {
+      "name": "Titi",
+      "phoneDisplay": "03777 72-3911",
+      "phoneInternational": "5493777723911"
+    },
+    "martita": {
+      "name": "Martita",
+      "phoneDisplay": "03777 47-2060",
+      "phoneInternational": "5493777472060"
+    }
+  }
 }

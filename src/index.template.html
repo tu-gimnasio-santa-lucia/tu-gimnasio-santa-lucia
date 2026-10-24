@@ -35,9 +35,9 @@
         >{{image_header_logo}}<span>Tu Gimnasio<small>Desde {{founded_year}}</small></span></a
       >
       <nav aria-label="Navegación principal">
-        <a href="#aniversario"><span data-elapsed-years>{{anniversary_years}}</span> años</a>
-        <a href="#nueva-sede">Próxima sede</a>
         <a href="#actividades">Actividades</a>
+        <a href="#horarios">Horarios</a>
+        <a href="#nueva-sede">Nueva sede</a>
         <a href="#ubicacion">Contacto</a>
       </nav>
       <a class="header-cta" href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer"
@@ -49,28 +49,23 @@
       <section class="hero" id="inicio" aria-labelledby="portada-titulo">
         <div class="section-shell hero-layout">
           <div class="hero-copy">
-            <p class="hero-edition">
-              Santa Lucía · {{founded_year}}—<span data-current-year>{{anniversary_year}}</span>
-            </p>
-            <h1 id="portada-titulo">
-              <span><span data-elapsed-years>{{anniversary_years}}</span> años.</span
-              ><span>Nueva casa.</span>
-            </h1>
+            <p class="hero-edition">Santa Lucía · Desde {{founded_year}}</p>
+            <h1 id="portada-titulo"><span>Tu lugar.</span><span>Tu gimnasio.</span></h1>
             <p class="hero-intro">
-              La misma pasión de siempre. Una nueva sede en construcción para seguir compartiéndola.
+              Musculación, spinning, gimnasia grupal y pilates en colchoneta. Encontrá tu horario y
+              consultá con tu profe.
             </p>
             <div class="hero-actions">
-              <a class="button button-yellow" href="#nueva-sede"
-                >Conocé lo que viene <span aria-hidden="true">↘</span></a
+              <a class="button button-yellow" href="#actividades"
+                >Ver actividades y horarios <span aria-hidden="true">↘</span></a
               >
-              <a
-                class="hero-contact"
-                href="{{whatsapp_url}}"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Hablemos por WhatsApp <span aria-hidden="true">↗</span></a
+              <a class="hero-contact" href="#ubicacion"
+                >Cómo llegar a la nueva sede <span aria-hidden="true">↘</span></a
               >
             </div>
+            <p class="hero-opening">
+              Apertura: <time datetime="{{opening_date}}">{{opening_date_label}}</time>.
+            </p>
             <p class="hero-motto">Todos somos iguales,<br />la diferencia está en los detalles.</p>
           </div>
           <div class="hero-media">
@@ -83,6 +78,28 @@
         </div>
         <div class="brand-track" aria-hidden="true">
           <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
+        <div class="section-shell">
+          <div class="section-heading">
+            <h2 id="actividades-titulo">Movete a tu manera.</h2>
+            <p>
+              Elegí tu actividad y consultá con el profe de tu horario por cupos, inscripción y
+              cuotas.
+            </p>
+          </div>
+          <p class="activities-opening">
+            Horarios de la nueva sede · Desde el
+            <time datetime="{{opening_date}}">{{opening_date_label}}</time>.
+          </p>
+          <div class="activity-grid">{{activity_cards}}</div>
+          <p class="activities-note">
+            En spinning indicamos la hora de inicio; consultá la duración con tu profe. Para fines
+            de semana y feriados, escribinos antes de venir.
+          </p>
+          <div class="manifesto-art" data-reveal="art">{{image_manifesto}}</div>
         </div>
       </section>
 
@@ -139,13 +156,12 @@
       <section class="future" id="nueva-sede" aria-labelledby="sede-titulo">
         <div class="section-shell future-layout">
           <div class="future-copy" data-reveal="future">
-            <p class="future-status">
-              <span aria-hidden="true"></span> Próxima sede · En construcción
-            </p>
+            <p class="future-status"><span aria-hidden="true"></span> Próxima apertura</p>
             <h2 id="sede-titulo">Nueva casa.<br />Misma esencia.</h2>
             <p>
-              Estamos construyendo el nuevo gimnasio. Otro espacio para encontrarnos, con la misma
-              esencia que nos acompaña desde {{founded_year}}.
+              Abrimos una nueva etapa el
+              <time datetime="{{opening_date}}">{{opening_date_label}}</time>. Otro espacio para
+              encontrarnos, con la misma esencia que nos acompaña desde {{founded_year}}.
             </p>
             <a
               class="button button-navy"
@@ -160,27 +176,17 @@
             <h3>{{future_street}}</h3>
             <p>{{future_locality}}</p>
             <div class="future-notice">
-              <strong>La mudanza todavía no se realizó.</strong>
-              <p>
-                La fecha de apertura se anunciará más adelante. Google Maps aún muestra la sede
-                actual; actualizaremos el enlace cuando cambie la ficha.
-              </p>
+              <strong>Te esperamos desde la apertura anunciada.</strong>
+              {{maps_notice}}
             </div>
+            <a
+              class="button button-yellow"
+              href="{{directions_url}}"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
+            >
           </div>
-        </div>
-      </section>
-
-      <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
-        <div class="section-shell">
-          <div class="section-heading">
-            <h2 id="actividades-titulo">Movete a tu manera.</h2>
-            <p>
-              Cuatro propuestas, un mismo lugar. Consultanos por cupos y horarios vigentes de cada
-              clase.
-            </p>
-          </div>
-          <div class="activity-grid">{{activity_cards}}</div>
-          <div class="manifesto-art" data-reveal="art">{{image_manifesto}}</div>
         </div>
       </section>
 
@@ -220,10 +226,10 @@
         </div>
       </section>
 
-      <section class="visit section-shell" aria-label="Información de la sede actual">
+      <section class="visit section-shell" aria-label="Horarios y ubicación de la nueva sede">
         <article class="schedule-panel" id="horarios">
-          <p class="section-note">Sede actual</p>
-          <h2>Hacé lugar<br />para vos.</h2>
+          <p class="section-note">Musculación · Horario general</p>
+          <h2>Organizá<br />tu semana.</h2>
           <div class="schedule-row">
             <span>{{weekday_label}}</span><strong>{{weekday_hours}}</strong>
           </div>
@@ -231,24 +237,30 @@
             <span>{{weekend_label}}</span><strong>{{weekend_hours}}</strong>
           </div>
           <p class="schedule-note">{{hours_notice}}</p>
+          <a class="text-link" href="#actividades"
+            >Ver todos los horarios y profesores <span aria-hidden="true">↑</span></a
+          >
         </article>
         <article class="location-panel" id="ubicacion">
-          <p class="section-note">Ubicación actual · Antes de la mudanza</p>
+          <p class="section-note">Nueva sede · Apertura {{opening_date_label}}</p>
           <h2>{{street_address}}</h2>
           <p>{{postal_locality}}<br />{{region_country}}</p>
           <div class="location-actions">
             <a
               class="button button-navy"
-              href="{{maps_url}}"
+              href="{{directions_url}}"
               target="_blank"
               rel="noopener noreferrer"
-              >Ver sede actual en Maps <span aria-hidden="true">↗</span></a
+              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
             >
-            <a class="phone-link" href="{{phone_href}}">{{phone_display}}</a>
+            <a class="phone-link" href="{{phone_href}}"
+              >{{default_teacher_name}} · {{phone_display}}</a
+            >
           </div>
-          <p class="location-code">Código de ubicación actual: {{plus_code}}</p>
+          {{maps_notice}}
+          <p class="location-code">Código de ubicación: {{plus_code}}</p>
           <a class="text-link" href="#nueva-sede"
-            >Ver anuncio de la próxima sede <span aria-hidden="true">↑</span></a
+            >Ver anuncio de apertura <span aria-hidden="true">↑</span></a
           >
         </article>
       </section>
@@ -260,28 +272,31 @@
         </div>
         <div class="questions-list">
           <details>
-            <summary>¿La nueva sede ya está abierta?</summary>
+            <summary>¿Cuándo abre la nueva sede?</summary>
             <p>
-              Todavía está en construcción. La próxima dirección será {{future_street}},
-              {{future_locality}}. Vamos a anunciar la apertura; mientras tanto, podés consultarnos
-              por WhatsApp.
+              La apertura está anunciada para el
+              <time datetime="{{opening_date}}">{{opening_date_label}}</time>, en {{future_street}},
+              {{future_locality}}. Consultá con tu profe antes de venir.
             </p>
           </details>
           <details>
-            <summary>¿Por qué Maps muestra otra dirección?</summary>
+            <summary>{{maps_faq_title}}</summary>
             <p>
-              La ficha todavía corresponde a {{street_address}}, la ubicación actual. El mapa de la
-              nueva sede se incorporará cuando se actualice Google Maps. El anuncio de la mudanza
-              está separado para evitar confusiones.
+              {{maps_faq_text}}
+              <a href="{{directions_url}}" target="_blank" rel="noopener noreferrer"
+                >Abrir indicaciones hacia Tu Gimnasio</a
+              >.
             </p>
           </details>
           <details>
             <summary>¿Cómo consulto horarios y actividades?</summary>
             <p>
-              Escribinos por
-              <a href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer">WhatsApp</a>. Te
-              contamos los horarios vigentes, los cupos de cada clase y las novedades de la próxima
-              sede.
+              En <a href="#actividades">actividades y horarios</a> encontrás el nombre del profe de
+              cada franja y su botón de WhatsApp. Musculación general se consulta con Titi; el
+              especial, con Martita. También podés escribirnos al
+              <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
+                >Instagram del gimnasio</a
+              >.
             </p>
           </details>
         </div>
@@ -361,7 +376,8 @@
           <p>Todos somos iguales,<br />la diferencia está en los detalles.</p>
           <div class="footer-links">
             <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer">Instagram</a
-            ><a href="{{maps_url}}" target="_blank" rel="noopener noreferrer">Maps · Sede actual</a
+            ><a href="{{directions_url}}" target="_blank" rel="noopener noreferrer"
+              >Maps · Nueva sede</a
             ><a href="{{phone_href}}">Llamar</a>
           </div>
         </div>

@@ -8,15 +8,14 @@
     "foundedYear",
     "anniversary",
     "relocation",
-    "phoneDisplay",
-    "phoneInternational",
     "address",
     "contacts",
     "hours",
     "mottos",
     "activities",
     "googleRating",
-    "foundedDate"
+    "foundedDate",
+    "teachers"
   ],
   "properties": {
     "$schema": {
@@ -76,51 +75,20 @@
     "relocation": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Anuncio de futura sede. No cambia address ni contacts.maps. La apertura requiere una migración explícita y comprobada de dirección, Maps, horario y JSON-LD.",
-      "required": ["status", "futureAddress", "openingDate", "mapsUpdated"],
+      "required": ["status", "openingDate", "maps"],
       "properties": {
         "status": {
-          "const": "announced"
+          "const": "scheduled"
         },
         "openingDate": {
-          "type": "null"
+          "type": "string",
+          "format": "date"
         },
-        "mapsUpdated": {
-          "const": false
-        },
-        "futureAddress": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["street", "locality", "region", "country"],
-          "properties": {
-            "street": {
-              "type": "string",
-              "minLength": 1
-            },
-            "locality": {
-              "type": "string",
-              "minLength": 1
-            },
-            "region": {
-              "type": "string",
-              "minLength": 1
-            },
-            "country": {
-              "type": "string",
-              "minLength": 1
-            }
-          }
+        "maps": {
+          "$ref": "#/$defs/maps"
         }
-      }
-    },
-    "phoneDisplay": {
-      "type": "string",
-      "minLength": 1
-    },
-    "phoneInternational": {
-      "type": "string",
-      "pattern": "^[0-9]{10,15}$",
-      "description": "Sin +, espacios ni guiones; se usa para tel y WhatsApp."
+      },
+      "description": "Próxima apertura anunciada, sin hora inventada ni activación automática. address es la dirección de la sede anunciada; el JSON-LD lleva validFrom para no afirmar apertura anterior."
     },
     "address": {
       "type": "object",
@@ -155,7 +123,7 @@
     "contacts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["instagram", "maps", "whatsappMessage"],
+      "required": ["instagram", "maps", "whatsappMessage", "defaultTeacherId"],
       "properties": {
         "instagram": {
           "type": "string",
@@ -168,6 +136,10 @@
         "whatsappMessage": {
           "type": "string",
           "minLength": 1
+        },
+        "defaultTeacherId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
         }
       }
     },
@@ -175,47 +147,38 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "weekdayLabel",
+        "generalActivityId",
+        "generalScheduleId",
         "weekendLabel",
-        "weekdays",
-        "opens",
-        "closes",
-        "weekendClosed",
+        "weekendNotice",
         "notice"
       ],
       "properties": {
-        "weekdayLabel": {
+        "generalActivityId": {
           "type": "string",
-          "minLength": 1
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "generalScheduleId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
         },
         "weekendLabel": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 1000
         },
-        "weekdays": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-          }
-        },
-        "opens": {
+        "weekendNotice": {
           "type": "string",
-          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
-        },
-        "closes": {
-          "type": "string",
-          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
-        },
-        "weekendClosed": {
-          "type": "boolean"
+          "minLength": 1,
+          "maxLength": 1000
         },
         "notice": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 1000
         }
-      }
+      },
+      "description": "Referencia al horario general de musculación; no duplicar días o franjas en dos lugares. Fines de semana/feriados se consultan mientras no haya confirmación vigente."
     },
     "mottos": {
       "type": "object",
@@ -237,26 +200,7 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["id", "name", "description", "accent"],
-        "properties": {
-          "id": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9-]*$"
-          },
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "description": {
-            "type": "string",
-            "minLength": 1
-          },
-          "accent": {
-            "enum": ["yellow", "blue", "red", "white"]
-          }
-        }
+        "$ref": "#/$defs/activity"
       }
     },
     "googleRating": {
@@ -286,6 +230,195 @@
     "foundedDate": {
       "type": "string",
       "const": "1996-11-04"
+    },
+    "teachers": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/teacher"
+      }
+    }
+  },
+  "description": "Contrato de datos 3: próxima apertura confirmada, pin comprobado de Maps y horarios por actividad y docente. Las franjas y teléfonos tienen una sola fuente.",
+  "$defs": {
+    "teacher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "phoneDisplay", "phoneInternational"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "phoneDisplay": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "phoneInternational": {
+          "type": "string",
+          "pattern": "^549[0-9]{10}$",
+          "description": "Móvil de Argentina, 54 + 9 + código de área y número; sin + ni separadores."
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "null conserva una hora de inicio sin inventar duración; inicio/fin usan HH:mm."
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "days", "teacherId", "periods"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "days": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+          },
+          "description": "Días ISO ordenados de lunes a domingo. No derivar días de un texto visual."
+        },
+        "teacherId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "periods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/period"
+          }
+        }
+      }
+    },
+    "activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "description", "accent", "schedules"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "accent": {
+          "enum": ["yellow", "blue", "red", "white"]
+        },
+        "schedules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/schedule"
+          }
+        }
+      }
+    },
+    "maps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "locationUpdated",
+        "streetNameUpdated",
+        "displayedStreet",
+        "verifiedAt",
+        "referenceUrl",
+        "coordinateSource",
+        "latitude",
+        "longitude",
+        "placeId"
+      ],
+      "properties": {
+        "locationUpdated": {
+          "const": true
+        },
+        "streetNameUpdated": {
+          "type": "boolean"
+        },
+        "displayedStreet": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "referenceUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "coordinateSource": {
+          "const": "business-profile"
+        },
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "placeId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{10,200}$",
+          "description": "Identidad del negocio verificada en las indicaciones; evita que Google elija un comercio cercano al pasar sólo coordenadas."
+        }
+      },
+      "description": "Distingue el pin actualizado de la calle todavía desactualizada. Coordenadas comprobadas en la ficha del negocio; la cámara de Street View sólo es referencia."
     }
   }
 }
