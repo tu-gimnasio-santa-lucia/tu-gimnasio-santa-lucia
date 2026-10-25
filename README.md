@@ -1,5 +1,7 @@
 # Tu Gimnasio — sitio oficial
 
+**Segunda etapa — 25/10/2026:** implementada y verificada localmente, con presentación rápida del logo/años hacia cabecera y movimiento suave, cancelable y opcional. Nueve grupos y 48 casos aprobados. Se preservan consultas, contador penúltimo, cierre original y ausencia de anuncio de reapertura. Presentación: Profe Martita y Profe Titi. La publicación se cierra por el procedimiento de mantenimiento; las esperas inferiores del 24/10 son históricas.
+
 Web informativa de Tu Gimnasio, Santa Lucía, Corrientes. Conserva la identidad original y “Desde 1996”.
 
 **Correcciones posteriores, 24/10/2026:** consultas simétricas, diseño pulido, contador en la penúltima sección y gráfica «Volvamos a las bases» en la última. Se retiraron el anuncio, la fecha visible y la sección de reapertura. Esta versión sigue local; la segunda etapa sólo comienza con la orden directa «comencemos la 2da etapa». Leer [etapas](docs/ETAPAS-ACTUALIZACION.md).

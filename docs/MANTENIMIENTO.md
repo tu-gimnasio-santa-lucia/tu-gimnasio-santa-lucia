@@ -15,7 +15,7 @@ Crear y comprobar un respaldo nuevo antes de editar. Los cambios del negocio se 
 
 ## Comandos
 
-Para la próxima apertura y el contador automático, leer [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). `address` describe la sede anunciada y los horarios estructurados usan `validFrom` con la fecha confirmada; `scheduled` no significa abierto. `activities[].schedules` y `teachers` son las fuentes únicas de franjas y teléfonos. La primera jornada se guarda localmente; publicar corresponde al cierre de la segunda, después de otro pedido del propietario.
+Para la próxima apertura y el contador automático, leer [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). `address` describe la sede anunciada y los horarios estructurados usan `validFrom` con la fecha confirmada; `scheduled` no significa abierto. `activities[].schedules` y `teachers` son las fuentes únicas de franjas y teléfonos. La segunda jornada fue autorizada e implementada el 25/10/2026. Las publicaciones futuras requieren un pedido vigente y QA del build exacto.
 
 Con Node.js 22 o posterior, desde la raíz del repositorio:
 
@@ -38,7 +38,7 @@ node scripts/browser-check.mjs
 pnpm audit
 ```
 
-La batería completa de 24 casos requiere Microsoft Edge instalado, además de los tres motores descargados por Playwright. Si falta un motor, el informe falla y debe resolverse o documentarse explícitamente antes de publicar; no se omiten pruebas silenciosamente. La batería usa perfiles temporales; no conectarla a sesiones personales. Consultar `docs/VERIFICACION.md` para los motores efectivamente comprobados y cualquier diferencia del equipo. Emular un celular no sustituye todas las pruebas en dispositivos físicos.
+La batería completa de 48 casos (24 generales y 24 de presentación, más salvaguardas) requiere Microsoft Edge instalado, además de los tres motores descargados por Playwright. Si falta un motor, el informe falla y debe resolverse o documentarse explícitamente antes de publicar; no se omiten pruebas silenciosamente. La batería usa perfiles temporales; no conectarla a sesiones personales. Consultar `docs/VERIFICACION.md` para los motores efectivamente comprobados y cualquier diferencia del equipo. Emular un celular no sustituye todas las pruebas en dispositivos físicos.
 
 La variable opcional `TU_GIMNASIO_FIREFOX_PATH` permite seleccionar una compilación oficial de Firefox preparada para el equipo. En esta PC se probó Firefox 155 de Playwright, porque la compilación 157 descargada presentaba un fallo de inicio SideBySide/mozglue de Windows. La ruta queda en configuración local, no se fija dentro del código compartido. No se deshabilitaron medidas de seguridad ni se modificó el perfil personal.
 

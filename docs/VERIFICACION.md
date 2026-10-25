@@ -1,5 +1,15 @@
 # Fuentes y verificaciones
 
+## Segunda etapa — 25/10/2026
+
+**Nueve grupos y 48 casos aprobados**: 24 generales y 24 entradas reales, mismos cuatro motores y seis vistas de 320 a 1920 px documentados abajo. Salvaguardas por motor: interacción, cambio de movimiento reducido, resize, documento oculto, enlace profundo, decode demorado y ausencia de Web Animations. Cero errores de aplicación, desbordamientos e infracciones detectadas por axe.
+
+Manifiesto aprobado: f852d353f700ff9a0626aef0c28b29cd258c4ccc0d3bf26c0fa607edeaf9ab84. Informe: artifacts/qa-report.json. Presentación de 1040 ms sólo con transform/opacity, sin bloquear puntero, teclado o scroll. Contenido estático alternativo y comprobaciones de 200 % de texto, sin JavaScript, reloj, aniversario, contactos y QR conservados. Capturas revisadas. Auditoría nueva de dependencias: cero vulnerabilidades, ninguna dependencia de producción; no se instalaron paquetes.
+
+Se corrigieron y preservaron dos fallos de prueba: visita con hash en página nueva y simulación de demora por decode en Firefox 155, cuyo protocolo no admite una opción de route de Playwright 1.64.1. Se comprueba la alternativa por demora, sin afirmar una medición física de red o rendimiento.
+
+El 25/10 Maps conserva pin correcto, 4,8/18 y calle San Martín s/n; se mantiene la aclaración. El propietario autorizó logo/placas, horas y cuatro actividades, además de retirar 21 imágenes antiguas tras respaldo y confirmación específica. Los estados de aprobación y recibos privados se conservan fuera del sitio. La presentación general usa Profe Martita antes de Profe Titi. Los apartados inferiores del 24/10 son históricos; no sustituyen la comprobación pública de esta entrega.
+
 ## Correcciones posteriores a la primera jornada — 24/10/2026
 
 Pedido directo: consultas simétricas, pulido general, contador penúltimo y «Volvamos a las bases» último, retirando la reapertura. Implementado como corrección independiente; **segunda etapa y publicación pendientes hasta la orden «comencemos la 2da etapa»**.

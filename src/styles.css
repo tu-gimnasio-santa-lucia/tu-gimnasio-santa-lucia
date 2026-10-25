@@ -29,7 +29,7 @@
   --header-offset: 7rem;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-quick: 180ms;
-  --motion-enter: 800ms;
+  --motion-enter: 650ms;
 }
 * {
   box-sizing: border-box;
@@ -189,6 +189,46 @@ h2 {
   margin-top: 0.3rem;
   font-size: 0.75rem;
   color: var(--yellow);
+}
+.brand .brand-years {
+  width: fit-content;
+  max-width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.brand-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+.brand-intro-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--navy-deep);
+}
+.brand-intro-logo,
+.brand-intro-years {
+  position: fixed;
+  display: block;
+  margin: 0;
+  transform-origin: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.brand-intro-logo {
+  max-width: none;
+  object-fit: contain;
+  border-radius: 0;
+}
+.brand-intro-years {
+  color: var(--yellow);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.brand-flight-active .site-header .brand-logo,
+.brand-flight-active .site-header .brand-years {
+  opacity: 0;
 }
 .site-header nav {
   display: flex;
@@ -925,8 +965,8 @@ footer {
 /* One-time motion only. Reading never depends on a hidden state or on animation. */
 @keyframes hero-arrive {
   from {
-    transform: translateY(18px);
-    opacity: 0.7;
+    transform: translateY(12px);
+    opacity: 0.85;
   }
   to {
     transform: none;
@@ -935,7 +975,7 @@ footer {
 }
 @keyframes logo-arrive {
   from {
-    transform: scale(0.96);
+    transform: scale(0.99);
   }
   to {
     transform: none;
@@ -952,13 +992,13 @@ footer {
     animation: hero-arrive var(--motion-enter) 140ms var(--ease-out) both;
   }
   .hero-logo-wrap {
-    animation: logo-arrive 1100ms var(--ease-out) both;
+    animation: logo-arrive 700ms var(--ease-out) both;
   }
 }
 @media (hover: hover) and (pointer: fine) {
   .button:hover,
   .header-cta:hover {
-    transform: translateY(-3px);
+    transform: translateY(-1px);
   }
   .button-yellow:hover,
   .header-cta:hover {
@@ -972,12 +1012,9 @@ footer {
     color: var(--navy);
   }
   .activity-card {
-    transition:
-      transform var(--motion-quick) var(--ease-out),
-      background-color var(--motion-quick) ease;
+    transition: background-color var(--motion-quick) ease;
   }
   .activity-card:hover {
-    transform: translateX(4px);
     background: #19196a;
   }
 }
@@ -1028,6 +1065,10 @@ footer {
   .site-header {
     position: relative;
     padding-block: 0.7rem;
+  }
+  .site-header .brand-founded,
+  .brand-intro .brand-founded {
+    display: none;
   }
   .site-header nav {
     justify-content: space-between;
@@ -1199,6 +1240,13 @@ footer {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .brand-intro {
+    display: none;
+  }
+  .brand-flight-active .site-header .brand-logo,
+  .brand-flight-active .site-header .brand-years {
+    opacity: 1;
+  }
   html {
     scroll-behavior: auto;
   }

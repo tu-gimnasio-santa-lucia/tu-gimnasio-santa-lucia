@@ -1,5 +1,13 @@
 # Actualización en dos jornadas
 
+## Estado vigente — 25/10/2026
+
+La segunda etapa fue autorizada directamente e implementada. Las esperas de los apartados anteriores son antecedentes ya cumplidos; no requieren una nueva frase literal. Nueve grupos y 48 casos de navegador aprobados; publicación por script y respaldo final en cierre.
+
+Conservar consultas simétricas, contador penúltimo, «Volvamos a las bases» último y ausencia de anuncio de reapertura. Presentaciones generales: **Profe Martita y Profe Titi**, en ese orden, sin cambiar el docente ni el orden lógico de cada horario.
+
+Maps: horas con pausa, cuatro servicios y descripción guardados; logo conservado. Dos placas informativas nuevas enviadas una sola vez, pendientes de revisión. Las 21 imágenes antiguas de 2022 se respaldaron/recuperaron y eliminaron tras confirmación específica. No duplicar cargas ni recuperar datos superados. Estado externo y recibos en el registro local; video/fotos de construcción siguen como futuro.
+
 ## Instrucción posterior que prevalece — 24/10/2026
 
 La primera jornada terminó. El propietario autorizó correcciones independientes sin iniciar la segunda: consultas simétricas, pulido general, contador penúltimo y «Volvamos a las bases» último, retirando la reapertura de la presentación. El orden solicitado ya se incorpora en estas correcciones.

@@ -1,5 +1,15 @@
 # Arquitectura y mapa del código
 
+## Contrato vigente de movimiento — 25/10/2026, arquitectura 4
+
+Segunda etapa autorizada e implementada. Las referencias inferiores a esperar esa etapa son históricas. Datos y contratos existentes permanecen; se agrega la función privada initializeBrandIntro() después de reloj, compartir y revelado.
+
+Destino: #header-brand, .brand-logo y .brand-years. La cabecera original conserva accesibilidad y posición. Copias decorativas aria-hidden, pointer-events: none, sin bloquear scroll o foco. Estados de raíz data-brand-intro: skipped, running, complete.
+
+La entrada única dura 1040 ms y sólo cambia transform/opacity; espera al logo como máximo 220 ms. Se omite con movimiento reducido, alto contraste forzado, ahorro de datos, documento oculto, scroll previo, hash a otra sección o ausencia de Web Animations. finishIntro() restaura originales, cancela vuelos y retira copias, listeners y temporizadores. Interacción, resize, cambio de preferencia, scroll, ocultación o error cancelan la entrada; watchdog de 1450 ms. No se repite al volver de caché.
+
+initializeMotion() revela grupos en orden de lectura con escalonado de 55 ms, desplazamientos cortos y una sola ejecución. El teclado termina movimientos activos para no desplazar controles enfocados. HTML/CSS estáticos son la alternativa; no duplicar cálculo de años ni animar el contador desde cero.
+
 Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/2026 (arquitectura 3). La fuente portátil es este repositorio: no requiere un chat, proveedor de IA, plugin o ruta de una PC. La primera jornada y las correcciones visuales posteriores están implementadas localmente. El contador ya es penúltimo y el cierre «Volvamos a las bases» es último; anuncio/fecha visible de reapertura retirados. Publicación y nueva presentación animada esperan la orden «comencemos la 2da etapa». Leer [etapas](ETAPAS-ACTUALIZACION.md).
 
 ## Responsabilidades
@@ -61,7 +71,7 @@ La migración retiró `phoneDisplay`/`phoneInternational` de la raíz, `relocati
 | `createBackup()` — `backup.mjs` | Crea copia y bundle verificados; devuelve su ruta. |
 | `verifyStagedOutput(checkout, outputDirectory)` — `publish.mjs` | Compara SHA-256 de los blobs que Git confirmará con la salida aprobada. |
 
-Funciones privadas del navegador: `initializeLiveClock()`, `initializeSharing()` e `initializeMotion()`. El reloj usa `updateElapsed()` y `scheduleClock()`; compartir dispone de `copyOfficialUrl()`, `showManualCopy()` y `shareOfficialPage()`; el movimiento utiliza `animateSection()` y `handleMotionPreference()`. Ya no existe una animación numérica `animateMetric()` ni se reinicia el contador desde cero.
+Funciones privadas del navegador: initializeLiveClock(), initializeSharing(), initializeMotion() e initializeBrandIntro(). El reloj usa `updateElapsed()` y `scheduleClock()`; compartir dispone de `copyOfficialUrl()`, `showManualCopy()` y `shareOfficialPage()`; el movimiento utiliza `animateSection()` y `handleMotionPreference()`. Ya no existe una animación numérica `animateMetric()` ni se reinicia el contador desde cero.
 
 `data-elapsed-years`, `data-time-unit`, `data-time-accessible`, `live-clock`, `toggle-clock` y `clock-status` conectan HTML y reloj. `data-reveal` conecta las entradas opcionales. Conservar o migrar explícitamente estos contratos en la segunda jornada. Las preguntas frecuentes usan `details/summary` nativos.
 

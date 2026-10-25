@@ -31,8 +31,14 @@
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
-      <a class="brand" href="#inicio"
-        >{{image_header_logo}}<span>Tu Gimnasio<small>Desde {{founded_year}}</small></span></a
+      <a class="brand" id="header-brand" href="#inicio"
+        >{{image_header_logo}}<span
+          >Tu Gimnasio<small class="brand-years"
+            ><span data-elapsed-years>{{anniversary_years}}</span> años<span class="brand-founded">
+              · Desde {{founded_year}}</span
+            ></small
+          ></span
+        ></a
       >
       <nav aria-label="Navegación principal">
         <a href="#actividades">Actividades</a>
@@ -52,8 +58,8 @@
             <p class="hero-edition">Santa Lucía · Desde {{founded_year}}</p>
             <h1 id="portada-titulo"><span>Tu lugar.</span><span>Tu gimnasio.</span></h1>
             <p class="hero-intro">
-              Musculación, spinning, gimnasia grupal y pilates en colchoneta. Encontrá tu horario y
-              consultá con tu profe.
+              Musculación, spinning, gimnasia grupal y pilates en colchoneta. Entrená con Profe
+              Martita y Profe Titi. Encontrá tu horario y consultá con tu profe.
             </p>
             <div class="hero-actions">
               <a class="button button-yellow" href="#actividades"
@@ -80,7 +86,7 @@
 
       <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
         <div class="section-shell">
-          <div class="section-heading">
+          <div class="section-heading" data-reveal="group">
             <h2 id="actividades-titulo">Movete a tu manera.</h2>
             <p>
               Elegí tu actividad y consultá con el profe de tu horario por cupos, inscripción y
@@ -96,8 +102,8 @@
       </section>
 
       <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
-        <div class="story-visual">{{image_identity}}</div>
-        <div class="story-copy">
+        <div class="story-visual" data-reveal="art">{{image_identity}}</div>
+        <div class="story-copy" data-reveal="group">
           <p class="section-note">De Santa Lucía. Desde {{founded_year}}.</p>
           <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
           <p>
@@ -116,7 +122,7 @@
       </section>
 
       <section class="reviews" aria-labelledby="opiniones-titulo">
-        <div class="section-shell reviews-inner">
+        <div class="section-shell reviews-inner" data-reveal="group">
           <p class="reviews-score">
             <strong>{{rating_display}}<span>/5</span></strong
             ><span>{{rating_count}} opiniones en Google</span>
@@ -132,7 +138,7 @@
       </section>
 
       <section class="visit section-shell" aria-label="Horarios y ubicación del gimnasio">
-        <article class="schedule-panel" id="horarios">
+        <article class="schedule-panel" id="horarios" data-reveal="panel">
           <p class="section-note">Musculación · Horario general</p>
           <h2>Organizá<br />tu semana.</h2>
           <div class="schedule-row">
@@ -146,7 +152,7 @@
             >Ver todos los horarios y profesores <span aria-hidden="true">↑</span></a
           >
         </article>
-        <article class="location-panel" id="ubicacion">
+        <article class="location-panel" id="ubicacion" data-reveal="panel">
           <p class="section-note">Ubicación · Santa Lucía</p>
           <h2>{{street_address}}</h2>
           <p>{{postal_locality}}<br />{{region_country}}</p>
@@ -186,8 +192,8 @@
             <summary>¿Cómo consulto horarios y actividades?</summary>
             <p>
               En <a href="#actividades">actividades y horarios</a> encontrás el nombre del profe de
-              cada franja y su botón de WhatsApp. Musculación general se consulta con Titi; el
-              especial, con Martita. También podés escribirnos al
+              cada franja y su botón de WhatsApp. El horario especial de musculación se consulta con
+              Profe Martita y el general, con Profe Titi. También podés escribirnos al
               <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
                 >Instagram del gimnasio</a
               >.
@@ -198,7 +204,7 @@
 
       <section class="share-section" aria-labelledby="compartir-titulo">
         <div class="section-shell share-inner">
-          <div class="share-copy">
+          <div class="share-copy" data-reveal="group">
             <p class="section-note">La historia se comparte</p>
             <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
             <p>
@@ -296,7 +302,7 @@
 
       <section class="final-cta" id="bases" aria-labelledby="cierre-titulo">
         <div class="section-shell final-layout">
-          <div class="final-copy">
+          <div class="final-copy" data-reveal="group">
             <p>Volvamos a las bases.</p>
             <h2 id="cierre-titulo">Tu lugar.<br />Tu gimnasio.</h2>
             <a

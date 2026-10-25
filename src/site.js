@@ -116,34 +116,226 @@ import { calculateElapsed } from './elapsed-time.js';
     controls.hidden = false;
   }
 
+  /**
+   * A short, optional brand flight to the real header slots.
+   * The static header owns the facts. Temporary copies are decorative, never intercept input,
+   * and disappear immediately on interaction, reduced motion, resize, hiding or any failure.
+   */
+  async function initializeBrandIntro() {
+    const root = document.documentElement;
+    root.dataset.brandIntro = 'skipped';
+    const brand = document.getElementById('header-brand');
+    const logo = brand?.querySelector('.brand-logo');
+    const years = brand?.querySelector('.brand-years');
+    if (!logo || !years || !window.matchMedia || !Element.prototype.animate) return;
+    const preference = window.matchMedia(
+      '(prefers-reduced-motion: reduce), (forced-colors: active)',
+    );
+    if (
+      preference.matches ||
+      document.hidden ||
+      window.scrollY > 24 ||
+      (location.hash && location.hash !== '#inicio') ||
+      navigator.connection?.saveData
+    )
+      return;
+
+    const animations = [];
+    const removers = [];
+    let overlay;
+    let loadTimer;
+    let cancelLoad;
+    let safetyTimer;
+    let finished = false;
+
+    function finishIntro() {
+      if (finished) return;
+      finished = true;
+      cancelLoad?.();
+      clearTimeout(loadTimer);
+      clearTimeout(safetyTimer);
+      animations.forEach((animation) => animation.cancel());
+      overlay?.remove();
+      root.classList.remove('brand-flight-active');
+      root.dataset.brandIntro = 'complete';
+      removers.forEach((remove) => remove());
+    }
+
+    function subscribe(target, event, listener, options) {
+      target.addEventListener(event, listener, options);
+      removers.push(() => target.removeEventListener(event, listener, options));
+    }
+
+    try {
+      for (const event of ['pointerdown', 'keydown', 'wheel', 'touchstart'])
+        subscribe(document, event, finishIntro, { capture: true, passive: true });
+      for (const event of ['resize', 'orientationchange', 'pagehide', 'scroll'])
+        subscribe(window, event, finishIntro, { passive: true });
+      subscribe(document, 'visibilitychange', () => {
+        if (document.hidden) finishIntro();
+      });
+      if (preference.addEventListener) subscribe(preference, 'change', finishIntro);
+      else {
+        preference.addListener(finishIntro);
+        removers.push(() => preference.removeListener(finishIntro));
+      }
+
+      // A slow or unavailable image never becomes a loading screen.
+      const imageReady = logo.complete
+        ? logo.naturalWidth > 0
+        : await Promise.race([
+            typeof logo.decode === 'function'
+              ? logo.decode().then(
+                  () => true,
+                  () => false,
+                )
+              : Promise.resolve(false),
+            new Promise((resolve) => {
+              cancelLoad = () => resolve(false);
+              loadTimer = setTimeout(() => resolve(false), 220);
+            }),
+          ]);
+      clearTimeout(loadTimer);
+      cancelLoad = undefined;
+      if (!imageReady || finished || document.hidden || preference.matches) {
+        finishIntro();
+        return;
+      }
+
+      // Read all geometry together; only transform/opacity animate afterward.
+      const logoBox = logo.getBoundingClientRect();
+      const yearsBox = years.getBoundingClientRect();
+      const yearsStyle = getComputedStyle(years);
+      if (!logoBox.width || !yearsBox.width) {
+        finishIntro();
+        return;
+      }
+      const centerX = innerWidth / 2;
+      const centerY = innerHeight * 0.44;
+      const largeLogo = Math.min(184, innerWidth * 0.42, innerHeight * 0.3);
+      const yearsScale = Math.min(1.8, (innerWidth - 40) / yearsBox.width);
+      const yearsY = centerY + largeLogo / 2 + 26;
+
+      overlay = document.createElement('div');
+      overlay.className = 'brand-intro';
+      overlay.setAttribute('aria-hidden', 'true');
+      const scrim = document.createElement('div');
+      scrim.className = 'brand-intro-scrim';
+      overlay.append(scrim);
+
+      function addFlightCopy(original, box, x, y, scale, className) {
+        const copy = original.cloneNode(true);
+        copy.className = className;
+        if (copy.tagName === 'IMG') copy.alt = '';
+        copy.removeAttribute('id');
+        // The live, accessible years remain in the real header, not this transient copy.
+        copy
+          .querySelectorAll('[data-elapsed-years]')
+          .forEach((item) => item.removeAttribute('data-elapsed-years'));
+        const from =
+          'translate(' +
+          (x - box.left - box.width / 2) +
+          'px, ' +
+          (y - box.top - box.height / 2) +
+          'px) scale(' +
+          scale +
+          ')';
+        Object.assign(copy.style, {
+          left: box.left + 'px',
+          top: box.top + 'px',
+          width: box.width + 'px',
+          height: box.height + 'px',
+          transform: from,
+        });
+        if (original === years) copy.style.font = yearsStyle.font;
+        overlay.append(copy);
+        return { copy, from };
+      }
+
+      const logoFlight = addFlightCopy(
+        logo,
+        logoBox,
+        centerX,
+        centerY,
+        largeLogo / logoBox.width,
+        'brand-intro-logo',
+      );
+      const yearsFlight = addFlightCopy(
+        years,
+        yearsBox,
+        centerX,
+        yearsY,
+        yearsScale,
+        'brand-intro-years',
+      );
+      document.body.append(overlay);
+      root.classList.add('brand-flight-active');
+      root.dataset.brandIntro = 'running';
+      const duration = 1040;
+      for (const { copy, from } of [logoFlight, yearsFlight])
+        animations.push(
+          copy.animate(
+            [
+              { transform: from, opacity: 1, offset: 0 },
+              { transform: from, opacity: 1, offset: 0.14 },
+              { transform: 'none', opacity: 1, offset: 1 },
+            ],
+            { duration, easing: 'cubic-bezier(0.65, 0, 0.22, 1)', fill: 'both' },
+          ),
+        );
+      animations.push(
+        scrim.animate(
+          [
+            { opacity: 1, offset: 0 },
+            { opacity: 0.94, offset: 0.18 },
+            { opacity: 0, offset: 0.78 },
+            { opacity: 0, offset: 1 },
+          ],
+          { duration, easing: 'linear', fill: 'both' },
+        ),
+      );
+      safetyTimer = setTimeout(finishIntro, 1450);
+      Promise.all(animations.map((animation) => animation.finished.catch(() => {}))).then(
+        finishIntro,
+      );
+    } catch {
+      finishIntro();
+    }
+  }
+
   /** One-time motion. The DOM starts complete; failures or reduced motion leave it readable. */
   function initializeMotion() {
     if (!window.matchMedia || !('IntersectionObserver' in window) || !Element.prototype.animate)
       return;
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const activeAnimations = new Set();
-    const activeFrames = new Set();
+    const cleanup = [];
     let observer;
 
     /** Distinct section entrances, with only transform and opacity; no permanent hidden states. */
     function animateSection(element) {
       const kind = element.dataset.reveal;
-      const parts = kind === 'time' ? [...element.querySelectorAll('.time-metric')] : [element];
+      const parts =
+        kind === 'time'
+          ? [...element.querySelectorAll('.time-metric')]
+          : kind === 'group'
+            ? [...element.children].filter((child) => !child.hidden).slice(0, 6)
+            : [element];
       parts.forEach((part, index) => {
         const from =
           kind === 'art'
-            ? 'scale(0.985)'
+            ? 'scale(0.99)'
             : kind === 'time'
-              ? 'translateX(14px)'
-              : 'translateY(20px)';
+              ? 'translateY(10px)'
+              : 'translateY(12px)';
         const animation = part.animate(
           [
-            { transform: from, opacity: 0.7 },
+            { transform: from, opacity: kind === 'schedule' ? 0.9 : 0.82 },
             { transform: 'none', opacity: 1 },
           ],
           {
-            duration: 750,
-            delay: index * 75,
+            duration: kind === 'schedule' ? 380 : kind === 'art' ? 640 : 540,
+            delay: index * 55,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
           },
         );
@@ -157,8 +349,6 @@ import { calculateElapsed } from './elapsed-time.js';
       if (!preference.matches) return;
       observer?.disconnect();
       activeAnimations.forEach((animation) => animation.cancel());
-      activeFrames.forEach(cancelAnimationFrame);
-      activeFrames.clear();
     }
 
     if (preference.matches) return;
@@ -170,18 +360,28 @@ import { calculateElapsed } from './elapsed-time.js';
           if (!preference.matches) animateSection(entry.target);
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.08, rootMargin: '0px 0px -12px 0px' },
     );
     document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element));
-    if (preference.addEventListener) preference.addEventListener('change', handleMotionPreference);
-    else preference.addListener(handleMotionPreference);
+    if (preference.addEventListener) {
+      preference.addEventListener('change', handleMotionPreference);
+      cleanup.push(() => preference.removeEventListener('change', handleMotionPreference));
+    } else {
+      preference.addListener(handleMotionPreference);
+      cleanup.push(() => preference.removeListener(handleMotionPreference));
+    }
+    function stopForKeyboard() {
+      observer.disconnect();
+      activeAnimations.forEach((animation) => animation.cancel());
+    }
+    document.addEventListener('keydown', stopForKeyboard, { once: true });
+    cleanup.push(() => document.removeEventListener('keydown', stopForKeyboard));
     window.addEventListener(
       'pagehide',
       () => {
         observer.disconnect();
         activeAnimations.forEach((animation) => animation.cancel());
-        activeFrames.forEach(cancelAnimationFrame);
-        activeFrames.clear();
+        cleanup.forEach((remove) => remove());
       },
       { once: true },
     );
@@ -190,4 +390,5 @@ import { calculateElapsed } from './elapsed-time.js';
   initializeLiveClock();
   initializeSharing();
   initializeMotion();
+  void initializeBrandIntro();
 })();

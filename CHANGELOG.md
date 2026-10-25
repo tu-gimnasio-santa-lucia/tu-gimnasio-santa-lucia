@@ -1,5 +1,9 @@
 # Correcciones posteriores — 24/10/2026, sin publicar
 
+## 2026-10-25 — Segunda etapa
+
+Presentación única del logo/años hacia cabecera, cancelable y sin bloqueo, con alternativas por preferencias o demora; revelado suave por grupos. Profe Martita antes de Profe Titi en presentación general. Nueve grupos y 48 casos aprobados; auditoría sin vulnerabilidades. Contador, horarios, contactos, QR e identidad conservados. Gestión externa de Maps registrada fuera del sitio público.
+
 - Consultas de WhatsApp e Instagram con ancho/altura y columna alineados; acciones principales de altura uniforme sin recortar texto ni limitar su crecimiento al ampliar.
 - Contador automático como penúltima sección; gráfica original «Volvamos a las bases» en la última. Pulido de portada, espaciado, contador, preguntas frecuentes y cierre, conservando la marca y los datos.
 - Anuncio, fecha visible, sección y consulta promocional de reapertura retirados por pedido posterior; fecha confirmada conservada en fuente/registro y `validFrom` de horarios.

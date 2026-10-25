@@ -1,5 +1,11 @@
 # Mudanza, apertura y antigüedad
 
+## Revisión vigente — 25/10/2026
+
+Segunda etapa autorizada e implementada. Mantener scheduled, sin anuncio público de reapertura ni afirmar funcionamiento efectivo u hora de inauguración. Maps conserva San Martín s/n: no retirar aviso de Héroes de Malvinas 150. Conservar el destino con nombre y Place ID comprobados.
+
+La antigüedad aparece también en cabecera y entrada usando el mismo cálculo argentino desde 04/11/1996. Contador completo penúltimo y «Volvamos a las bases» último. No crear cálculos duplicados ni cifras fijas de 30 antes del aniversario.
+
 Estado al 24/10/2026: primera jornada y correcciones posteriores implementadas localmente, sin publicar. El propietario pidió después **retirar la reapertura de la presentación pública**. No se genera su sección, anuncio, fecha visible, consulta promocional ni descripción de apertura en metadatos. La dirección Héroes de Malvinas 150 se conserva. La fecha prevista 03/11/2026 queda como dato confirmado de la fuente y `validFrom` de los horarios, sin declarar apertura efectiva ni inventar hora de inauguración.
 
 La apertura de esta sede y la fundación del gimnasio son hechos distintos: se fundó el **4 de noviembre de 1996**. El 03/11/2026 tiene 29 años; el 04/11/2026 cumple 30.

@@ -1,5 +1,11 @@
 # Identidad y criterios visuales
 
+## Movimiento y presentación vigentes — 25/10/2026
+
+Entrada logo/años implementada: 1040 ms, reducción hacia cabecera, cancelable y sin bloqueo; fallback estático y movimiento reducido. Entradas de filas 380 ms, grupos 540 ms, arte 640 ms, escalonado 55 ms. Sin ciclos ni rebotes; sólo transformación y opacidad. El teclado termina las entradas activas.
+
+Mantener Profe Martita antes de Profe Titi en presentación general; las filas conservan su docente y orden de horarios. Las menciones inferiores a esperar la segunda etapa son antecedentes superados. Marca, logo completo, simetría, contador penúltimo y cierre original permanecen.
+
 La marca existente prevalece sobre preferencias de una habilidad o modelo. La dirección es deportiva, clara y cercana, con capítulos de color y tipografía contundente. El objetivo principal es consultar actividades por WhatsApp, seguido de encontrar ubicación/horarios y compartir la página.
 
 ## Tokens

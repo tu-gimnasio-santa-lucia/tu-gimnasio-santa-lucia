@@ -1,5 +1,20 @@
 # Tu Gimnasio: reglas de mantenimiento
 
+## Estado vigente — 25/10/2026
+
+La segunda etapa fue autorizada directamente e implementada. Las esperas de los apartados anteriores son antecedentes ya cumplidos; no requieren una nueva frase literal. Nueve grupos y 48 casos de navegador aprobados; publicación por script y respaldo final en cierre.
+
+Conservar consultas simétricas, contador penúltimo, «Volvamos a las bases» último y ausencia de anuncio de reapertura. Presentaciones generales: **Profe Martita y Profe Titi**, en ese orden, sin cambiar el docente ni el orden lógico de cada horario.
+
+Maps: horas con pausa, cuatro servicios y descripción guardados; logo conservado. Dos placas informativas nuevas enviadas una sola vez, pendientes de revisión. Las 21 imágenes antiguas de 2022 se respaldaron/recuperaron y eliminaron tras confirmación específica. No duplicar cargas ni recuperar datos superados. Estado externo y recibos en el registro local; video/fotos de construcción siguen como futuro.
+
+## Segunda etapa autorizada — 25/10/2026
+
+La orden directa «Ahora si, continua con la 2da etapa» satisface la condición de inicio. Continuar desde el registro, con respaldo nuevo ya recuperado. Se autorizan la entrada logo/años hacia cabecera, refinamiento de movimiento, revisión/gestión de imágenes del perfil correcto de Maps y publicación por el procedimiento habitual después de QA completa.
+
+Conservar consultas uniformes, contador penúltimo, «Volvamos a las bases» último y la retirada del anuncio de reapertura. No repetir tareas terminadas ni recuperar datos superados. Las notas inferiores que piden esperar son antecedentes de esta autorización. Mantener el registro actualizado y todos los respaldos.
+
+
 ## Corrección posterior vigente — 24/10/2026
 
 El propietario pidió simetría en consultas, pulido general, contador penúltimo y «Volvamos a las bases» último, y retirar la reapertura de la presentación pública. Se autoriza ese alcance sin iniciar la segunda etapa. Conservar dirección, actividades, docentes, horarios, contactos y reloj; la fecha prevista se mantiene como hecho en la fuente y `validFrom`, sin anuncio visible ni descripción promocional. No volver a agregar el bloque de reapertura por leer el plan anterior.

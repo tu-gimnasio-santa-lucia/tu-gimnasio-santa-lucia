@@ -31,6 +31,8 @@ const report = {
   errors: [],
   motionChecks: [],
   fontChecks: [],
+  introChecks: [],
+  introSafeguards: [],
 };
 const definitions = [
   { name: 'chromium', type: chromium },
@@ -38,6 +40,218 @@ const definitions = [
   { name: 'webkit', type: webkit },
   { name: 'edge', type: chromium, channel: 'msedge' },
 ];
+
+/** Exercise the real flight, then cancellation and progressive fallbacks in each engine. */
+async function checkBrandIntro(browser, definition) {
+  for (const viewport of viewports) {
+    const context = await browser.newContext({ viewport, reducedMotion: 'no-preference' });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    try {
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await page.waitForFunction(
+        () => document.documentElement.dataset.brandIntro === 'running',
+        null,
+        {
+          timeout: 2500,
+        },
+      );
+      const first = await page.evaluate(() => {
+        const intro = document.querySelector('.brand-intro');
+        const flying = intro.querySelector('.brand-intro-logo');
+        const logo = document.querySelector('#header-brand .brand-logo');
+        const box = logo.getBoundingClientRect();
+        const keyframes = flying.getAnimations()[0].effect.getKeyframes();
+        const timing = flying.getAnimations()[0].effect.getTiming();
+        return {
+          accessible: intro.getAttribute('aria-hidden'),
+          pointerEvents: getComputedStyle(intro).pointerEvents,
+          header: { x: box.x, y: box.y, width: box.width, height: box.height },
+          years: document.querySelector('#header-brand .brand-years').textContent,
+          keyframes,
+          duration: timing.duration,
+          iterations: timing.iterations,
+          overflow: getComputedStyle(document.body).overflow,
+          scrollWidth: document.documentElement.scrollWidth,
+        };
+      });
+      assert.equal(first.accessible, 'true');
+      assert.equal(first.pointerEvents, 'none');
+      assert.notEqual(first.overflow, 'hidden');
+      assert.ok(first.scrollWidth <= viewport.width + 1);
+      assert.match(first.years, /\d+\s*años/);
+      assert.ok(first.duration > 0 && first.duration <= 1200);
+      assert.equal(first.iterations, 1);
+      assert.notEqual(first.keyframes[0].transform, 'none');
+      for (const frame of first.keyframes)
+        for (const forbidden of ['left', 'top', 'width', 'height', 'margin'])
+          assert.equal(Object.hasOwn(frame, forbidden), false, forbidden);
+      if (definition.name === 'chromium' && [390, 1280].includes(viewport.width))
+        await page.screenshot({
+          path: path.join(artifacts, 'intro-inicio-' + viewport.width + '.png'),
+          caret: 'initial',
+        });
+      await page.waitForFunction(
+        () => document.documentElement.dataset.brandIntro === 'complete',
+        null,
+        {
+          timeout: 2200,
+        },
+      );
+      assert.equal(await page.locator('.brand-intro').count(), 0);
+      const final = await page.locator('#header-brand .brand-logo').evaluate((logo) => {
+        const box = logo.getBoundingClientRect();
+        return {
+          x: box.x,
+          y: box.y,
+          width: box.width,
+          height: box.height,
+          opacity: getComputedStyle(logo).opacity,
+        };
+      });
+      for (const dimension of ['x', 'y', 'width', 'height'])
+        assert.ok(Math.abs(first.header[dimension] - final[dimension]) < 1);
+      assert.equal(final.opacity, '1');
+      assert.equal(await page.locator('#header-brand .brand-years').textContent(), first.years);
+      if (definition.name === 'chromium' && [390, 1280].includes(viewport.width))
+        await page.screenshot({
+          path: path.join(artifacts, 'intro-final-' + viewport.width + '.png'),
+          caret: 'initial',
+        });
+      assert.deepEqual(errors, []);
+      report.introChecks.push({
+        browser: definition.name,
+        width: viewport.width,
+        height: viewport.height,
+        durationMs: first.duration,
+        headerLayoutShift: false,
+        interactionBlocking: false,
+        status: 'passed',
+      });
+    } finally {
+      await context.close();
+    }
+  }
+
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    reducedMotion: 'no-preference',
+  });
+  const page = await context.newPage();
+  const running = async () => {
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(
+      () => document.documentElement.dataset.brandIntro === 'running',
+      null,
+      {
+        timeout: 2500,
+      },
+    );
+  };
+  const completed = async () => {
+    await page.waitForFunction(
+      () => document.documentElement.dataset.brandIntro === 'complete',
+      null,
+      {
+        timeout: 1500,
+      },
+    );
+    assert.equal(await page.locator('.brand-intro').count(), 0);
+    assert.equal(
+      await page
+        .locator('#header-brand .brand-logo')
+        .evaluate((logo) => getComputedStyle(logo).opacity),
+      '1',
+    );
+  };
+  try {
+    await running();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await completed();
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await running();
+    await page.locator('a[href="#actividades"]').first().click();
+    await completed();
+    assert.equal(new URL(page.url()).hash, '#actividades');
+    await running();
+    await page.setViewportSize({ width: 320, height: 800 });
+    await completed();
+    await running();
+    await page.evaluate(() => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await completed();
+    // A direct-link visit needs a fresh document, not a same-document hash navigation.
+    const deepPage = await context.newPage();
+    await deepPage.goto(url + '#actividades', { waitUntil: 'networkidle' });
+    assert.equal(await deepPage.locator('.brand-intro').count(), 0);
+    assert.equal(
+      await deepPage.evaluate(() => document.documentElement.dataset.brandIntro),
+      'skipped',
+    );
+  } finally {
+    await context.close();
+  }
+
+  const slow = await browser.newContext({ reducedMotion: 'no-preference' });
+  try {
+    // Delay image decoding in the page: also works with the pinned Firefox build whose
+    // network-interception protocol predates the current Playwright route API.
+    await slow.addInitScript(() => {
+      const complete = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'complete');
+      const decode = HTMLImageElement.prototype.decode;
+      Object.defineProperty(HTMLImageElement.prototype, 'complete', {
+        configurable: true,
+        get() {
+          return this.getAttribute('src') === 'tu-gimnasio-logo.jpg'
+            ? false
+            : complete.get.call(this);
+        },
+      });
+      HTMLImageElement.prototype.decode = async function () {
+        if (this.getAttribute('src') === 'tu-gimnasio-logo.jpg')
+          await new Promise((resolve) => setTimeout(resolve, 700));
+        return decode.call(this);
+      };
+    });
+    const slowPage = await slow.newPage();
+    await slowPage.goto(url, { waitUntil: 'domcontentloaded' });
+    await slowPage.waitForFunction(
+      () => ['skipped', 'complete'].includes(document.documentElement.dataset.brandIntro),
+      null,
+      { timeout: 1500 },
+    );
+    assert.equal(await slowPage.locator('.brand-intro').count(), 0);
+    assert.ok(await slowPage.locator('.hero-actions a').first().isVisible());
+  } finally {
+    await slow.close();
+  }
+  const unsupported = await browser.newContext({ reducedMotion: 'no-preference' });
+  try {
+    await unsupported.addInitScript(() => {
+      Element.prototype.animate = undefined;
+    });
+    const plain = await unsupported.newPage();
+    await plain.goto(url);
+    assert.equal(await plain.locator('.brand-intro').count(), 0);
+    assert.ok(await plain.locator('#header-brand .brand-years').isVisible());
+    assert.ok(await plain.locator('#toggle-clock').isVisible());
+  } finally {
+    await unsupported.close();
+  }
+  report.introSafeguards.push({
+    browser: definition.name,
+    preferenceChange: 'passed',
+    pointerCancellation: 'passed',
+    resizeCancellation: 'passed',
+    hiddenCancellation: 'passed',
+    deepLink: 'passed',
+    slowImage: 'passed',
+    missingAnimationAPI: 'passed',
+  });
+}
 try {
   for (const definition of definitions) {
     const browser = await definition.type.launch({
@@ -96,6 +310,8 @@ try {
           }
           await page.evaluate(() => window.scrollTo(0, 0));
           assert.ok(await page.locator('#share-controls').isVisible());
+          assert.equal(await page.locator('.brand-intro').count(), 0);
+          assert.ok(await page.locator('#header-brand .brand-years').isVisible());
           assert.equal(await page.locator('h1').count(), 1);
           // WebKit's platform setting may tab only between controls. Test the link's keyboard action
           // explicitly there; on the other engines, also verify its position in the native Tab order.
@@ -294,6 +510,7 @@ try {
           await context.close();
         }
       }
+      await checkBrandIntro(browser, definition);
       const noScript = await browser.newContext({
         javaScriptEnabled: false,
         viewport: { width: 390, height: 844 },
@@ -497,7 +714,9 @@ try {
     !report.errors.length &&
     report.browsers.length === definitions.length * viewports.length &&
     report.motionChecks.length === definitions.length &&
-    report.fontChecks.length === definitions.length
+    report.fontChecks.length === definitions.length &&
+    report.introChecks.length === definitions.length * viewports.length &&
+    report.introSafeguards.length === definitions.length
   )
     report.status = 'passed';
 } catch (error) {
@@ -507,7 +726,12 @@ try {
   await writeFile(path.join(artifacts, 'qa-report.json'), JSON.stringify(report, null, 2));
   console.log(
     JSON.stringify(
-      { status: report.status, cases: report.browsers.length, errors: report.errors },
+      {
+        status: report.status,
+        cases: report.browsers.length,
+        introCases: report.introChecks.length,
+        errors: report.errors,
+      },
       null,
       2,
     ),
