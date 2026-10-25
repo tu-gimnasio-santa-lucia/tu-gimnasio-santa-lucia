@@ -1,10 +1,10 @@
 # Tu Gimnasio — sitio oficial
 
-**Segunda etapa — 25/10/2026:** implementada y verificada localmente, con presentación rápida del logo/años hacia cabecera y movimiento suave, cancelable y opcional. Nueve grupos y 48 casos aprobados. Se preservan consultas, contador penúltimo, cierre original y ausencia de anuncio de reapertura. Presentación: Profe Martita y Profe Titi. La publicación se cierra por el procedimiento de mantenimiento; las esperas inferiores del 24/10 son históricas.
+**Segunda etapa — 25/10/2026:** publicada y comprobada, con presentación rápida del logo/años hacia cabecera y movimiento suave, cancelable y opcional. Nueve grupos y 48 casos aprobados. Se preservan consultas, contador penúltimo, cierre original y ausencia de anuncio de reapertura. Presentación: Profe Martita y Profe Titi. Los 17 archivos públicos coinciden por SHA-256 con el build aprobado. Las esperas inferiores del 24/10 son históricas.
 
 Web informativa de Tu Gimnasio, Santa Lucía, Corrientes. Conserva la identidad original y “Desde 1996”.
 
-**Correcciones posteriores, 24/10/2026:** consultas simétricas, diseño pulido, contador en la penúltima sección y gráfica «Volvamos a las bases» en la última. Se retiraron el anuncio, la fecha visible y la sección de reapertura. Esta versión sigue local; la segunda etapa sólo comienza con la orden directa «comencemos la 2da etapa». Leer [etapas](docs/ETAPAS-ACTUALIZACION.md).
+**Correcciones posteriores, 24/10/2026:** consultas simétricas, diseño pulido, contador en la penúltima sección y gráfica «Volvamos a las bases» en la última. Se retiraron el anuncio, la fecha visible y la sección de reapertura. Ese era el estado local del 24/10, anterior a la segunda etapa autorizada y publicada el 25/10. Leer [etapas](docs/ETAPAS-ACTUALIZACION.md).
 
 La antigüedad automática desde el 4 de noviembre de 1996 se conserva: 29 años el 03/11/2026 y 30 desde el 04/11/2026. Maps ya apunta al pin nuevo, pero todavía muestra San Martin s/n; la web distingue la dirección confirmada y ese nombre pendiente. Leer [mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md) antes de activar la sede o cambiar la llegada.
 

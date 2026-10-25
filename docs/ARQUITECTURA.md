@@ -10,7 +10,7 @@ La entrada única dura 1040 ms y sólo cambia transform/opacity; espera al logo 
 
 initializeMotion() revela grupos en orden de lectura con escalonado de 55 ms, desplazamientos cortos y una sola ejecución. El teclado termina movimientos activos para no desplazar controles enfocados. HTML/CSS estáticos son la alternativa; no duplicar cálculo de años ni animar el contador desde cero.
 
-Identificador estable: `tu-gimnasio-santa-lucia`. Contrato revisado el 24/10/2026 (arquitectura 3). La fuente portátil es este repositorio: no requiere un chat, proveedor de IA, plugin o ruta de una PC. La primera jornada y las correcciones visuales posteriores están implementadas localmente. El contador ya es penúltimo y el cierre «Volvamos a las bases» es último; anuncio/fecha visible de reapertura retirados. Publicación y nueva presentación animada esperan la orden «comencemos la 2da etapa». Leer [etapas](ETAPAS-ACTUALIZACION.md).
+Identificador estable: tu-gimnasio-santa-lucia. Contrato revisado el 25/10/2026 (arquitectura 4). Fuente portátil, sin dependencia de un chat o proveedor. Ambas jornadas implementadas, verificadas y publicadas. Contador penúltimo y #bases último, sin anuncio de reapertura. Ver ETAPAS-ACTUALIZACION.md.
 
 ## Responsabilidades
 
@@ -73,7 +73,7 @@ La migración retiró `phoneDisplay`/`phoneInternational` de la raíz, `relocati
 
 Funciones privadas del navegador: initializeLiveClock(), initializeSharing(), initializeMotion() e initializeBrandIntro(). El reloj usa `updateElapsed()` y `scheduleClock()`; compartir dispone de `copyOfficialUrl()`, `showManualCopy()` y `shareOfficialPage()`; el movimiento utiliza `animateSection()` y `handleMotionPreference()`. Ya no existe una animación numérica `animateMetric()` ni se reinicia el contador desde cero.
 
-`data-elapsed-years`, `data-time-unit`, `data-time-accessible`, `live-clock`, `toggle-clock` y `clock-status` conectan HTML y reloj. `data-reveal` conecta las entradas opcionales. Conservar o migrar explícitamente estos contratos en la segunda jornada. Las preguntas frecuentes usan `details/summary` nativos.
+`data-elapsed-years`, `data-time-unit`, `data-time-accessible`, `live-clock`, `toggle-clock` y `clock-status` conectan HTML y reloj. `data-reveal` conecta las entradas opcionales. Conservar o migrar explícitamente estos contratos en futuros cambios. Las preguntas frecuentes usan `details/summary` nativos.
 
 ## Generación, seguridad y portabilidad
 

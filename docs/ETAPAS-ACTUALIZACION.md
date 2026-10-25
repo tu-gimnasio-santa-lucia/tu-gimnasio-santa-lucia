@@ -2,7 +2,7 @@
 
 ## Estado vigente — 25/10/2026
 
-La segunda etapa fue autorizada directamente e implementada. Las esperas de los apartados anteriores son antecedentes ya cumplidos; no requieren una nueva frase literal. Nueve grupos y 48 casos de navegador aprobados; publicación por script y respaldo final en cierre.
+La segunda etapa fue autorizada directamente e implementada. Las esperas de los apartados anteriores son antecedentes ya cumplidos; no requieren una nueva frase literal. Nueve grupos y 48 casos de navegador aprobados. Web publicada por script y 17 archivos públicos comprobados por SHA-256 el 25/10/2026; respaldo final y recibo de recuperación en el registro local.
 
 Conservar consultas simétricas, contador penúltimo, «Volvamos a las bases» último y ausencia de anuncio de reapertura. Presentaciones generales: **Profe Martita y Profe Titi**, en ese orden, sin cambiar el docente ni el orden lógico de cada horario.
 

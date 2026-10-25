@@ -1,5 +1,11 @@
 # Fuentes y verificaciones
 
+## Publicación comprobada — 25/10/2026
+
+Fuente de la implementación: f6fbde3f10e2f8768be0f999245156123aa297b5. Publicación generada: bc37f1588749df2654138be5c30e19ad0b6cac01. Se usó scripts/publish.mjs, sin force-push, con respaldo y QA del build exacto. **17 archivos públicos HTTP 200 y SHA-256 coincidentes**, incluido el manifiesto f852d353f700ff9a0626aef0c28b29cd258c4ccc0d3bf26c0fa607edeaf9ab84.
+
+La página pública real se abrió y comprobó: cuatro actividades, diez filas, antigüedad real de 29 años en cabecera/contador/pie, presentación terminada, Profe Martita primero, sin desbordamiento. Horas de Maps públicas verificadas de lunes a viernes 07:00–11:00 y 13:30–22:00. Los fines de semana conservan Closed preexistente. Recibos detallados y respaldo recuperado permanecen fuera de la publicación.
+
 ## Segunda etapa — 25/10/2026
 
 **Nueve grupos y 48 casos aprobados**: 24 generales y 24 entradas reales, mismos cuatro motores y seis vistas de 320 a 1920 px documentados abajo. Salvaguardas por motor: interacción, cambio de movimiento reducido, resize, documento oculto, enlace profundo, decode demorado y ausencia de Web Animations. Cero errores de aplicación, desbordamientos e infracciones detectadas por axe.
