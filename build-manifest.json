@@ -25,8 +25,8 @@
     },
     {
       "name": "index.html",
-      "bytes": 21450,
-      "sha256": "d572f8a52576621aca72918c2274166b50f1107a1c108cd578ad91201cb83b64"
+      "bytes": 31854,
+      "sha256": "f3b9805a9d3ff9c7e6a36d2895e8761235c484a3ad5949008c79538d2f91f844"
     },
     {
       "name": "qr-tu-gimnasio.png",
@@ -44,9 +44,9 @@
       "sha256": "3e78cc585da86a6ff54e3d6dfdd5995374eb02fab931adc8b6d5c85db0c1a446"
     },
     {
-      "name": "site.0c65a8e7607e.js",
-      "bytes": 7447,
-      "sha256": "0c65a8e7607ee6236075f0c8f6b2a187e55ec02f514a38496696458949ec0e4b"
+      "name": "site.4be14007efd8.js",
+      "bytes": 14563,
+      "sha256": "4be14007efd8661c1598668145164a17c3def660a9d62535a3feaf11c58e4534"
     },
     {
       "name": "sitemap.xml",
@@ -54,9 +54,9 @@
       "sha256": "65a80d65b9b6b43066c1ecdd346e57fffc84c55e3827ca43b9a6a2178a3462ab"
     },
     {
-      "name": "styles.c2a0ef260af7.css",
-      "bytes": 23610,
-      "sha256": "c2a0ef260af7f1a13359d2cae80a82f00393e701dc75fc223408db7f75e172f8"
+      "name": "styles.364f7b45edf7.css",
+      "bytes": 25432,
+      "sha256": "364f7b45edf79baf9e02fb4208d987af4aa2c2fce1e2093242c95cead30beacf"
     },
     {
       "name": "tu-gimnasio-actividades.png",

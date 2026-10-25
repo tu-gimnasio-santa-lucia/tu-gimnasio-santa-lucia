@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; base-uri &#39;none&#39;; object-src &#39;none&#39;; frame-src &#39;none&#39;; form-action &#39;none&#39;; img-src &#39;self&#39;; style-src &#39;self&#39;; script-src &#39;self&#39; &#39;sha256-vaVrJiG2q+ydQmGrqYy4SNrgM1IaaVLjRb9MophqEzE=&#39;; font-src &#39;self&#39;; connect-src &#39;none&#39;" />
-    <title>Tu Gimnasio | Desde 1996 y una nueva sede en camino</title>
-    <meta name="description" content="Tu Gimnasio: Desde el 4 de noviembre de 1996 en Santa Lucía. Próxima sede en Héroes de Malvinas 150, en construcción. Consultá actividades y novedades." />
+    <meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; base-uri &#39;none&#39;; object-src &#39;none&#39;; frame-src &#39;none&#39;; form-action &#39;none&#39;; img-src &#39;self&#39;; style-src &#39;self&#39;; script-src &#39;self&#39; &#39;sha256-1qHA6S1aOM/XHHRGCdJQUkyvpJ6lk8wJlw/DGvzjw64=&#39;; font-src &#39;self&#39;; connect-src &#39;none&#39;" />
+    <title>Tu Gimnasio | Actividades y horarios en Santa Lucía</title>
+    <meta name="description" content="Tu Gimnasio en Santa Lucía: musculación, spinning, gimnasia grupal y pilates en colchoneta. Horarios, profesores y consultas en Héroes de Malvinas 150." />
     <meta name="theme-color" content="#08084f" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:title" content="Tu Gimnasio | Desde 1996 y una nueva sede en camino" />
-    <meta property="og:description" content="Tu Gimnasio: Desde el 4 de noviembre de 1996 en Santa Lucía. Próxima sede en Héroes de Malvinas 150, en construcción. Consultá actividades y novedades." />
+    <meta property="og:title" content="Tu Gimnasio | Actividades y horarios en Santa Lucía" />
+    <meta property="og:description" content="Tu Gimnasio en Santa Lucía: musculación, spinning, gimnasia grupal y pilates en colchoneta. Horarios, profesores y consultas en Héroes de Malvinas 150." />
     <meta property="og:url" content="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/" />
     <meta property="og:image" content="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/tu-gimnasio-identidad.png" />
     <meta
@@ -23,24 +23,30 @@
     <link rel="icon" href="tu-gimnasio-logo.jpg" />
     <link
       rel="stylesheet"
-      href="styles.c2a0ef260af7.css"
-      integrity="sha384-T6BEd9cy8VQglK9KX1kwa2h75WfAtS7Z83GhQ0YaTwakQOfFDcih6jEANsIzAKgf"
+      href="styles.364f7b45edf7.css"
+      integrity="sha384-G2wPYO8YA1kSTpJyvPx3trIgFblqmudfBX6aY/VU00TwkaCSMB41Qavk/L3CKqX5"
       crossorigin="anonymous"
     />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
-      <a class="brand" href="#inicio"
-        ><picture><img class="brand-logo" src="tu-gimnasio-logo.jpg" width="1205" height="1177" alt="" loading="eager" decoding="async" fetchpriority="high"></picture><span>Tu Gimnasio<small>Desde 1996</small></span></a
+      <a class="brand" id="header-brand" href="#inicio"
+        ><picture><img class="brand-logo" src="tu-gimnasio-logo.jpg" width="1205" height="1177" alt="" loading="eager" decoding="async" fetchpriority="high"></picture><span
+          >Tu Gimnasio<small class="brand-years"
+            ><span data-elapsed-years>29</span> años<span class="brand-founded">
+              · Desde 1996</span
+            ></small
+          ></span
+        ></a
       >
       <nav aria-label="Navegación principal">
-        <a href="#aniversario"><span data-elapsed-years>29</span> años</a>
-        <a href="#nueva-sede">Próxima sede</a>
         <a href="#actividades">Actividades</a>
-        <a href="#ubicacion">Contacto</a>
+        <a href="#horarios">Horarios</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a href="#historia">Historia</a>
       </nav>
-      <a class="header-cta" href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades." target="_blank" rel="noopener noreferrer"
+      <a class="header-cta" href="https://wa.me/5493777723911?text=Hola+Tu+Gimnasio%2C+quisiera+consultar+por+las+actividades." target="_blank" rel="noopener noreferrer"
         >Consultanos <span aria-hidden="true">↗</span></a
       >
     </header>
@@ -49,26 +55,18 @@
       <section class="hero" id="inicio" aria-labelledby="portada-titulo">
         <div class="section-shell hero-layout">
           <div class="hero-copy">
-            <p class="hero-edition">
-              Santa Lucía · 1996—<span data-current-year>2026</span>
-            </p>
-            <h1 id="portada-titulo">
-              <span><span data-elapsed-years>29</span> años.</span
-              ><span>Nueva casa.</span>
-            </h1>
+            <p class="hero-edition">Santa Lucía · Desde 1996</p>
+            <h1 id="portada-titulo"><span>Tu lugar.</span><span>Tu gimnasio.</span></h1>
             <p class="hero-intro">
-              La misma pasión de siempre. Una nueva sede en construcción para seguir compartiéndola.
+              Musculación, spinning, gimnasia grupal y pilates en colchoneta. Entrená con Profe
+              Martita y Profe Titi. Encontrá tu horario y consultá con tu profe.
             </p>
             <div class="hero-actions">
-              <a class="button button-yellow" href="#nueva-sede"
-                >Conocé lo que viene <span aria-hidden="true">↘</span></a
+              <a class="button button-yellow" href="#actividades"
+                >Ver actividades y horarios <span aria-hidden="true">↘</span></a
               >
-              <a
-                class="hero-contact"
-                href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades."
-                target="_blank"
-                rel="noopener noreferrer"
-                >Hablemos por WhatsApp <span aria-hidden="true">↗</span></a
+              <a class="hero-contact" href="#ubicacion"
+                >Cómo llegar al gimnasio <span aria-hidden="true">↘</span></a
               >
             </div>
             <p class="hero-motto">Todos somos iguales,<br />la diferencia está en los detalles.</p>
@@ -83,6 +81,181 @@
         </div>
         <div class="brand-track" aria-hidden="true">
           <span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
+        <div class="section-shell">
+          <div class="section-heading" data-reveal="group">
+            <h2 id="actividades-titulo">Movete a tu manera.</h2>
+            <p>
+              Elegí tu actividad y consultá con el profe de tu horario por cupos, inscripción y
+              cuotas.
+            </p>
+          </div>
+          <div class="activity-grid"><article class="activity-card yellow" id="actividad-musculacion" data-activity-id="musculacion" aria-labelledby="titulo-musculacion"><header class="activity-card-header" data-reveal="group"><div><h3 id="titulo-musculacion">Musculación</h3><p class="activity-description">Tu espacio para construir fuerza y entrenar con constancia.</p></div><a class="activity-instagram" href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer" aria-label="Consultar en Instagram por Musculación de Tu Gimnasio">Consultar en Instagram <span aria-hidden="true">↗</span></a></header><ul class="activity-schedules" aria-label="Horarios y profesores de Musculación"><li class="activity-session" data-reveal="schedule" id="horario-musculacion-general" data-schedule-id="general" data-teacher-id="titi"><div class="session-information"><h4>Horario general</h4><p class="schedule-days">Lunes a viernes</p><p class="schedule-times"><span class="schedule-period"><time datetime="07:00">7:00</time> a <time datetime="11:00">11:00</time></span><span class="period-separator"> y </span><span class="schedule-period"><time datetime="13:30">13:30</time> a <time datetime="22:00">22:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Titi</strong><span class="teacher-phone">03777 72-3911</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777723911?text=Hola+Titi%2C+quisiera+consultar+por+Musculaci%C3%B3n%2C+lunes+a+viernes%2C+7%3A00+a+11%3A00+y+13%3A30+a+22%3A00+%28horario+general%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Titi por Musculación, lunes a viernes, 7:00 a 11:00 y 13:30 a 22:00">Consultar con Titi <span aria-hidden="true">↗</span></a></div></li>
+<li class="activity-session" data-reveal="schedule" id="horario-musculacion-especial-martita" data-schedule-id="especial-martita" data-teacher-id="martita"><div class="session-information"><h4>Horario especial</h4><p class="schedule-days">Lunes a viernes</p><p class="schedule-times"><span class="schedule-period"><time datetime="08:00">8:00</time> a <time datetime="09:00">9:00</time></span><span class="period-separator"> y </span><span class="schedule-period"><time datetime="20:00">20:00</time> a <time datetime="21:00">21:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Martita</strong><span class="teacher-phone">03777 47-2060</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777472060?text=Hola+Martita%2C+quisiera+consultar+por+Musculaci%C3%B3n%2C+lunes+a+viernes%2C+8%3A00+a+9%3A00+y+20%3A00+a+21%3A00+%28horario+especial%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Martita por Musculación, lunes a viernes, 8:00 a 9:00 y 20:00 a 21:00">Consultar con Martita <span aria-hidden="true">↗</span></a></div></li></ul></article>
+<article class="activity-card blue" id="actividad-spinning" data-activity-id="spinning" aria-labelledby="titulo-spinning"><header class="activity-card-header" data-reveal="group"><div><h3 id="titulo-spinning">Spinning</h3><p class="activity-description">Energía en grupo y ritmo sobre la bici para superarte.</p></div><a class="activity-instagram" href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer" aria-label="Consultar en Instagram por Spinning de Tu Gimnasio">Consultar en Instagram <span aria-hidden="true">↗</span></a></header><ul class="activity-schedules" aria-label="Horarios y profesores de Spinning"><li class="activity-session" data-reveal="schedule" id="horario-spinning-martes-jueves-0800" data-schedule-id="martes-jueves-0800" data-teacher-id="martita"><div class="session-information"><p class="schedule-days">Martes y jueves</p><p class="schedule-times"><span class="schedule-period"><span class="time-label">Inicio </span><time datetime="08:00">8:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Martita</strong><span class="teacher-phone">03777 47-2060</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777472060?text=Hola+Martita%2C+quisiera+consultar+por+Spinning%2C+martes+y+jueves%2C+8%3A00+%28inicio%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Martita por Spinning, martes y jueves, 8:00 (inicio)">Consultar con Martita <span aria-hidden="true">↗</span></a></div></li>
+<li class="activity-session" data-reveal="schedule" id="horario-spinning-manana-titi" data-schedule-id="manana-titi" data-teacher-id="titi"><div class="session-information"><p class="schedule-days">Lunes a viernes</p><p class="schedule-times"><span class="schedule-period"><span class="time-label">Inicio </span><time datetime="09:00">9:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Titi</strong><span class="teacher-phone">03777 72-3911</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777723911?text=Hola+Titi%2C+quisiera+consultar+por+Spinning%2C+lunes+a+viernes%2C+9%3A00+%28inicio%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Titi por Spinning, lunes a viernes, 9:00 (inicio)">Consultar con Titi <span aria-hidden="true">↗</span></a></div></li>
+<li class="activity-session" data-reveal="schedule" id="horario-spinning-mediodia-titi" data-schedule-id="mediodia-titi" data-teacher-id="titi"><div class="session-information"><p class="schedule-days">Lunes a viernes</p><p class="schedule-times"><span class="schedule-period"><span class="time-label">Inicio </span><time datetime="14:00">14:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Titi</strong><span class="teacher-phone">03777 72-3911</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777723911?text=Hola+Titi%2C+quisiera+consultar+por+Spinning%2C+lunes+a+viernes%2C+14%3A00+%28inicio%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Titi por Spinning, lunes a viernes, 14:00 (inicio)">Consultar con Titi <span aria-hidden="true">↗</span></a></div></li>
+<li class="activity-session" data-reveal="schedule" id="horario-spinning-tarde-martita" data-schedule-id="tarde-martita" data-teacher-id="martita"><div class="session-information"><p class="schedule-days">Lunes a viernes</p><p class="schedule-times"><span class="schedule-period"><span class="time-label">Inicio </span><time datetime="15:00">15:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Martita</strong><span class="teacher-phone">03777 47-2060</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777472060?text=Hola+Martita%2C+quisiera+consultar+por+Spinning%2C+lunes+a+viernes%2C+15%3A00+%28inicio%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Martita por Spinning, lunes a viernes, 15:00 (inicio)">Consultar con Martita <span aria-hidden="true">↗</span></a></div></li>
+<li class="activity-session" data-reveal="schedule" id="horario-spinning-lunes-miercoles-viernes-1900" data-schedule-id="lunes-miercoles-viernes-1900" data-teacher-id="martita"><div class="session-information"><p class="schedule-days">Lunes, miércoles y viernes</p><p class="schedule-times"><span class="schedule-period"><span class="time-label">Inicio </span><time datetime="19:00">19:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Martita</strong><span class="teacher-phone">03777 47-2060</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777472060?text=Hola+Martita%2C+quisiera+consultar+por+Spinning%2C+lunes%2C+mi%C3%A9rcoles+y+viernes%2C+19%3A00+%28inicio%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Martita por Spinning, lunes, miércoles y viernes, 19:00 (inicio)">Consultar con Martita <span aria-hidden="true">↗</span></a></div></li>
+<li class="activity-session" data-reveal="schedule" id="horario-spinning-noche-titi" data-schedule-id="noche-titi" data-teacher-id="titi"><div class="session-information"><p class="schedule-days">Lunes a jueves</p><p class="schedule-times"><span class="schedule-period"><span class="time-label">Inicio </span><time datetime="20:00">20:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Titi</strong><span class="teacher-phone">03777 72-3911</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777723911?text=Hola+Titi%2C+quisiera+consultar+por+Spinning%2C+lunes+a+jueves%2C+20%3A00+%28inicio%29%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Titi por Spinning, lunes a jueves, 20:00 (inicio)">Consultar con Titi <span aria-hidden="true">↗</span></a></div></li></ul></article>
+<article class="activity-card red" id="actividad-gimnasia-grupal" data-activity-id="gimnasia-grupal" aria-labelledby="titulo-gimnasia-grupal"><header class="activity-card-header" data-reveal="group"><div><h3 id="titulo-gimnasia-grupal">Gimnasia grupal</h3><p class="activity-description">Clases para moverte, compartir y disfrutar el proceso.</p></div><a class="activity-instagram" href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer" aria-label="Consultar en Instagram por Gimnasia grupal de Tu Gimnasio">Consultar en Instagram <span aria-hidden="true">↗</span></a></header><ul class="activity-schedules" aria-label="Horarios y profesores de Gimnasia grupal"><li class="activity-session" data-reveal="schedule" id="horario-gimnasia-grupal-general" data-schedule-id="general" data-teacher-id="martita"><div class="session-information"><p class="schedule-days">Lunes a viernes</p><p class="schedule-times"><span class="schedule-period"><time datetime="14:00">14:00</time> a <time datetime="15:00">15:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Martita</strong><span class="teacher-phone">03777 47-2060</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777472060?text=Hola+Martita%2C+quisiera+consultar+por+Gimnasia+grupal%2C+lunes+a+viernes%2C+14%3A00+a+15%3A00%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Martita por Gimnasia grupal, lunes a viernes, 14:00 a 15:00">Consultar con Martita <span aria-hidden="true">↗</span></a></div></li></ul></article>
+<article class="activity-card white" id="actividad-pilates" data-activity-id="pilates" aria-labelledby="titulo-pilates"><header class="activity-card-header" data-reveal="group"><div><h3 id="titulo-pilates">Pilates en colchoneta</h3><p class="activity-description">Control, movilidad y equilibrio para sentirte mejor.</p></div><a class="activity-instagram" href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer" aria-label="Consultar en Instagram por Pilates en colchoneta de Tu Gimnasio">Consultar en Instagram <span aria-hidden="true">↗</span></a></header><ul class="activity-schedules" aria-label="Horarios y profesores de Pilates en colchoneta"><li class="activity-session" data-reveal="schedule" id="horario-pilates-general" data-schedule-id="general" data-teacher-id="martita"><div class="session-information"><p class="schedule-days">Martes y jueves</p><p class="schedule-times"><span class="schedule-period"><time datetime="19:00">19:00</time> a <time datetime="20:00">20:00</time></span></p></div><div class="session-contact"><p>Profe <strong>Martita</strong><span class="teacher-phone">03777 47-2060</span></p><a class="button button-yellow teacher-contact" href="https://wa.me/5493777472060?text=Hola+Martita%2C+quisiera+consultar+por+Pilates+en+colchoneta%2C+martes+y+jueves%2C+19%3A00+a+20%3A00%2C+disponibilidad+y+cuota." target="_blank" rel="noopener noreferrer" aria-label="Consultar con Martita por Pilates en colchoneta, martes y jueves, 19:00 a 20:00">Consultar con Martita <span aria-hidden="true">↗</span></a></div></li></ul></article></div>
+          <p class="activities-note">
+            En spinning indicamos la hora de inicio; consultá la duración con tu profe. Para fines
+            de semana y feriados, escribinos antes de venir.
+          </p>
+        </div>
+      </section>
+
+      <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
+        <div class="story-visual" data-reveal="art"><picture><source srcset="tu-gimnasio-identidad.webp" type="image/webp"><img class="identity-image" src="tu-gimnasio-identidad.png" width="1254" height="1254" alt="Identidad de Tu Gimnasio: todos somos iguales, la diferencia está en los detalles." loading="lazy" decoding="async"></picture></div>
+        <div class="story-copy" data-reveal="group">
+          <p class="section-note">De Santa Lucía. Desde 1996.</p>
+          <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
+          <p>
+            Tu Gimnasio nació con una idea simple: que cada persona encuentre un lugar donde
+            entrenar, sentirse acompañada y avanzar a su manera.
+          </p>
+          <p>
+            La experiencia se construye todos los días, cuidando esos detalles que hacen que quieras
+            volver.
+          </p>
+          <a class="text-link" href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer"
+            >Seguinos en Instagram <span aria-hidden="true">↗</span></a
+          >
+          <p class="story-signature">Tu lugar,<br /><strong>tu gimnasio.</strong></p>
+        </div>
+      </section>
+
+      <section class="reviews" aria-labelledby="opiniones-titulo">
+        <div class="section-shell reviews-inner" data-reveal="group">
+          <p class="reviews-score">
+            <strong>4,8<span>/5</span></strong
+            ><span>18 opiniones en Google</span>
+          </p>
+          <div>
+            <h2 id="opiniones-titulo">La comunidad también habla.</h2>
+            <p>Conocé las experiencias de quienes ya pasaron por Tu Gimnasio.</p>
+          </div>
+          <a class="text-link" href="https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8" target="_blank" rel="noopener noreferrer"
+            >Leer opiniones <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+
+      <section class="visit section-shell" aria-label="Horarios y ubicación del gimnasio">
+        <article class="schedule-panel" id="horarios" data-reveal="panel">
+          <p class="section-note">Musculación · Horario general</p>
+          <h2>Organizá<br />tu semana.</h2>
+          <div class="schedule-row">
+            <span>Lunes a viernes</span><strong>7:00 a 11:00 y 13:30 a 22:00</strong>
+          </div>
+          <div class="schedule-row closed">
+            <span>Fines de semana y feriados</span><strong>Consultá disponibilidad con tu profe.</strong>
+          </div>
+          <p class="schedule-note">Consultá disponibilidad y cupos con el profe de cada actividad.</p>
+          <a class="text-link" href="#actividades"
+            >Ver todos los horarios y profesores <span aria-hidden="true">↑</span></a
+          >
+        </article>
+        <article class="location-panel" id="ubicacion" data-reveal="panel">
+          <p class="section-note">Ubicación · Santa Lucía</p>
+          <h2>Héroes de Malvinas 150</h2>
+          <p>W3440ABB Santa Lucía<br />Corrientes, Argentina</p>
+          <div class="location-actions">
+            <a
+              class="button button-navy"
+              href="https://www.google.com/maps/dir/?api=1&amp;destination=Tu+Gimnasio%2C+Santa+Luc%C3%ADa%2C+Corrientes%2C+Argentina&amp;destination_place_id=ChIJ97NG_pRjTpQRJB6lqKeqmWU"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
+            >
+            <a class="phone-link" href="tel:+5493777723911"
+              >Titi · 03777 72-3911</a
+            >
+          </div>
+          <p class="maps-notice">En Google Maps, esta calle todavía aparece como San Martin s/n. La dirección es Héroes de Malvinas 150 y el punto indicado corresponde al gimnasio. La actualización del nombre está en trámite.</p>
+          <p class="location-code">Código de ubicación: 2WF2+5J</p>
+        </article>
+      </section>
+
+      <section class="questions section-shell" aria-labelledby="preguntas-titulo">
+        <div>
+          <p class="section-note">Para que vengas con todo claro</p>
+          <h2 id="preguntas-titulo">Antes de venir.</h2>
+        </div>
+        <div class="questions-list">
+          <details>
+            <summary>¿Por qué Maps muestra San Martín?</summary>
+            <p>
+              En Google Maps, esta calle todavía aparece como San Martin s/n. La dirección es Héroes de Malvinas 150 y el punto indicado corresponde al gimnasio. La actualización del nombre está en trámite.
+              <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Tu+Gimnasio%2C+Santa+Luc%C3%ADa%2C+Corrientes%2C+Argentina&amp;destination_place_id=ChIJ97NG_pRjTpQRJB6lqKeqmWU" target="_blank" rel="noopener noreferrer"
+                >Abrir indicaciones hacia Tu Gimnasio</a
+              >.
+            </p>
+          </details>
+          <details>
+            <summary>¿Cómo consulto horarios y actividades?</summary>
+            <p>
+              En <a href="#actividades">actividades y horarios</a> encontrás el nombre del profe de
+              cada franja y su botón de WhatsApp. El horario especial de musculación se consulta con
+              Profe Martita y el general, con Profe Titi. También podés escribirnos al
+              <a href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer"
+                >Instagram del gimnasio</a
+              >.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="share-section" aria-labelledby="compartir-titulo">
+        <div class="section-shell share-inner">
+          <div class="share-copy" data-reveal="group">
+            <p class="section-note">La historia se comparte</p>
+            <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
+            <p>
+              Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
+              oficial para que tengas los horarios y las consultas a mano.
+            </p>
+            <div class="share-actions" id="share-controls" hidden>
+              <button class="button button-yellow" id="share-site" type="button">
+                Compartir página <span aria-hidden="true">↗</span>
+              </button>
+              <button class="button button-ghost" id="copy-link" type="button">
+                Copiar enlace
+              </button>
+            </div>
+            <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
+            <div id="manual-copy" class="manual-copy" hidden>
+              <label for="official-url">Dirección oficial para copiar</label>
+              <input
+                id="official-url"
+                type="url"
+                readonly
+                value="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/"
+                spellcheck="false"
+                autocomplete="url"
+              />
+            </div>
+            <p class="share-fallback">
+              <a href="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/">Abrir la página oficial</a> · También podés descargar el QR.
+            </p>
+          </div>
+          <div class="qr-card">
+            <a href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
+              ><img
+                src="qr-tu-gimnasio.png"
+                width="1146"
+                height="1216"
+                alt="Descargar el QR de la página oficial de Tu Gimnasio"
+                loading="lazy"
+                decoding="async"
+            /></a>
+            <p>Escaneá. Guardá. Compartí.</p>
+          </div>
         </div>
       </section>
 
@@ -139,219 +312,20 @@
         </div>
       </section>
 
-      <section class="future" id="nueva-sede" aria-labelledby="sede-titulo">
-        <div class="section-shell future-layout">
-          <div class="future-copy" data-reveal="future">
-            <p class="future-status">
-              <span aria-hidden="true"></span> Próxima sede · En construcción
-            </p>
-            <h2 id="sede-titulo">Nueva casa.<br />Misma esencia.</h2>
-            <p>
-              Estamos construyendo el nuevo gimnasio. Otro espacio para encontrarnos, con la misma
-              esencia que nos acompaña desde 1996.
-            </p>
+      <section class="final-cta" id="bases" aria-labelledby="cierre-titulo">
+        <div class="section-shell final-layout">
+          <div class="final-copy" data-reveal="group">
+            <p>Volvamos a las bases.</p>
+            <h2 id="cierre-titulo">Tu lugar.<br />Tu gimnasio.</h2>
             <a
               class="button button-navy"
-              href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20la%20apertura%20de%20la%20nueva%20sede%20en%20H%C3%A9roes%20de%20Malvinas%20150."
+              href="https://wa.me/5493777723911?text=Hola+Tu+Gimnasio%2C+quisiera+consultar+por+las+actividades."
               target="_blank"
               rel="noopener noreferrer"
-              >Consultá por la apertura <span aria-hidden="true">↗</span></a
+              >Consultar por WhatsApp <span aria-hidden="true">↗</span></a
             >
           </div>
-          <div class="future-address">
-            <p>Nuestra próxima dirección</p>
-            <h3>Héroes de Malvinas 150</h3>
-            <p>Santa Lucía, Corrientes, Argentina</p>
-            <div class="future-notice">
-              <strong>La mudanza todavía no se realizó.</strong>
-              <p>
-                La fecha de apertura se anunciará más adelante. Google Maps aún muestra la sede
-                actual; actualizaremos el enlace cuando cambie la ficha.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
-        <div class="section-shell">
-          <div class="section-heading">
-            <h2 id="actividades-titulo">Movete a tu manera.</h2>
-            <p>
-              Cuatro propuestas, un mismo lugar. Consultanos por cupos y horarios vigentes de cada
-              clase.
-            </p>
-          </div>
-          <div class="activity-grid"><article class="activity-card yellow" id="actividad-musculacion"><h3>Musculación</h3><p>Tu espacio para construir fuerza y entrenar con constancia.</p><a href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades." target="_blank" rel="noopener noreferrer" aria-label="Consultar por Musculación">Consultar <span aria-hidden="true">↗</span></a></article>
-<article class="activity-card blue" id="actividad-spinning"><h3>Spinning</h3><p>Energía en grupo y ritmo sobre la bici para superarte.</p><a href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades." target="_blank" rel="noopener noreferrer" aria-label="Consultar por Spinning">Consultar <span aria-hidden="true">↗</span></a></article>
-<article class="activity-card red" id="actividad-gimnasia-grupal"><h3>Gimnasia grupal</h3><p>Clases para moverte, compartir y disfrutar el proceso.</p><a href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades." target="_blank" rel="noopener noreferrer" aria-label="Consultar por Gimnasia grupal">Consultar <span aria-hidden="true">↗</span></a></article>
-<article class="activity-card white" id="actividad-pilates"><h3>Pilates</h3><p>Control, movilidad y equilibrio para sentirte mejor.</p><a href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades." target="_blank" rel="noopener noreferrer" aria-label="Consultar por Pilates">Consultar <span aria-hidden="true">↗</span></a></article></div>
           <div class="manifesto-art" data-reveal="art"><picture><source srcset="tu-gimnasio-actividades.webp" type="image/webp"><img class="manifesto-image" src="tu-gimnasio-actividades.png" width="1600" height="900" alt="Volvamos a las bases. Tu Gimnasio." loading="lazy" decoding="async"></picture></div>
-        </div>
-      </section>
-
-      <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
-        <div class="story-visual"><picture><source srcset="tu-gimnasio-identidad.webp" type="image/webp"><img class="identity-image" src="tu-gimnasio-identidad.png" width="1254" height="1254" alt="Identidad de Tu Gimnasio: todos somos iguales, la diferencia está en los detalles." loading="lazy" decoding="async"></picture></div>
-        <div class="story-copy">
-          <p class="section-note">De Santa Lucía. Desde 1996.</p>
-          <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
-          <p>
-            Tu Gimnasio nació con una idea simple: que cada persona encuentre un lugar donde
-            entrenar, sentirse acompañada y avanzar a su manera.
-          </p>
-          <p>
-            La experiencia se construye todos los días, cuidando esos detalles que hacen que quieras
-            volver.
-          </p>
-          <a class="text-link" href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer"
-            >Seguinos en Instagram <span aria-hidden="true">↗</span></a
-          >
-          <p class="story-signature">Tu lugar,<br /><strong>tu gimnasio.</strong></p>
-        </div>
-      </section>
-
-      <section class="reviews" aria-labelledby="opiniones-titulo">
-        <div class="section-shell reviews-inner">
-          <p class="reviews-score">
-            <strong>4,8<span>/5</span></strong
-            ><span>18 opiniones en Google</span>
-          </p>
-          <div>
-            <h2 id="opiniones-titulo">La comunidad también habla.</h2>
-            <p>Conocé las experiencias de quienes ya pasaron por Tu Gimnasio.</p>
-          </div>
-          <a class="text-link" href="https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8" target="_blank" rel="noopener noreferrer"
-            >Leer opiniones <span aria-hidden="true">↗</span></a
-          >
-        </div>
-      </section>
-
-      <section class="visit section-shell" aria-label="Información de la sede actual">
-        <article class="schedule-panel" id="horarios">
-          <p class="section-note">Sede actual</p>
-          <h2>Hacé lugar<br />para vos.</h2>
-          <div class="schedule-row">
-            <span>Lunes a viernes</span><strong>07:00 — 22:00</strong>
-          </div>
-          <div class="schedule-row closed">
-            <span>Sábado y domingo</span><strong>Cerrado</strong>
-          </div>
-          <p class="schedule-note">Las clases tienen horarios específicos. Consultá disponibilidad por WhatsApp. En feriados el horario puede variar.</p>
-        </article>
-        <article class="location-panel" id="ubicacion">
-          <p class="section-note">Ubicación actual · Antes de la mudanza</p>
-          <h2>Av. Italia 109</h2>
-          <p>W3440 Santa Lucía<br />Corrientes, Argentina</p>
-          <div class="location-actions">
-            <a
-              class="button button-navy"
-              href="https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Ver sede actual en Maps <span aria-hidden="true">↗</span></a
-            >
-            <a class="phone-link" href="tel:+543777723911">03777 72-3911</a>
-          </div>
-          <p class="location-code">Código de ubicación actual: 2W73+W9</p>
-          <a class="text-link" href="#nueva-sede"
-            >Ver anuncio de la próxima sede <span aria-hidden="true">↑</span></a
-          >
-        </article>
-      </section>
-
-      <section class="questions section-shell" aria-labelledby="preguntas-titulo">
-        <div>
-          <p class="section-note">Para que vengas con todo claro</p>
-          <h2 id="preguntas-titulo">Antes de venir.</h2>
-        </div>
-        <div class="questions-list">
-          <details>
-            <summary>¿La nueva sede ya está abierta?</summary>
-            <p>
-              Todavía está en construcción. La próxima dirección será Héroes de Malvinas 150,
-              Santa Lucía, Corrientes, Argentina. Vamos a anunciar la apertura; mientras tanto, podés consultarnos
-              por WhatsApp.
-            </p>
-          </details>
-          <details>
-            <summary>¿Por qué Maps muestra otra dirección?</summary>
-            <p>
-              La ficha todavía corresponde a Av. Italia 109, la ubicación actual. El mapa de la
-              nueva sede se incorporará cuando se actualice Google Maps. El anuncio de la mudanza
-              está separado para evitar confusiones.
-            </p>
-          </details>
-          <details>
-            <summary>¿Cómo consulto horarios y actividades?</summary>
-            <p>
-              Escribinos por
-              <a href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades." target="_blank" rel="noopener noreferrer">WhatsApp</a>. Te
-              contamos los horarios vigentes, los cupos de cada clase y las novedades de la próxima
-              sede.
-            </p>
-          </details>
-        </div>
-      </section>
-
-      <section class="share-section" aria-labelledby="compartir-titulo">
-        <div class="section-shell share-inner">
-          <div class="share-copy">
-            <p class="section-note">La historia se comparte</p>
-            <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
-            <p>
-              Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
-              oficial, también después de la mudanza.
-            </p>
-            <div class="share-actions" id="share-controls" hidden>
-              <button class="button button-yellow" id="share-site" type="button">
-                Compartir página <span aria-hidden="true">↗</span>
-              </button>
-              <button class="button button-ghost" id="copy-link" type="button">
-                Copiar enlace
-              </button>
-            </div>
-            <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
-            <div id="manual-copy" class="manual-copy" hidden>
-              <label for="official-url">Dirección oficial para copiar</label>
-              <input
-                id="official-url"
-                type="url"
-                readonly
-                value="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/"
-                spellcheck="false"
-                autocomplete="url"
-              />
-            </div>
-            <p class="share-fallback">
-              <a href="https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/">Abrir la página oficial</a> · También podés descargar el QR.
-            </p>
-          </div>
-          <div class="qr-card">
-            <a href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
-              ><img
-                src="qr-tu-gimnasio.png"
-                width="1146"
-                height="1216"
-                alt="Descargar el QR de la página oficial de Tu Gimnasio"
-                loading="lazy"
-                decoding="async"
-            /></a>
-            <p>Escaneá. Guardá. Compartí.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="final-cta" aria-labelledby="cierre-titulo">
-        <div class="section-shell">
-          <p>Volvamos a las bases.</p>
-          <h2 id="cierre-titulo">Lo que viene.<br />Con vos.</h2>
-          <a
-            class="button button-navy"
-            href="https://wa.me/543777723911?text=Hola%20Tu%20Gimnasio%2C%20quisiera%20consultar%20por%20las%20actividades."
-            target="_blank"
-            rel="noopener noreferrer"
-            >Nos vemos en Tu Gimnasio <span aria-hidden="true">↗</span></a
-          >
         </div>
       </section>
     </main>
@@ -367,8 +341,8 @@
           <p>Todos somos iguales,<br />la diferencia está en los detalles.</p>
           <div class="footer-links">
             <a href="https://www.instagram.com/tugimnasio1/" target="_blank" rel="noopener noreferrer">Instagram</a
-            ><a href="https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8" target="_blank" rel="noopener noreferrer">Maps · Sede actual</a
-            ><a href="tel:+543777723911">Llamar</a>
+            ><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Tu+Gimnasio%2C+Santa+Luc%C3%ADa%2C+Corrientes%2C+Argentina&amp;destination_place_id=ChIJ97NG_pRjTpQRJB6lqKeqmWU" target="_blank" rel="noopener noreferrer">Cómo llegar</a
+            ><a href="tel:+5493777723911">Llamar</a>
           </div>
         </div>
         <p class="footer-wordmark">Tu Gimnasio</p>
@@ -379,12 +353,12 @@
       </div>
     </footer>
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"ExerciseGym","name":"Tu Gimnasio","foundingDate":"1996-11-04","url":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/","image":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/tu-gimnasio-identidad.png","telephone":"+543777723911","address":{"@type":"PostalAddress","streetAddress":"Av. Italia 109","addressLocality":"Santa Lucía","addressRegion":"Corrientes","postalCode":"W3440","addressCountry":"AR"},"sameAs":["https://www.instagram.com/tugimnasio1/","https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"18"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"22:00"}]}
+      {"@context":"https://schema.org","@type":"ExerciseGym","name":"Tu Gimnasio","foundingDate":"1996-11-04","url":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/","image":"https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/tu-gimnasio-identidad.png","description":"Tu Gimnasio en Santa Lucía. Actividades, horarios y consultas con tu profe.","telephone":"+5493777723911","address":{"@type":"PostalAddress","streetAddress":"Héroes de Malvinas 150","addressLocality":"Santa Lucía","addressRegion":"Corrientes","postalCode":"W3440ABB","addressCountry":"AR"},"sameAs":["https://www.instagram.com/tugimnasio1/","https://maps.app.goo.gl/M5ivz5WYEiGhwfAX8"],"hasMap":"https://www.google.com/maps/dir/?api=1\u0026destination=Tu+Gimnasio%2C+Santa+Luc%C3%ADa%2C+Corrientes%2C+Argentina\u0026destination_place_id=ChIJ97NG_pRjTpQRJB6lqKeqmWU","geo":{"@type":"GeoCoordinates","latitude":-28.9770634,"longitude":-59.0984372},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"18"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"11:00","validFrom":"2026-11-03"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"13:30","closes":"22:00","validFrom":"2026-11-03"}]}
     </script>
     <script
       type="module"
-      src="site.0c65a8e7607e.js"
-      integrity="sha384-p9GonAewJA3NdYQNOKI3xSMMb0lV+iJ5l/EB+2kcnKAhgUQ7727HOo9GVSrP9ytd"
+      src="site.4be14007efd8.js"
+      integrity="sha384-dVRrj233cpupOhVozdHM+EAtcgparmlfHjzeSjwuUohfBroGpjub7yqmjYWQmItp"
       crossorigin="anonymous"
       defer
     ></script>

@@ -1,4 +1,4 @@
-/* Tu Gimnasio · anniversary edition. Stable brand, layout and motion tokens. */
+/* Tu Gimnasio: shared brand, spacing and control dimensions. */
 @font-face {
   font-family: 'Tu Gimnasio Display';
   src: url('anton-regular.ttf') format('truetype');
@@ -23,11 +23,13 @@
   --display-font: Impact, 'Tu Gimnasio Display', 'Arial Narrow', 'Arial Black', sans-serif;
   --body-font: Arial, Helvetica, sans-serif;
   --gutter: clamp(1.1rem, 4.5vw, 5rem);
-  --section-space: clamp(4.5rem, 8vw, 8.5rem);
+  --section-space: clamp(4rem, 7vw, 7rem);
+  --consult-width: 18rem;
+  --surface: #e9ecf4;
   --header-offset: 7rem;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-quick: 180ms;
-  --motion-enter: 800ms;
+  --motion-enter: 650ms;
 }
 * {
   box-sizing: border-box;
@@ -44,7 +46,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--body-font);
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 ::selection {
@@ -188,6 +190,46 @@ h2 {
   font-size: 0.75rem;
   color: var(--yellow);
 }
+.brand .brand-years {
+  width: fit-content;
+  max-width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.brand-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+.brand-intro-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--navy-deep);
+}
+.brand-intro-logo,
+.brand-intro-years {
+  position: fixed;
+  display: block;
+  margin: 0;
+  transform-origin: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.brand-intro-logo {
+  max-width: none;
+  object-fit: contain;
+  border-radius: 0;
+}
+.brand-intro-years {
+  color: var(--yellow);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.brand-flight-active .site-header .brand-logo,
+.brand-flight-active .site-header .brand-years {
+  opacity: 0;
+}
 .site-header nav {
   display: flex;
   flex-wrap: wrap;
@@ -210,24 +252,29 @@ h2 {
   text-decoration: underline;
 }
 .header-cta,
-.button {
+.button,
+.activity-instagram {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
-  min-height: 52px;
+  min-height: 3.25rem;
   max-width: 100%;
-  padding: 0.9rem 1.3rem;
+  padding: 0.75rem 1rem;
   border: 2px solid transparent;
   font-size: 0.9rem;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.4;
   text-decoration: none;
   text-align: center;
+  touch-action: manipulation;
   transition:
     transform var(--motion-quick) var(--ease-out),
     background-color var(--motion-quick) ease,
     color var(--motion-quick) ease;
+}
+.button {
+  inline-size: min(100%, var(--consult-width));
 }
 .header-cta,
 .button-yellow {
@@ -276,12 +323,11 @@ h2 {
   grid-template-columns: 1.12fr 0.88fr;
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
-  min-height: 680px;
-  padding-block: clamp(3.5rem, 6vw, 6.5rem);
+  min-height: 620px;
+  padding-block: clamp(3.25rem, 5vw, 5rem);
 }
 .hero-layout > *,
 .anniversary > *,
-.future-layout > *,
 .section-heading > *,
 .story > *,
 .reviews-inner > *,
@@ -291,9 +337,12 @@ h2 {
   min-width: 0;
 }
 .hero-edition {
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   color: var(--light-ink);
-  font-size: 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .hero h1 {
   margin: 0;
@@ -331,11 +380,11 @@ h2 {
   isolation: isolate;
   display: grid;
   place-items: center;
-  width: min(100%, 450px);
+  width: min(100%, 400px);
   aspect-ratio: 1;
   margin-inline: auto;
   padding: 0;
-  border: 2px solid #484876;
+  border: 1px solid #484876;
   border-radius: 50%;
   background: var(--navy-deep);
 }
@@ -389,10 +438,10 @@ h2 {
   background: var(--blue);
 }
 
-/* The anniversary is fixed commemorative content, with one optional count-up. */
+/* The live clock is the penultimate content section; the calculation stays independent. */
 .anniversary {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   align-items: start;
   gap: clamp(2.5rem, 6vw, 6rem);
   padding-block: var(--section-space);
@@ -424,7 +473,8 @@ h2 {
 }
 .time-grid {
   display: grid;
-  gap: 1.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.4rem 1.4rem;
   margin: 0;
 }
 .time-metric {
@@ -449,7 +499,7 @@ h2 {
   margin: 0;
   color: var(--navy);
   font-family: var(--display-font);
-  font-size: clamp(1.6rem, 5.7vw, 5.5rem);
+  font-size: clamp(1.25rem, 3vw, 3.2rem);
   font-variant-numeric: tabular-nums;
   line-height: 1.12;
 }
@@ -460,71 +510,6 @@ h2 {
   margin: 1.6rem 0 0;
   color: var(--muted);
   font-size: 0.9rem;
-}
-
-/* Future address and present address deliberately have separate visual contexts. */
-.future {
-  background: var(--yellow);
-  color: var(--navy-deep);
-}
-.future-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2.5rem, 7vw, 7rem);
-  align-items: center;
-  padding-block: var(--section-space);
-}
-.future-status {
-  display: flex;
-  gap: 0.65rem;
-  align-items: center;
-  margin-bottom: 1.75rem;
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-.future-status > span {
-  flex: 0 0 0.7rem;
-  height: 0.7rem;
-  border-radius: 50%;
-  background: var(--navy);
-}
-.future h2 {
-  font-size: clamp(2.6rem, 4.5vw, 5rem);
-}
-.future-copy > p {
-  max-width: 31rem;
-}
-.future-copy .button {
-  margin-top: 0.5rem;
-}
-.future-address {
-  padding: clamp(1.5rem, 3.2vw, 3.2rem);
-  background: var(--navy-deep);
-  color: var(--white);
-}
-.future-address > p:first-child {
-  color: var(--yellow);
-  font-size: 1rem;
-}
-.future-address h3 {
-  font-size: clamp(2.5rem, 4.3vw, 4.7rem);
-}
-.future-address > p {
-  color: var(--light-ink);
-}
-.future-notice {
-  padding-top: 1.2rem;
-  margin-top: 2rem;
-  border-top: 4px solid var(--yellow);
-}
-.future-notice strong {
-  display: block;
-  font-size: 0.95rem;
-}
-.future-notice p {
-  margin: 0.7rem 0 0;
-  font-size: 0.95rem;
-  color: var(--light-ink);
 }
 
 /* Activities are editorial rows, so every option stays readable on a phone. */
@@ -550,13 +535,10 @@ h2 {
 }
 .activity-grid {
   display: grid;
-  gap: 0.8rem;
+  gap: 1.25rem;
 }
 .activity-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  align-items: center;
-  gap: 1.5rem;
+  min-width: 0;
   padding: clamp(1.3rem, 2.4vw, 2.3rem);
   border-left: 5px solid var(--yellow);
   background: var(--navy-panel);
@@ -579,17 +561,105 @@ h2 {
   color: var(--light-ink);
   font-size: 1rem;
 }
-.activity-card > a {
-  display: inline-flex;
+.activity-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--consult-width);
   align-items: center;
-  min-height: 44px;
-  padding: 0.5rem;
+  gap: 1.2rem 2rem;
+}
+.activity-card .activity-description {
+  margin-top: 0.85rem;
+  max-width: 60ch;
+}
+.activity-instagram {
   color: var(--yellow);
-  font-size: 0.95rem;
+  background: transparent;
+  border-color: var(--yellow);
+}
+.activity-instagram:hover {
+  color: var(--navy-deep);
+  background: var(--yellow);
+}
+.activity-schedules {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+.activity-session {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--consult-width);
+  align-items: center;
+  gap: 1rem 2rem;
+  padding-block: 1.2rem;
+  border-top: 1px solid #535884;
+}
+.session-information,
+.session-contact,
+.activity-card-header > div {
+  min-width: 0;
+}
+.session-information h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--yellow);
+}
+.activity-card .schedule-days {
+  color: var(--white);
   font-weight: 700;
 }
+.activity-card .schedule-times {
+  margin-top: 0.25rem;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+}
+.schedule-period time {
+  white-space: nowrap;
+}
+.time-label,
+.period-separator {
+  color: var(--light-ink);
+  font-size: 0.9em;
+}
+.session-contact {
+  display: grid;
+  justify-items: stretch;
+  gap: 0.6rem;
+}
+.teacher-phone {
+  display: block;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.activity-instagram,
+.session-contact .teacher-contact {
+  inline-size: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.activities-note {
+  max-width: 68ch;
+  font-size: 0.95rem;
+  color: var(--light-ink);
+}
+.activities-note {
+  margin: 1.7rem 0 0;
+}
+.location-panel .maps-notice {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+.schedule-panel > .text-link {
+  margin-top: 1.3rem;
+  color: var(--yellow);
+}
 .manifesto-art {
-  margin-top: 3.5rem;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(0.9rem, 2vw, 1.8rem);
+  background: var(--navy-deep);
 }
 .manifesto-art img {
   object-fit: contain;
@@ -669,7 +739,7 @@ h2 {
   color: var(--yellow);
 }
 
-/* Information for the current location; no map pin is invented for the future one. */
+/* Confirmed address and teacher contacts; Maps keeps its verified business identity. */
 .visit {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -711,7 +781,7 @@ h2 {
   color: var(--light-ink);
 }
 .location-panel {
-  background: #e9ecf4;
+  background: var(--surface);
   color: var(--navy);
 }
 .location-panel .section-note {
@@ -745,8 +815,8 @@ h2 {
   gap: 0.8rem;
 }
 .questions details {
-  padding: 1.2rem 1.4rem;
-  background: #e9ecf4;
+  padding: 1.3rem 1.5rem;
+  background: var(--white);
 }
 .questions summary {
   min-height: 44px;
@@ -761,7 +831,7 @@ h2 {
   font-size: 0.95rem;
 }
 .questions details[open] {
-  background: var(--white);
+  background: var(--surface);
 }
 
 /* Sharing keeps its complete no-JavaScript path and the original QR. */
@@ -837,8 +907,25 @@ h2 {
   font-weight: 700;
 }
 .final-cta h2 {
-  font-size: clamp(2.8rem, 6.5vw, 7rem);
+  font-size: clamp(2.8rem, 5.4vw, 5.2rem);
   margin-bottom: 2.5rem;
+}
+.final-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+.final-copy {
+  min-width: 0;
+}
+.anniversary-time #toggle-clock {
+  margin-top: 1.8rem;
+}
+#clock-status {
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 footer {
   padding-block: 3rem 1.8rem;
@@ -862,9 +949,9 @@ footer {
   gap: 0.5rem 1.2rem;
 }
 .footer-wordmark {
-  margin: 3.5rem 0 1rem;
+  margin: 2.5rem 0 1rem;
   font-family: var(--display-font);
-  font-size: clamp(2.8rem, 12.1vw, 12rem);
+  font-size: clamp(2.8rem, 9vw, 9rem);
   font-weight: 900;
   text-transform: uppercase;
   line-height: 0.95;
@@ -878,8 +965,8 @@ footer {
 /* One-time motion only. Reading never depends on a hidden state or on animation. */
 @keyframes hero-arrive {
   from {
-    transform: translateY(18px);
-    opacity: 0.7;
+    transform: translateY(12px);
+    opacity: 0.85;
   }
   to {
     transform: none;
@@ -888,7 +975,7 @@ footer {
 }
 @keyframes logo-arrive {
   from {
-    transform: scale(0.96);
+    transform: scale(0.99);
   }
   to {
     transform: none;
@@ -905,13 +992,13 @@ footer {
     animation: hero-arrive var(--motion-enter) 140ms var(--ease-out) both;
   }
   .hero-logo-wrap {
-    animation: logo-arrive 1100ms var(--ease-out) both;
+    animation: logo-arrive 700ms var(--ease-out) both;
   }
 }
 @media (hover: hover) and (pointer: fine) {
   .button:hover,
   .header-cta:hover {
-    transform: translateY(-3px);
+    transform: translateY(-1px);
   }
   .button-yellow:hover,
   .header-cta:hover {
@@ -925,12 +1012,9 @@ footer {
     color: var(--navy);
   }
   .activity-card {
-    transition:
-      transform var(--motion-quick) var(--ease-out),
-      background-color var(--motion-quick) ease;
+    transition: background-color var(--motion-quick) ease;
   }
   .activity-card:hover {
-    transform: translateX(4px);
     background: #19196a;
   }
 }
@@ -956,13 +1040,6 @@ footer {
   .hero h1 {
     font-size: clamp(3.5rem, 8vw, 6.5rem);
   }
-  .activity-card {
-    grid-template-columns: 1fr 1fr;
-  }
-  .activity-card > a {
-    grid-column: 2;
-    justify-self: start;
-  }
   .reviews-inner {
     grid-template-columns: 0.7fr 1.3fr;
   }
@@ -976,6 +1053,11 @@ footer {
     grid-column: 1 / -1;
   }
 }
+@media (min-width: 761px) and (max-width: 1100px) {
+  .anniversary-heading h2 {
+    font-size: clamp(1.9rem, 3.8vw, 2.7rem);
+  }
+}
 @media (max-width: 760px) {
   :root {
     --header-offset: 1.5rem;
@@ -983,6 +1065,10 @@ footer {
   .site-header {
     position: relative;
     padding-block: 0.7rem;
+  }
+  .site-header .brand-founded,
+  .brand-intro .brand-founded {
+    display: none;
   }
   .site-header nav {
     justify-content: space-between;
@@ -1022,12 +1108,12 @@ footer {
     margin-bottom: 0.5rem;
   }
   .anniversary,
-  .future-layout,
   .section-heading,
   .story,
   .visit,
   .questions,
-  .share-inner {
+  .share-inner,
+  .final-layout {
     grid-template-columns: minmax(0, 1fr);
   }
   .anniversary {
@@ -1052,26 +1138,23 @@ footer {
   .time-metric:nth-child(n + 3) dd {
     font-size: clamp(1.8rem, 9vw, 4rem);
   }
-  .future-layout {
-    gap: 2.5rem;
-  }
-  .future-address {
-    border-left: 5px solid var(--navy);
-  }
   .section-heading {
     gap: 1.2rem;
     margin-bottom: 2rem;
   }
-  .activity-card {
+  .activity-card-header,
+  .activity-session {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.9rem;
   }
-  .activity-card > a {
-    grid-column: auto;
-    padding-left: 0;
+  .activity-instagram {
+    justify-self: stretch;
   }
-  .manifesto-art {
-    margin-top: 2.5rem;
+  .session-contact {
+    width: 100%;
+  }
+  .session-contact .teacher-contact {
+    width: 100%;
   }
   .story {
     gap: 2.5rem;
@@ -1157,6 +1240,13 @@ footer {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .brand-intro {
+    display: none;
+  }
+  .brand-flight-active .site-header .brand-logo,
+  .brand-flight-active .site-header .brand-years {
+    opacity: 1;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -1175,7 +1265,6 @@ footer {
   .button,
   .header-cta,
   .activity-card,
-  .future-address,
   details {
     border: 2px solid ButtonText;
   }
@@ -1214,7 +1303,6 @@ footer {
   }
   .hero,
   .activities,
-  .future,
   .reviews,
   .share-section,
   footer {
@@ -1223,7 +1311,6 @@ footer {
   }
   .hero-layout,
   .anniversary,
-  .future-layout,
   .story,
   .visit,
   .questions,
@@ -1236,7 +1323,6 @@ footer {
   .activity-card,
   .schedule-panel,
   .location-panel,
-  .future-address,
   .questions details {
     color: black;
     background: white;
@@ -1246,8 +1332,6 @@ footer {
   .section-note,
   .activity-card p,
   .schedule-note,
-  .future-address > p,
-  .future-notice p,
   .reviews-inner p,
   .reviews-score > span,
   .share-copy p,
@@ -1256,8 +1340,7 @@ footer {
     color: black !important;
   }
   .schedule-row strong,
-  .schedule-row.closed strong,
-  .future-address h3 {
+  .schedule-row.closed strong {
     color: black;
   }
   .questions details p {
