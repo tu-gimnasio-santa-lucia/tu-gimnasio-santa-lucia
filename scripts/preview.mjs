@@ -16,15 +16,37 @@ export async function startPreview(port = 4173) {
     '.jpg': 'image/jpeg',
     '.webp': 'image/webp',
     '.ttf': 'font/ttf',
+    '.woff2': 'font/woff2',
     '.json': 'application/json',
     '.xml': 'application/xml',
     '.txt': 'text/plain',
   };
   const server = createServer(async (request, response) => {
     try {
-      const name =
-        decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname).slice(1) ||
-        'index.html';
+      if (!/^(?:127\.0\.0\.1|localhost)(?::\d{1,5})?$/.test(request.headers.host || '')) {
+        response.writeHead(403).end('Forbidden');
+        return;
+      }
+      const host = new URL('http://' + (request.headers.host || ''));
+      if (
+        !['127.0.0.1', 'localhost'].includes(host.hostname) ||
+        (request.headers.origin && request.headers.origin !== host.origin)
+      ) {
+        response.writeHead(403).end('Forbidden');
+        return;
+      }
+      if (!['GET', 'HEAD'].includes(request.method)) {
+        response.writeHead(405, { Allow: 'GET, HEAD' }).end('Method not allowed');
+        return;
+      }
+      let name;
+      try {
+        name =
+          decodeURIComponent(new URL(request.url, host.origin).pathname).slice(1) || 'index.html';
+      } catch {
+        response.writeHead(400).end('Bad request');
+        return;
+      }
       if (name === 'index.html') {
         const current = await buildSite();
         allowed = new Set([...current.files.map((f) => f.name), 'build-manifest.json']);
@@ -39,8 +61,11 @@ export async function startPreview(port = 4173) {
           'Content-Type': mime[path.extname(name)] || 'text/plain',
           'X-Content-Type-Options': 'nosniff',
           'Cache-Control': 'no-store',
+          'Referrer-Policy': 'no-referrer',
+          'Cross-Origin-Resource-Policy': 'same-origin',
+          'Content-Security-Policy': "frame-ancestors 'none'",
         })
-        .end(bytes);
+        .end(request.method === 'HEAD' ? undefined : bytes);
     } catch {
       response.writeHead(500).end('Read error');
     }

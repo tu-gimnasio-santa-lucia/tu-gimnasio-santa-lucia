@@ -1,0 +1,4 @@
+# Optional preparation only. Normal Node build uses the committed derivatives.
+Pillow==13.0.0
+fonttools==4.67.0
+Brotli==1.2.1

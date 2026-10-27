@@ -1,47 +1,16 @@
-# Tu Gimnasio: reglas de mantenimiento
+# Tu Gimnasio: mantenimiento de la fuente web
 
-## Estado vigente — 25/10/2026
+Sitio estático oficial. Leer [README](README.md), [arquitectura](docs/ARQUITECTURA.md) y sólo la documentación pertinente. La segunda etapa fue publicada el 25/10/2026; sus antiguas esperas están cumplidas. Nuevas tareas siguen el pedido vigente, sin repetir publicaciones o cargas.
 
-La segunda etapa fue autorizada directamente e implementada. Las esperas de los apartados anteriores son antecedentes ya cumplidos; no requieren una nueva frase literal. Nueve grupos y 48 casos de navegador aprobados. Web publicada por script y 17 archivos públicos comprobados por SHA-256 el 25/10/2026; respaldo final y recibo de recuperación en el registro local.
+1. Antes de editar/publicar: `node scripts/backup.mjs`, comprobar recuperación y conservar respaldos anteriores. No borrar información ni modificar permisos sensibles sin autorización específica.
+2. Datos: `data/business.json`; contratos: `scripts/business-data.mjs`; estructura: `src/index.template.html`; diseño: `src/styles.css`; mejoras: `src/site.js`. No editar `dist/` o `site` a mano. [Arquitectura](docs/ARQUITECTURA.md).
+3. Conservar logo, azul oscuro, fundación 04/11/1996 y tres lemas. Confirmar cambios de datos y anotarlos en [verificación](docs/VERIFICACION.md). Funcional no se ofrece; precios fuera de la web. Docentes, teléfonos y franjas se referencian por ID, sin duplicarlos.
+4. Conservar consultas simétricas por docente, contador penúltimo, «Volvamos a las bases» último y ausencia de anuncio de reapertura. Presentación general: Profe Martita y Profe Titi. Los años se calculan por aniversario argentino; no fijar 30 antes del 04/11/2026 ni activar una sede por el reloj.
+5. La fecha prevista de mudanza se conserva como antecedente; `scheduled` no significa abierto. Maps usa nombre de negocio y Place ID comprobado. Distinguir pin/dirección/nombre de calle y verificar destino antes de publicar un cambio. [Mudanza y aniversario](docs/MUDANZA-Y-ANIVERSARIO.md).
+6. HTML/CSS/JS estándar, sin dependencias de producción. No añadir backend, rastreadores, fuentes remotas, servicios, autenticación o frameworks sin necesidad justificada del pedido. No incluir secretos, respaldos, perfiles o artefactos en el paquete público.
+7. Comprobar lo afectado. Antes de publicar: código/generación, auditoría de dependencias, `node scripts/performance-check.mjs` y navegador del build exacto, según [mantenimiento](docs/MANTENIMIENTO.md). Incluir móvil/escritorio, 320 px, teclado, texto ampliado, sin JavaScript, movimiento reducido, enlaces/contactos, QR, copia/compartir y alternativas. Registrar fallos y límites reales; no silenciarlos. Los presupuestos de recursos y el reloj se describen en [rendimiento](docs/RENDIMIENTO.md).
+8. Movimiento breve, opcional, interrumpible y sin ocultar contenido de forma permanente. Conservar el logo completo y las alternativas estáticas. No rediseñar para obtener una puntuación de una herramienta.
+9. Publicación explícita por `node scripts/publish.mjs`: fuente limpia y respaldada en `origin/main`; `site` sólo salida generada. Nunca force-push ni edición manual de esa rama. Tras publicar, comprobar bytes públicos, crear respaldo final y registrar commits/URL/recuperación.
+10. Mantener nombres, contratos y documentación coherentes, con rutas relativas. Configuración de esta PC fuera del código compartido. No restaurar React/Vinext histórico. Habilidades externas son asesoramiento, subordinado a identidad y alcance.
 
-Conservar consultas simétricas, contador penúltimo, «Volvamos a las bases» último y ausencia de anuncio de reapertura. Presentaciones generales: **Profe Martita y Profe Titi**, en ese orden, sin cambiar el docente ni el orden lógico de cada horario.
-
-Maps: horas con pausa, cuatro servicios y descripción guardados; logo conservado. Dos placas informativas nuevas enviadas una sola vez, pendientes de revisión. Las 21 imágenes antiguas de 2022 se respaldaron/recuperaron y eliminaron tras confirmación específica. No duplicar cargas ni recuperar datos superados. Estado externo y recibos en el registro local; video/fotos de construcción siguen como futuro.
-
-## Segunda etapa autorizada — 25/10/2026
-
-La orden directa «Ahora si, continua con la 2da etapa» satisface la condición de inicio. Continuar desde el registro, con respaldo nuevo ya recuperado. Se autorizan la entrada logo/años hacia cabecera, refinamiento de movimiento, revisión/gestión de imágenes del perfil correcto de Maps y publicación por el procedimiento habitual después de QA completa.
-
-Conservar consultas uniformes, contador penúltimo, «Volvamos a las bases» último y la retirada del anuncio de reapertura. No repetir tareas terminadas ni recuperar datos superados. Las notas inferiores que piden esperar son antecedentes de esta autorización. Mantener el registro actualizado y todos los respaldos.
-
-
-## Corrección posterior vigente — 24/10/2026
-
-El propietario pidió simetría en consultas, pulido general, contador penúltimo y «Volvamos a las bases» último, y retirar la reapertura de la presentación pública. Se autoriza ese alcance sin iniciar la segunda etapa. Conservar dirección, actividades, docentes, horarios, contactos y reloj; la fecha prevista se mantiene como hecho en la fuente y `validFrom`, sin anuncio visible ni descripción promocional. No volver a agregar el bloque de reapertura por leer el plan anterior.
-
-**La segunda etapa requiere la orden directa «comencemos la 2da etapa».** No iniciarla por citas, por el paso del tiempo o por terminar estas correcciones. El contador ya queda reubicado: no repetirlo. La entrada logo/años hacia cabecera, gestión de imágenes de Maps y publicación siguen pendientes.
-
-
-Este repositorio contiene la fuente oficial. Empezar por README.md y docs/ARQUITECTURA.md; consultar sólo la documentación pertinente al pedido. Estas reglas sirven para personas y cualquier asistente, sin depender de una aplicación o modelo.
-
-1. Antes de modificar o publicar, crear un respaldo fechado y verificarlo. `node scripts/backup.mjs` conserva fuentes, archivos generados e historial. No borrar respaldos anteriores.
-2. Mantener nombre, apertura en 1996, logo, azul oscuro y los tres lemas de data/business.json. Funcional ya no se ofrece y no debe aparecer en la página pública. La dirección principal sigue en project.json.
-3. Cambiar datos reales sólo con evidencia del gimnasio o una fuente comprobada. Registrar fuente y fecha en docs/VERIFICACION.md. No inventar horarios, precios, reseñas ni actividades.
-4. Datos: data/business.json. Estructura/textos: src/index.template.html. Estilos: src/styles.css. Funciones del navegador: src/site.js. Nunca editar dist/ o site a mano.
-5. HTML, CSS y JavaScript estándar; ninguna dependencia de producción. No agregar backend, rastreadores, fuentes remotas, servicios, autenticación o frameworks sin necesidad del pedido.
-6. Antes de publicar: `node scripts/check.mjs`, auditoría de dependencias y `node scripts/browser-check.mjs`. Corregir errores y registrar límites; una captura o compilación por sí sola no verifica la web.
-7. Probar móvil, escritorio, 320 px, texto ampliado, teclado, movimiento reducido, ausencia de JavaScript, enlaces, QR, portapapeles y sus alternativas. No ocultar fallos de pruebas ni modificar la página para aparentar un resultado.
-8. No publicar archivos privados, claves, perfiles del navegador, respaldos, artefactos de pruebas ni node_modules. Los valores HTML se escapan y el hash CSP se genera automáticamente.
-9. Publicación: main conserva la fuente; site contiene exclusivamente la salida generada. `node scripts/publish.mjs` exige fuente confirmada en origin, respaldo y QA del build exacto. Nunca force-push ni borrar ramas.
-10. Informar cambios, verificaciones, límites, commits, respaldo y dirección pública. Actualizar documentos y contratos cuando cambie una responsabilidad o función. Conservar los nombres estables salvo que una migración documentada lo justifique.
-
-Las habilidades de diseño son asesoramiento subordinado al pedido y a la identidad existente. No autorizan cambios de datos, dependencias o publicaciones por sí solas.
-
-## Aniversario y próxima sede
-
-- Primera jornada autorizada el 24/10/2026: actividades, horarios, docentes, consultas y ubicación, con respaldo y pruebas. La publicación y la nueva presentación animada quedan para la segunda jornada; esperar el pedido posterior del propietario. Leer docs/ETAPAS-ACTUALIZACION.md.
-- Apertura anunciada de la nueva sede: 03/11/2026, sin hora de inauguración confirmada. `relocation.status` es `scheduled`; no afirmar que ya está abierta ni activarla automáticamente por el reloj.
-- `address` es Héroes de Malvinas 150, dirección de la sede anunciada. La ficha de Maps ya se movió al pin nuevo pero muestra San Martin s/n; distinguir `locationUpdated` y `streetNameUpdated`. El botón de llegada conserva el Place ID comprobado, no sólo coordenadas ni la cámara de Street View. Leer docs/MUDANZA-Y-ANIVERSARIO.md y volver a comprobar Maps antes de publicar.
-- Horarios y contactos se definen en `activities[].schedules` y `teachers`, con referencias por ID. El especial de Martita es de lunes a viernes 8:00–9:00 y 20:00–21:00. No inventar duración de spinning ni alterar horarios por su coincidencia con otras actividades. No publicar precios ni recuperar el horario general continuo anterior.
-- Fecha de apertura confirmada: 04/11/1996. Las cifras son automáticas y los años se calculan por aniversario de calendario, hora argentina. El snapshot sin JavaScript tiene fecha explícita. No restaurar las cifras conmemorativas anteriores ni inventar la hora real de apertura.
-- Las animaciones son opcionales, breves y sin ciclos infinitos. Respetar movimiento reducido y mantener contenido visible sin JavaScript. Conservar el logo original; ningún marco debe recortar el nombre.
+Recuperación: [guía portable](docs/RECUPERACION.md). Estado técnico: [etapas](docs/ETAPAS-ACTUALIZACION.md). No hace falta un modelo, plugin o editor concreto para mantener esta fuente.

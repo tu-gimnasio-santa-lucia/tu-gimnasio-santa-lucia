@@ -1,5 +1,15 @@
 # Arquitectura y mapa del código
 
+## Revisión 27/10/2026 — arquitectura 5
+
+La arquitectura estática existente se conserva. Nuevos contratos: fonts.display.woff2 y variantes responsive de identity/manifesto con rutas, dimensiones y SHA-256. Node genera srcset/sizes y valida integridad; los PNG/TTF originales siguen como alternativas. Python sólo prepara derivados versionados: no es dependencia de ejecución ni del build normal.
+
+scripts/prepare-assets.py conserva originales, verifica píxeles de cada versión redimensionada, mapa Unicode y métricas de la fuente; --check regenera en temporal sin escribir assets. Requisitos exactos en scripts/requirements-assets.txt. scripts/performance-check.mjs mide cuatro combinaciones de viewport/DPR, presupuestos, reloj y aniversario argentino en procesos propios.
+
+scripts/release-check.mjs exporta validateReleaseReports(browser, performance, manifestBytes): exige ambos informes aprobados del build exacto y rechaza baseline, medición incompleta o evidencia obsoleta. publish.mjs aplica esa puerta antes de preparar la rama site. El reloj cachea nodos y calendario, escribiendo sólo valores distintos. El snapshot visible sin JavaScript deriva de business.json.
+
+Datos → validación/generador → dist → código/navegador/rendimiento → puerta de publicación → site/Pages. La preparación de recursos es opcional y anterior al build. Las instrucciones/contexto privados siguen fuera del paquete; no se agregan agentes, servicios o frameworks sin un beneficio justificado. Ver RENDIMIENTO.md y SEGURIDAD.md.
+
 ## Contrato vigente de movimiento — 25/10/2026, arquitectura 4
 
 Segunda etapa autorizada e implementada. Las referencias inferiores a esperar esa etapa son históricas. Datos y contratos existentes permanecen; se agrega la función privada initializeBrandIntro() después de reloj, compartir y revelado.

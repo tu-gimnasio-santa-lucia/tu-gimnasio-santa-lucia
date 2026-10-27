@@ -25,6 +25,8 @@ node scripts/check.mjs
 node scripts/preview.mjs
 ```
 
+Para publicar, ejecutar también `node scripts/performance-check.mjs`: verifica presupuestos de recursos, fuente, actualizaciones del reloj y aniversario. Leer [rendimiento](RENDIMIENTO.md) para medir, regenerar recursos y distinguir bytes de métricas de usuarios reales. La preparación Python es opcional; Node usa los derivados ya versionados.
+
 La vista local usa `http://127.0.0.1:4173`. Recargar la portada regenera los archivos después de editar. Un editor de texto cualquiera sirve: no es necesario Codex, Claude, React ni un plugin.
 
 Si cambia el código del generador o del servidor, reiniciar la vista local. Si se retira un recurso público del manifiesto, usar una salida vacía y conservar la salida anterior como respaldo; el generador rechaza archivos ajenos en vez de borrarlos automáticamente.

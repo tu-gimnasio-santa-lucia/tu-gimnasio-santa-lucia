@@ -1,7 +1,9 @@
 /* Tu Gimnasio: shared brand, spacing and control dimensions. */
 @font-face {
   font-family: 'Tu Gimnasio Display';
-  src: url('anton-regular.ttf') format('truetype');
+  src:
+    url('anton-regular.woff2') format('woff2'),
+    url('anton-regular.ttf') format('truetype');
   font-style: normal;
   font-weight: 400;
   font-display: swap;

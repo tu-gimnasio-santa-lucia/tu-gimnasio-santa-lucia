@@ -5,7 +5,11 @@
       "license": "anton-ofl.txt",
       "licenseSha256": "ee67e6ee22790b7929f1a3769ca2801d565c64b5a9096942c1adf5596de9c9e4",
       "sha256": "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab",
-      "source": "https://github.com/google/fonts/tree/cee74d7ca45d66d5c1878c828645c862f2788d2d/ofl/anton"
+      "source": "https://github.com/google/fonts/tree/cee74d7ca45d66d5c1878c828645c862f2788d2d/ofl/anton",
+      "woff2": {
+        "file": "anton-regular.woff2",
+        "sha256": "e261fbadf359b1387d3685b865818c2b7f650517e13016d77d21e1eb7ab7fae4"
+      }
     }
   },
   "logo": {
@@ -23,13 +27,47 @@
     "png": "tu-gimnasio-identidad.png",
     "webp": "tu-gimnasio-identidad.webp",
     "width": 1254,
-    "height": 1254
+    "height": 1254,
+    "responsive": [
+      {
+        "file": "tu-gimnasio-identidad-480.webp",
+        "width": 480,
+        "height": 480,
+        "sha256": "36eb5a818878baa8194dd62e10538405ce5dc48b9d0559f9b7415754d65926b7"
+      },
+      {
+        "file": "tu-gimnasio-identidad-768.webp",
+        "width": 768,
+        "height": 768,
+        "sha256": "bd1d0c5fc7db5e4a7ed71d502aca2837c0515f5a7e4179df11f77d50b0b0567d"
+      }
+    ]
   },
   "manifesto": {
     "png": "tu-gimnasio-actividades.png",
     "webp": "tu-gimnasio-actividades.webp",
     "width": 1600,
-    "height": 900
+    "height": 900,
+    "responsive": [
+      {
+        "file": "tu-gimnasio-actividades-480.webp",
+        "width": 480,
+        "height": 270,
+        "sha256": "c1cb58667414c72fd49cdcce958c5edad74cfeed66d4f1dc7884e9f9896559ea"
+      },
+      {
+        "file": "tu-gimnasio-actividades-800.webp",
+        "width": 800,
+        "height": 450,
+        "sha256": "45dcf4097de7b1b8cb51837df03880b2df1b7ade3acdcb095363a047dc58f5c5"
+      },
+      {
+        "file": "tu-gimnasio-actividades-1200.webp",
+        "width": 1200,
+        "height": 675,
+        "sha256": "05736361be6ae886271d1dfa9aa7e5332b75cf256ad9ed74300e0aa368568ad6"
+      }
+    ]
   },
   "schedule": {
     "archived": true,

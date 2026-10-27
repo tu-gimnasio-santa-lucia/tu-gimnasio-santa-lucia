@@ -1,5 +1,17 @@
 # Fuentes y verificaciones
 
+## Optimización web — 27/10/2026
+
+Doce grupos de código aprobados; 48 casos de navegador (24 generales y 24 de presentación) y cuatro mediciones de recursos/reloj aprobados. Manifiesto: f4de190435caa6f034a16eab442ec7306bd3fdabba7b8fef7bec6325b5081e3b. Capturas de móvil/escritorio revisadas antes del cierre. Se conservan contactos, horarios, pausa, datos, QR, identidad, contador penúltimo y bases último.
+
+390 px: dos imágenes de historia/cierre bajan de 1.347.430 a 275.602 bytes en DPR 1 (79,55 %) y a 626.234 en DPR 2 (53,52 %). Fuente seleccionada al cargar Anton: 170.812 a 57.412 bytes (66,39 %). En cinco ticks, escrituras de años estables 15→0 y consultas 30→0. Cambio de 29 a 30 al cruzar medianoche argentina del 04/11/2026 comprobado en los tres lugares visibles. Son mediciones locales de archivos elegidos, no LCP de usuarios reales ni garantías de SEO.
+
+El marcado del propio negocio ya no emite aggregateRating; valoración visible y enlace permanecen según la guía de Google. El preview local rechaza autoridades/orígenes ajenos, POST y rutas privadas, y soporta HEAD/WOFF2. No se atribuyen esas cabeceras a Pages.
+
+Pillow 12.3.0 disponible en el runtime tenía avisos publicados; se preparó un entorno privado del proyecto con Pillow 13.0.0, FontTools 4.67.0 y Brotli 1.2.1. Consulta OSV final sin avisos para esas versiones; Node mantiene su bloqueo y seis dependencias de desarrollo, ninguna de producción. No se actualizaron runtimes globales ni proyectos ajenos. El cambio de Pillow no alteró los derivados generados; sus bytes y originales se comprobaron.
+
+Evidencia completa, estado de publicación y respaldos: registro local de esta optimización, fuera del sitio. Fuente técnica: RENDIMIENTO.md. Los resultados inferiores son históricos respecto de este build.
+
 ## Publicación comprobada — 25/10/2026
 
 Fuente de la implementación: f6fbde3f10e2f8768be0f999245156123aa297b5. Publicación generada: bc37f1588749df2654138be5c30e19ad0b6cac01. Se usó scripts/publish.mjs, sin force-push, con respaldo y QA del build exacto. **17 archivos públicos HTTP 200 y SHA-256 coincidentes**, incluido el manifiesto f852d353f700ff9a0626aef0c28b29cd258c4ccc0d3bf26c0fa607edeaf9ab84.

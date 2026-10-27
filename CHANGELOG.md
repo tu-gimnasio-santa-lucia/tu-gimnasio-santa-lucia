@@ -1,5 +1,14 @@
 # Correcciones posteriores — 24/10/2026, sin publicar
 
+## 2026-10-27 — Recursos, seguridad y verificación de publicación
+
+- Imágenes responsive y fuente WOFF2, conservando originales, alternativas y licencia.
+- Nodos/calendario del reloj reutilizados y escrituras sólo cuando cambia el valor; aniversario argentino preservado.
+- Valoración visible conservada; aggregateRating propio retirado del JSON-LD y entidad con ID estable.
+- Preview local restringido por autoridad/origen/método y archivos; pruebas negativas añadidas.
+- Medición reproducible de cuatro escenarios, control de aniversario y puerta de publicación que rechaza informes obsoletos/incompletos.
+- Preparación de assets con versiones fijadas en un entorno privado del proyecto. Sin dependencias de producción, servicios o agentes nuevos.
+
 ## 2026-10-25 — Segunda etapa
 
 Presentación única del logo/años hacia cabecera, cancelable y sin bloqueo, con alternativas por preferencias o demora; revelado suave por grupos. Profe Martita antes de Profe Titi en presentación general. Nueve grupos y 48 casos aprobados; auditoría sin vulnerabilidades. Contador, horarios, contactos, QR e identidad conservados. Gestión externa de Maps registrada fuera del sitio público.

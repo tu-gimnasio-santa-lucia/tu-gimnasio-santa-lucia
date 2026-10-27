@@ -5,6 +5,9 @@ import { readFile, mkdtemp, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
+import { request as httpRequest } from 'node:http';
+import { startPreview } from '../scripts/preview.mjs';
+import { validateReleaseReports } from '../scripts/release-check.mjs';
 import {
   ROOT,
   buildSite,
@@ -35,6 +38,95 @@ test('escapes HTML data and prevents a JSON-LD closing-tag injection', () => {
   assert.equal(escapeHtml('<img src=x onerror="x">'), '&lt;img src=x onerror=&quot;x&quot;&gt;');
   assert.ok(!serializeJsonLd({ text: '</script><script>alert(1)</script>' }).includes('</script>'));
   assert.throws(() => renderTemplate('{{undefined_key}}', {}), /sin definir/);
+});
+
+test('release requires browser and complete performance evidence from the exact build', () => {
+  const manifest = Buffer.from('release fixture');
+  const digest = createHash('sha256').update(manifest).digest('hex');
+  const browser = { status: 'passed', buildManifestSha256: digest };
+  const performance = {
+    status: 'passed',
+    mode: 'verify',
+    buildManifestSha256: digest,
+    cases: [1, 2, 3, 4],
+    errors: [],
+  };
+  assert.equal(validateReleaseReports(browser, performance, manifest), digest);
+  assert.throws(() =>
+    validateReleaseReports({ ...browser, buildManifestSha256: 'previous' }, performance, manifest),
+  );
+  for (const changed of [
+    null,
+    { ...performance, mode: 'baseline' },
+    { ...performance, cases: [1] },
+    { ...performance, status: 'failed' },
+    { ...performance, buildManifestSha256: 'previous' },
+  ])
+    assert.throws(() => validateReleaseReports(browser, changed, manifest));
+});
+
+test('rejects unsafe responsive/font paths and inconsistent candidate dimensions', async () => {
+  const assets = JSON.parse(await readFile(path.join(ROOT, 'assets/manifest.json')));
+  for (const mutate of [
+    (data) => {
+      data.fonts.display.woff2.file = '../private.woff2';
+    },
+    (data) => {
+      data.identity.responsive[0].file = '../private.webp';
+    },
+    (data) => {
+      data.identity.responsive[0].sha256 = 'not-a-hash';
+    },
+    (data) => {
+      data.identity.responsive[0].height += 1;
+    },
+    (data) => {
+      data.identity.responsive[1].width = data.identity.responsive[0].width;
+    },
+  ]) {
+    const changed = structuredClone(assets);
+    mutate(changed);
+    assert.throws(() => validateAssetManifest(changed));
+  }
+});
+
+test('local preview rejects foreign authorities/origins, writes and private paths', async () => {
+  const { server, url } = await startPreview(0);
+  const request = (route, method = 'GET', headers = {}) =>
+    new Promise((resolve, reject) => {
+      const req = httpRequest(new URL(route, url), { method, headers }, (response) => {
+        const chunks = [];
+        response.on('data', (chunk) => chunks.push(chunk));
+        response.on('end', () =>
+          resolve({
+            status: response.statusCode,
+            headers: response.headers,
+            body: Buffer.concat(chunks),
+          }),
+        );
+      });
+      req.on('error', reject);
+      req.end();
+    });
+  try {
+    assert.equal((await request('/', 'GET', { Host: 'attacker.invalid' })).status, 403);
+    assert.equal((await request('/', 'GET', { Origin: 'https://attacker.invalid' })).status, 403);
+    const post = await request('/', 'POST');
+    assert.equal(post.status, 405);
+    assert.equal(post.headers.allow, 'GET, HEAD');
+    for (const route of ['/.git/config', '/data/business.json', '/src/site.js'])
+      assert.equal((await request(route)).status, 404);
+    assert.equal((await request('/%zz')).status, 400);
+    const head = await request('/', 'HEAD');
+    assert.equal(head.status, 200);
+    assert.equal(head.body.length, 0);
+    assert.equal(head.headers['cross-origin-resource-policy'], 'same-origin');
+    const font = await request('/anton-regular.woff2');
+    assert.equal(font.status, 200);
+    assert.equal(font.headers['content-type'], 'font/woff2');
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 });
 test('rejects unsafe links, duplicate activities and invalid real-business inputs', async () => {
   const business = JSON.parse(await readFile(path.join(ROOT, 'data/business.json')));
@@ -116,9 +208,13 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
   const expected = createHash('sha256').update(jsonLd).digest('base64');
   assert.ok(html.includes('sha256-' + expected));
   const business = JSON.parse(await readFile(path.join(ROOT, 'data/business.json')));
-  assert.equal(
-    JSON.parse(jsonLd).aggregateRating.reviewCount,
-    String(business.googleRating.reviewCount),
+  assert.ok(
+    !('aggregateRating' in JSON.parse(jsonLd)),
+    'Do not mark up self-serving business ratings.',
+  );
+  assert.ok(
+    html.includes(`${business.googleRating.reviewCount} opiniones en Google`),
+    'Keep the visible, sourced rating.',
   );
   assert.equal(
     JSON.parse(jsonLd).address.streetAddress,
@@ -126,6 +222,14 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
     'Los datos estructurados conservan la dirección confirmada.',
   );
   const structured = JSON.parse(jsonLd);
+  assert.equal(
+    structured['@id'],
+    'https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/#gimnasio',
+  );
+  assert.ok(
+    html.includes('Cifras al ' + business.anniversary.snapshotDate.split('-').reverse().join('/')),
+  );
+  assert.match(html, /srcset="[^\"]+480w[^\"]+768w[^\"]+1254w" sizes=/);
   assert.doesNotMatch(html, /reapertura|próxima apertura|apertura anunciada|3 de noviembre/i);
   assert.doesNotMatch(structured.description, /apertura|inauguraci[oó]n/i);
   assert.deepEqual(

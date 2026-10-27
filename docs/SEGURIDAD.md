@@ -9,6 +9,10 @@ La web es estática y pública. No gestiona usuarios, datos de socios, contrase�
 - Fuentes y documentación en main; sólo artefactos permitidos en site. Respaldos y perfiles del navegador permanecen fuera del repositorio público.
 - Publicación con historial normal y sin force-push. Conservar la protección de site y revisar accesos a GitHub.
 
+Revisión del 27/10/2026: el preview de loopback acepta únicamente hosts locales, origen propio y métodos GET/HEAD. Deniega autoridades/orígenes ajenos, escrituras y rutas de código/configuración; errores de URL se responden como 400. Sus cabeceras locales incluyen aislamiento de recursos y `frame-ancestors 'none'`; no atribuir esas cabeceras al alojamiento público. Las variantes y WOFF2 se verifican por SHA-256 antes del build.
+
+La preparación opcional de imágenes utiliza Pillow 13.0.0 en un entorno privado del proyecto: la versión 12.3.0 del runtime compartido tenía avisos que no forman parte del sitio público. No se actualizó ese runtime ni recursos de otros proyectos. FontTools/Brotli/Pillow fijados se consultaron en OSV el 27/10/2026 sin hallazgos para las versiones elegidas; una consulta puntual no garantiza ausencia de vulnerabilidades futuras. Ver [requisitos y regeneración](RENDIMIENTO.md).
+
 ## Límites reales
 
 GitHub Pages controla las cabeceras HTTP. No se deben crear archivos .htaccess, fingir cabeceras con metadatos que el navegador no admite o afirmar que se controla toda la configuración del servidor. `frame-ancestors`, HSTS y otras políticas de cabecera dependen del alojamiento, no de una etiqueta meta. La CSP de la web no equivale a una garantía contra todos los ataques.

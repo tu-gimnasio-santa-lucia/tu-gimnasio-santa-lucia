@@ -1,5 +1,7 @@
 # Tu Gimnasio — sitio oficial
 
+**Optimización del 27/10/2026:** recursos responsive, fuente WOFF2 con TTF de respaldo, reloj sin escrituras repetidas y marcado SEO corregido. Doce grupos, 48 casos de navegador y cuatro mediciones aprobados. [Comparativa y mantenimiento](docs/RENDIMIENTO.md). Las cifras de 17 archivos de entregas anteriores describen esas versiones; el manifiesto generado define el paquete actual.
+
 **Segunda etapa — 25/10/2026:** publicada y comprobada, con presentación rápida del logo/años hacia cabecera y movimiento suave, cancelable y opcional. Nueve grupos y 48 casos aprobados. Se preservan consultas, contador penúltimo, cierre original y ausencia de anuncio de reapertura. Presentación: Profe Martita y Profe Titi. Los 17 archivos públicos coinciden por SHA-256 con el build aprobado. Las esperas inferiores del 24/10 son históricas.
 
 Web informativa de Tu Gimnasio, Santa Lucía, Corrientes. Conserva la identidad original y “Desde 1996”.
@@ -26,6 +28,7 @@ La rama **main** contiene toda la fuente. La rama **site** sólo contiene la pub
 - [Arquitectura, contratos y nombres de funciones](docs/ARQUITECTURA.md).
 - [Edición, pruebas y publicación](docs/MANTENIMIENTO.md).
 - [Identidad visual](DESIGN.md).
+- [Rendimiento, recursos y mediciones](docs/RENDIMIENTO.md).
 - [Seguridad y sus límites](docs/SEGURIDAD.md).
 - [Fuentes y verificaciones](docs/VERIFICACION.md).
 - [Recuperación y traslado a otra PC](docs/RECUPERACION.md).

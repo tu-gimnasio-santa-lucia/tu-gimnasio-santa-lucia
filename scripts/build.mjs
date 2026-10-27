@@ -39,6 +39,14 @@ export function validateAssetManifest(assets) {
     throw new Error('Fuente local o licencia insegura.');
   names.add(font.file);
   names.add(font.license);
+  if (font.woff2) {
+    if (
+      !/^[a-z][a-z0-9-]*\.woff2$/.test(font.woff2.file) ||
+      !/^[a-f0-9]{64}$/.test(font.woff2.sha256)
+    )
+      throw new Error('Fuente WOFF2 insegura.');
+    names.add(font.woff2.file);
+  }
   for (const key of [
     'logo',
     'identity',
@@ -63,6 +71,25 @@ export function validateAssetManifest(assets) {
       if (!/^[a-z][a-z0-9-]*\.(png|jpg|webp)$/.test(name))
         throw new Error('Ruta de recurso insegura.');
       names.add(name);
+    }
+    if (image.responsive !== undefined) {
+      if (!Array.isArray(image.responsive) || !image.webp || image.archived)
+        throw new Error('Variantes de imagen inválidas.');
+      let previousWidth = 0;
+      for (const variant of image.responsive) {
+        if (
+          !/^[a-z][a-z0-9-]*\.webp$/.test(variant.file) ||
+          names.has(variant.file) ||
+          !Number.isInteger(variant.width) ||
+          variant.width <= previousWidth ||
+          variant.width >= image.width ||
+          variant.height !== Math.round((image.height * variant.width) / image.width) ||
+          !/^[a-f0-9]{64}$/.test(variant.sha256)
+        )
+          throw new Error('Variante responsive insegura o incoherente.');
+        names.add(variant.file);
+        previousWidth = variant.width;
+      }
     }
   }
   return names;
@@ -94,6 +121,13 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     assets.fonts.display.sha256
   )
     throw new Error('La fuente no coincide con su versión verificada.');
+  const derivatives = [
+    assets.fonts.display.woff2,
+    ...Object.values(assets).flatMap((image) => image.responsive || []),
+  ].filter(Boolean);
+  for (const resource of derivatives)
+    if (sha256(await readFile(path.join(ROOT, 'assets', resource.file))) !== resource.sha256)
+      throw new Error('Recurso derivado alterado: ' + resource.file);
   if (
     (await readdir(path.join(ROOT, 'assets'))).some(
       (name) => name !== 'manifest.json' && !assetFiles.has(name),
@@ -122,6 +156,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const jsonLd = serializeJsonLd({
     '@context': 'https://schema.org',
     '@type': 'ExerciseGym',
+    '@id': new URL('#gimnasio', project.publicUrl).href,
     name: business.name,
     foundingDate: business.foundedDate,
     url: project.publicUrl,
@@ -143,11 +178,6 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
       latitude: business.relocation.maps.latitude,
       longitude: business.relocation.maps.longitude,
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: String(business.googleRating.value),
-      reviewCount: String(business.googleRating.reviewCount),
-    },
     openingHoursSpecification: generalSchedule.periods.map((period) => ({
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: generalSchedule.days,
@@ -160,7 +190,17 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const csp = `default-src 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-${jsonLdHash}'; font-src 'self'; connect-src 'none'`;
   function picture(key, className, alt, eager = false) {
     const image = assets[key];
-    return `<picture>${image.webp ? `<source srcset="${escapeHtml(image.webp)}" type="image/webp">` : ''}<img class="${escapeHtml(className)}" src="${escapeHtml(image.png || image.jpeg)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}></picture>`;
+    const srcset = image.responsive?.length
+      ? [
+          ...image.responsive.map((variant) => `${variant.file} ${variant.width}w`),
+          `${image.webp} ${image.width}w`,
+        ].join(', ')
+      : image.webp;
+    // Conservative width estimate for these two lazy artwork slots; CSS remains the layout authority.
+    const sizes = image.responsive?.length
+      ? ' sizes="(max-width: 620px) calc(100vw - 2.2rem), 560px"'
+      : '';
+    return `<picture>${image.webp ? `<source srcset="${escapeHtml(srcset)}"${sizes} type="image/webp">` : ''}<img class="${escapeHtml(className)}" src="${escapeHtml(image.png || image.jpeg)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}></picture>`;
   }
   const activityCards = business.activities
     .map((activity) => {
@@ -203,6 +243,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     anniversary_years: business.anniversary.years,
     anniversary_year: business.anniversary.referenceYear,
     anniversary_metrics: anniversaryMetrics,
+    anniversary_snapshot_label: business.anniversary.snapshotDate.split('-').reverse().join('/'),
     maps_notice: mapNotice ? `<p class="maps-notice">${escapeHtml(mapNotice)}</p>` : '',
     maps_faq_title: mapNotice ? '¿Por qué Maps muestra San Martín?' : '¿Cómo llego al gimnasio?',
     maps_faq_text:

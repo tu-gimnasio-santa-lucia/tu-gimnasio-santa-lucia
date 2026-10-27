@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { ROOT, sha256 } from './build.mjs';
 import { createBackup } from './backup.mjs';
+import { validateReleaseReports } from './release-check.mjs';
 
 const git = (...args) =>
   execFileSync('git', args, {
@@ -40,8 +41,8 @@ const backup = await createBackup();
 execFileSync(process.execPath, ['scripts/check.mjs'], { cwd: ROOT, stdio: 'inherit' });
 const manifestBytes = await readFile(path.join(ROOT, 'dist/build-manifest.json'));
 const qa = JSON.parse(await readFile(path.join(ROOT, 'artifacts/qa-report.json')));
-if (qa.status !== 'passed' || qa.buildManifestSha256 !== sha256(manifestBytes))
-  throw new Error('Falta una revisión de navegador aprobada del build exacto.');
+const performance = JSON.parse(await readFile(path.join(ROOT, 'artifacts/performance-after.json')));
+validateReleaseReports(qa, performance, manifestBytes);
 const staging = await mkdtemp(path.join(tmpdir(), 'tu-gimnasio-publicacion-'));
 const checkout = path.join(staging, 'site');
 git('worktree', 'add', '--detach', checkout, `origin/${project.publicationBranch}`);

@@ -10,6 +10,8 @@ for (const file of [
   'scripts/backup.mjs',
   'scripts/publish.mjs',
   'scripts/browser-check.mjs',
+  'scripts/performance-check.mjs',
+  'scripts/release-check.mjs',
 ]) {
   execFileSync(process.execPath, ['--check', file], { cwd: ROOT, stdio: 'inherit' });
 }
