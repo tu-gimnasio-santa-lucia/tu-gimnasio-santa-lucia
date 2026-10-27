@@ -1,4 +1,10 @@
 /** Shared calendar/elapsed-time calculation. Midnight is a convention, not a known opening hour. */
+const argentinaCalendar = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Argentina/Buenos_Aires',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
 export function calculateElapsed(foundedDate, now = new Date()) {
   const start = new Date(`${foundedDate}T00:00:00-03:00`);
   if (
@@ -9,12 +15,7 @@ export function calculateElapsed(foundedDate, now = new Date()) {
   )
     throw new Error('Fecha de fundación o reloj inválidos.');
   const parts = Object.fromEntries(
-    new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'America/Argentina/Buenos_Aires',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
+    argentinaCalendar
       .formatToParts(now)
       .filter((part) => part.type !== 'literal')
       .map((part) => [part.type, Number(part.value)]),

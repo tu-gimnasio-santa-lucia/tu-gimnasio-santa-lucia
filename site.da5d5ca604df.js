@@ -1,4 +1,4 @@
-import { calculateElapsed } from './elapsed-time.a7c3b2d95282.js';
+import { calculateElapsed } from './elapsed-time.0915083a0e92.js';
 /** Optional, independent enhancements. Facts and navigation always work without JavaScript. */
 (() => {
   'use strict';
@@ -10,22 +10,30 @@ import { calculateElapsed } from './elapsed-time.a7c3b2d95282.js';
     const status = document.getElementById('clock-status');
     if (!clock || !button || !status) return;
     const format = new Intl.NumberFormat('es-AR');
+    const unitNodes = ['days', 'hours', 'minutes', 'seconds'].map((unit) => ({
+      unit,
+      elements: [
+        ...clock.querySelectorAll(`[data-time-unit="${unit}"], [data-time-accessible="${unit}"]`),
+      ],
+    }));
+    const yearNodes = [...document.querySelectorAll('[data-elapsed-years]')];
+    const currentYearNodes = [...document.querySelectorAll('[data-current-year]')];
     let paused = false;
     let timer;
     function updateElapsed() {
       const elapsed = calculateElapsed(clock.dataset.foundedDate);
-      for (const unit of ['days', 'hours', 'minutes', 'seconds']) {
+      for (const { unit, elements } of unitNodes) {
         const value = format.format(elapsed[unit]);
-        for (const element of clock.querySelectorAll(
-          `[data-time-unit="${unit}"], [data-time-accessible="${unit}"]`,
-        ))
+        for (const element of elements)
           if (element.textContent !== value) element.textContent = value;
       }
-      document.querySelectorAll('[data-elapsed-years]').forEach((element) => {
-        element.textContent = format.format(elapsed.years);
+      const years = format.format(elapsed.years);
+      yearNodes.forEach((element) => {
+        if (element.textContent !== years) element.textContent = years;
       });
-      document.querySelectorAll('[data-current-year]').forEach((element) => {
-        element.textContent = String(elapsed.currentYear);
+      const currentYear = String(elapsed.currentYear);
+      currentYearNodes.forEach((element) => {
+        if (element.textContent !== currentYear) element.textContent = currentYear;
       });
     }
     function scheduleClock() {
