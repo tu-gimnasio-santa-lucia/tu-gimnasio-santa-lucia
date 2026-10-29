@@ -1,0 +1,16 @@
+# Tu Gimnasio
+
+> Gimnasio de Santa Lucía, Corrientes, Argentina. Desde 1996. Actividades, horarios y consultas con cada profe.
+
+Las franjas y los docentes se consultan en la página oficial. En spinning sólo se publica la hora de inicio: no inferir la duración. Las cuotas se consultan con el profe. La información del sitio no es un anuncio de reapertura ni una confirmación de apertura efectiva.
+
+## Información del gimnasio
+
+- [Sitio oficial](https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/): identidad, actividades, horarios y contactos.
+- [Actividades y profes](https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/#actividades): Musculación, Spinning, Gimnasia grupal, Pilates en colchoneta.
+- [Horarios y ubicación](https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/#horarios): franjas de atención y acceso a las indicaciones de llegada.
+- [Historia](https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/#historia): identidad del gimnasio y lemas originales.
+
+## Optional
+
+- [Instagram oficial](https://www.instagram.com/tugimnasio1/): novedades del gimnasio.

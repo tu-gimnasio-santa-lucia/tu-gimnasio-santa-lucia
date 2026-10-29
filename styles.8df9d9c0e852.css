@@ -140,9 +140,11 @@ h2 {
   background: var(--yellow);
   color: var(--navy);
   font-weight: 700;
+  clip-path: inset(50%);
 }
 .skip-link:focus {
   top: 1rem;
+  clip-path: none;
 }
 .section-note {
   margin-bottom: 1.4rem;
@@ -157,7 +159,7 @@ h2 {
   top: 0;
   z-index: 50;
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
   align-items: center;
   gap: 1.5rem;
   padding: 0.85rem var(--gutter);
@@ -233,6 +235,7 @@ h2 {
   opacity: 0;
 }
 .site-header nav {
+  min-width: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -472,6 +475,13 @@ h2 {
   font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.4;
+}
+.anniversary-origin strong {
+  display: block;
+  font-family: var(--display-font);
+  font-size: clamp(4rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1.1;
 }
 .time-grid {
   display: grid;
@@ -724,6 +734,7 @@ h2 {
   font-size: 0.4em;
 }
 .reviews-score > span {
+  display: block;
   font-size: 0.85rem;
   color: var(--light-ink);
 }
@@ -1026,7 +1037,11 @@ footer {
   }
 }
 @media (max-width: 1100px) {
+  :root {
+    --header-offset: 1.5rem;
+  }
   .site-header {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -1259,7 +1274,19 @@ footer {
     transition: none !important;
   }
 }
+html[data-reduced-effects] *,
+html[data-reduced-effects] *::before,
+html[data-reduced-effects] *::after {
+  animation: none !important;
+  transition: none !important;
+}
 @media (forced-colors: active) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
   .brand-logo,
   .hero-logo {
     mix-blend-mode: normal;
@@ -1348,6 +1375,18 @@ footer {
   .questions details p {
     display: block;
   }
+  /* Closed native disclosures must retain their answers on paper, too. */
+  details::details-content {
+    content-visibility: visible;
+  }
+  .session-information h4 {
+    color: black;
+  }
+  #toggle-clock,
+  #share-status,
+  #manual-copy {
+    display: none !important;
+  }
   .qr-card {
     max-width: 200px;
   }
@@ -1359,4 +1398,64 @@ footer {
   .qr-card {
     break-inside: avoid;
   }
+}
+
+/* A fixed header must not consume a landscape screen. */
+@media screen and (max-height: 500px) {
+  :root {
+    --header-offset: 1.5rem;
+  }
+  .site-header {
+    position: relative;
+  }
+}
+
+/* Public 404: shared identity, no JavaScript or motion required. */
+.error-page {
+  min-height: 100vh;
+  background: var(--navy);
+  color: var(--white);
+}
+.error-panel {
+  width: min(100% - 2.2rem, 46rem);
+  margin-inline: auto;
+  padding-block: clamp(2rem, 6vh, 5rem);
+}
+.error-brand {
+  display: block;
+  width: 7rem;
+  margin-bottom: 2rem;
+}
+.error-code {
+  margin: 0;
+  color: var(--yellow);
+  font: 400 clamp(5rem, 18vw, 9rem) / 1 var(--display-font);
+}
+.error-panel h1 {
+  margin-block: 1rem;
+  font: 400 clamp(2rem, 7vw, 3.8rem) / 1.12 var(--display-font);
+}
+.error-panel > p:not(.error-code) {
+  max-width: 40rem;
+  color: var(--light-ink);
+}
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-block: 2rem;
+}
+.error-activities {
+  display: inline-block;
+  padding-block: 0.8rem;
+  color: var(--yellow);
+}
+.error-activities:hover {
+  text-decoration-thickness: 0.15em;
+}
+.error-panel .error-motto {
+  border-top: 1px solid currentColor;
+  padding-top: 1.25rem;
+  font-weight: 700;
 }
