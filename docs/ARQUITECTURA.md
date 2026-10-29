@@ -1,5 +1,17 @@
 # Arquitectura y mapa del código
 
+## Revisión final local — 29/10/2026
+
+Las alternativas `[data-static-age]` contienen el año de fundación; `[data-live-age]` sólo se revela después de un cálculo válido y conserva tres nodos `[data-elapsed-years]`. No se depende del año del build para mostrar una antigüedad sin fecha. El snapshot del contador sigue fechado desde los datos. La entrada de marca espera sus promesas y diferencia cancelación esperada de errores inesperados; las salidas y tiempos permanecen.
+
+`browser-check.mjs` añade controles de cabecera al 200 %, espaciado de texto, recorrido de foco, respuestas impresas, colores forzados y ahorro de datos. Prueba las tres edades en una zona del dispositivo distinta de Argentina y el aniversario siguiente. Se conservan las verificaciones previas. [Contrato y guía breve](ESTABILIDAD.md).
+
+## Contratos de calidad — 29/10/2026, fuente local
+
+`scripts/quality-gates.mjs` inspecciona el mapa de archivos antes de escribir el build. No necesita paquetes externos. `scripts/seo-check.mjs` guarda evidencia con la huella del manifiesto; `scripts/check.mjs` incluye sus pruebas de regresión. La puerta de publicación habitual hereda estos controles a través del build, además del navegador/rendimiento del mismo paquete.
+
+`src/404.template.html` se genera con recursos y regreso anclados al prefijo público, sin scripts y con noindex. La vista local sirve el mismo documento con HTTP 404 en rutas desconocidas y permite probar el prefijo real de GitHub Pages. `llms.txt` se genera desde datos canónicos como índice breve y se enlaza desde la portada. La 404 queda fuera del sitemap. Detalles y límites en [calidad web](CALIDAD-WEB.md).
+
 ## Revisión 27/10/2026 — arquitectura 5
 
 La arquitectura estática existente se conserva. Nuevos contratos: fonts.display.woff2 y variantes responsive de identity/manifesto con rutas, dimensiones y SHA-256. Node genera srcset/sizes y valida integridad; los PNG/TTF originales siguen como alternativas. Python sólo prepara derivados versionados: no es dependencia de ejecución ni del build normal.

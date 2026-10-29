@@ -33,6 +33,8 @@ const report = {
   fontChecks: [],
   introChecks: [],
   introSafeguards: [],
+  notFoundChecks: [],
+  durabilityChecks: [],
 };
 const definitions = [
   { name: 'chromium', type: chromium },
@@ -41,10 +43,225 @@ const definitions = [
   { name: 'edge', type: chromium, channel: 'msedge' },
 ];
 
+/** Regressions found in the final review: enlarged header, spacing, print and static ages. */
+async function checkDurability(browser, definition) {
+  const context = await browser.newContext({ reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  try {
+    await page.goto(url);
+    for (const viewport of [
+      { width: 320, height: 800 },
+      { width: 844, height: 390 },
+      { width: 1024, height: 768 },
+      { width: 1280, height: 800 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.evaluate(() => {
+        document.documentElement.style.fontSize = '200%';
+      });
+      const dimensions = await page.evaluate(() => {
+        const header = document.querySelector('.site-header');
+        return {
+          overflow: document.documentElement.scrollWidth > innerWidth + 1,
+          headerHeight: header.getBoundingClientRect().height,
+          position: getComputedStyle(header).position,
+        };
+      });
+      assert.equal(dimensions.overflow, false, 'Texto ampliado sin desborde.');
+      if (dimensions.position === 'sticky')
+        assert.ok(
+          dimensions.headerHeight < viewport.height / 2,
+          'La cabecera no tapa la pantalla.',
+        );
+      else assert.equal(dimensions.position, 'relative');
+    }
+    // WCAG text-spacing overrides, separate from enlarged text and without injecting a stylesheet.
+    for (const width of [320, 768, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.evaluate(() => {
+        document.documentElement.style.fontSize = '100%';
+        for (const element of document.querySelectorAll(
+          'body, p, a, button, h1, h2, h3, h4, summary, small, dt, dd',
+        )) {
+          element.style.lineHeight = '1.5';
+          element.style.letterSpacing = '0.12em';
+          element.style.wordSpacing = '0.16em';
+          if (element.tagName === 'P') element.style.marginBottom = '2em';
+        }
+      });
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+      assert.ok(await page.locator('#actividad-pilates .teacher-contact').isVisible());
+    }
+    await page.reload();
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = '200%';
+    });
+    // Keyboard traversal checks actual focused controls, including the enlarged desktop header.
+    if (definition.name === 'webkit') await page.locator('.skip-link').focus();
+    for (let index = 0; index < 60; index++) {
+      await page.keyboard.press('Tab');
+      // WebKit scrolls native summary focus asynchronously. Inspect the settled viewport,
+      // rather than clamping a stale off-screen rectangle to the header's top-left pixel.
+      await page.evaluate(
+        () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+      );
+      assert.equal(
+        await page.evaluate(() => {
+          const element = document.activeElement;
+          if (!element || element === document.body || element.closest('.site-header, .skip-link'))
+            return false;
+          const box = element.getBoundingClientRect();
+          const point = document.elementFromPoint(
+            Math.max(1, box.x + box.width / 2),
+            Math.max(1, box.y + box.height / 2),
+          );
+          return Boolean(point?.closest('.site-header'));
+        }),
+        false,
+        'El foco no debe quedar bajo la cabecera.',
+      );
+    }
+    await page.reload();
+    await page.emulateMedia({ media: 'print' });
+    assert.ok(await page.locator('#toggle-clock').isHidden());
+    assert.ok(
+      await page
+        .locator('details p')
+        .evaluateAll((elements) =>
+          elements.every((element) => element.checkVisibility({ contentVisibilityAuto: true })),
+        ),
+      'Las respuestas cerradas también se imprimen.',
+    );
+    assert.ok(
+      await page
+        .locator('.session-information h4')
+        .evaluateAll((elements) =>
+          elements.every((element) => getComputedStyle(element).color === 'rgb(0, 0, 0)'),
+        ),
+    );
+    if (definition.name === 'chromium') {
+      await page
+        .locator('.visit')
+        .screenshot({ path: path.join(artifacts, 'impresion-ubicacion.png') });
+      await page
+        .locator('.questions')
+        .screenshot({ path: path.join(artifacts, 'impresion-preguntas.png') });
+    }
+    await page.emulateMedia({
+      media: 'screen',
+      forcedColors: 'active',
+      reducedMotion: 'no-preference',
+    });
+    await page.reload();
+    await page.locator('#aniversario').scrollIntoViewIfNeeded();
+    assert.equal(await page.evaluate(() => document.getAnimations().length), 0);
+    assert.equal(await page.locator('.brand-intro').count(), 0);
+    assert.deepEqual(errors, []);
+  } finally {
+    await context.close();
+  }
+  const limited = await browser.newContext({ reducedMotion: 'no-preference' });
+  try {
+    await limited.addInitScript(() => {
+      Object.defineProperty(navigator, 'connection', {
+        configurable: true,
+        value: { saveData: true },
+      });
+    });
+    const page = await limited.newPage();
+    await page.goto(url);
+    await page.locator('#aniversario').scrollIntoViewIfNeeded();
+    assert.equal(await page.evaluate(() => document.getAnimations().length), 0);
+    assert.equal(await page.locator('.brand-intro').count(), 0);
+  } finally {
+    await limited.close();
+  }
+  report.durabilityChecks.push({
+    browser: definition.name,
+    status: 'passed',
+    enlargedText: [320, 844, 1024, 1280],
+    textSpacing: [320, 768, 1280],
+    keyboardAt200Percent: true,
+    printAnswers: true,
+    forcedColorsStatic: true,
+    saveDataStatic: true,
+  });
+}
+
+async function checkNotFound(browser, definition) {
+  for (const width of [320, 1280]) {
+    const context = await browser.newContext({
+      viewport: { width, height: 900 },
+      javaScriptEnabled: false,
+      reducedMotion: 'reduce',
+    });
+    try {
+      const page = await context.newPage();
+      const missingUrl = new URL(
+        new URL(project.publicUrl).pathname + 'carpeta/pagina-inexistente',
+        url,
+      ).href;
+      const errors = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() !== 'error') return;
+        // A 404 document is expected here; a failed stylesheet/image is still a defect.
+        if (message.location().url === missingUrl && /404/.test(message.text())) return;
+        errors.push(message.text());
+      });
+      page.on('response', (response) => {
+        if (response.status() >= 400 && response.url() !== missingUrl)
+          errors.push(`${response.status()} ${response.url()}`);
+      });
+      const response = await page.goto(missingUrl, {
+        waitUntil: 'networkidle',
+      });
+      assert.equal(response.status(), 404);
+      assert.equal(await page.locator('h1').count(), 1);
+      assert.equal(
+        await page.locator('meta[name="robots"]').getAttribute('content'),
+        'noindex,follow',
+      );
+      assert.equal(await page.locator('script').count(), 0);
+      assert.ok(await page.locator('.error-actions').isVisible());
+      assert.ok(
+        await page
+          .locator('.error-brand img')
+          .evaluate((image) => image.complete && image.naturalWidth > 0),
+      );
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+      if (definition.name === 'chromium')
+        await page.screenshot({
+          path: path.join(artifacts, `404-${width}.png`),
+          fullPage: true,
+          caret: 'initial',
+        });
+      await page.getByRole('link', { name: 'Volver al inicio', exact: true }).click();
+      assert.ok(await page.locator('#actividades').isVisible());
+      assert.deepEqual(errors, []);
+      report.notFoundChecks.push({
+        browser: definition.name,
+        width,
+        status: 'passed',
+        httpStatus: 404,
+        noJavaScript: true,
+      });
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 /** Exercise the real flight, then cancellation and progressive fallbacks in each engine. */
 async function checkBrandIntro(browser, definition) {
   for (const viewport of viewports) {
-    const context = await browser.newContext({ viewport, reducedMotion: 'no-preference' });
+    const context = await browser.newContext({
+      viewport,
+      reducedMotion: 'no-preference',
+    });
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
@@ -179,7 +396,10 @@ async function checkBrandIntro(browser, definition) {
     await completed();
     await running();
     await page.evaluate(() => {
-      Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+      Object.defineProperty(document, 'hidden', {
+        configurable: true,
+        value: true,
+      });
       document.dispatchEvent(new Event('visibilitychange'));
     });
     await completed();
@@ -228,7 +448,9 @@ async function checkBrandIntro(browser, definition) {
   } finally {
     await slow.close();
   }
-  const unsupported = await browser.newContext({ reducedMotion: 'no-preference' });
+  const unsupported = await browser.newContext({
+    reducedMotion: 'no-preference',
+  });
   try {
     await unsupported.addInitScript(() => {
       Element.prototype.animate = undefined;
@@ -510,7 +732,9 @@ try {
           await context.close();
         }
       }
+      await checkNotFound(browser, definition);
       await checkBrandIntro(browser, definition);
+      await checkDurability(browser, definition);
       const noScript = await browser.newContext({
         javaScriptEnabled: false,
         viewport: { width: 390, height: 844 },
@@ -520,6 +744,16 @@ try {
       assert.ok(await plain.locator('.hero-actions a').first().isVisible());
       assert.ok(await plain.locator('.qr-card a').isVisible());
       assert.ok(await plain.locator('#share-controls').isHidden());
+      assert.equal(await plain.locator('[data-static-age]').count(), 3);
+      for (const fallback of await plain.locator('[data-static-age]').all()) {
+        assert.ok(await fallback.isVisible());
+        assert.match(await fallback.textContent(), /1996/);
+      }
+      for (const age of await plain.locator('[data-elapsed-years]').all())
+        assert.ok(
+          await age.isHidden(),
+          'Una cifra de años sin fecha no debe quedar obsoleta sin JS.',
+        );
       await plain.locator('.questions summary').first().click();
       assert.equal(await plain.locator('.questions details').first().getAttribute('open'), '');
       assert.ok(
@@ -557,11 +791,21 @@ try {
         fixedFinalValues: 'passed',
       });
       await motionContext.close();
-      const clockContext = await browser.newContext({ reducedMotion: 'reduce' });
+      const clockContext = await browser.newContext({
+        reducedMotion: 'reduce',
+        timezoneId: 'Asia/Tokyo',
+      });
       const clockPage = await clockContext.newPage();
       await clockPage.clock.install({ time: new Date('2026-11-04T02:59:59Z') });
       await clockPage.goto(url);
       assert.equal(await clockPage.locator('[data-elapsed-years]').first().textContent(), '29');
+      assert.deepEqual(await clockPage.locator('[data-elapsed-years]').allTextContents(), [
+        '29',
+        '29',
+        '29',
+      ]);
+      for (const age of await clockPage.locator('[data-elapsed-years]').all())
+        assert.ok(await age.isVisible());
       const readSeconds = async () =>
         Number(
           (await clockPage.locator('[data-time-unit="seconds"]').textContent()).replaceAll('.', ''),
@@ -569,6 +813,11 @@ try {
       const beforeTick = await readSeconds();
       await clockPage.clock.fastForward(2100);
       assert.equal(await clockPage.locator('[data-elapsed-years]').first().textContent(), '30');
+      assert.deepEqual(await clockPage.locator('[data-elapsed-years]').allTextContents(), [
+        '30',
+        '30',
+        '30',
+      ]);
       assert.ok((await readSeconds()) > beforeTick);
       await clockPage.locator('#toggle-clock').click();
       const pausedValue = await readSeconds();
@@ -577,17 +826,43 @@ try {
       await clockPage.locator('#toggle-clock').click();
       assert.ok((await readSeconds()) >= pausedValue + 5);
       await clockPage.evaluate(() => {
-        Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+        Object.defineProperty(document, 'hidden', {
+          configurable: true,
+          value: true,
+        });
         document.dispatchEvent(new Event('visibilitychange'));
       });
       const hiddenValue = await readSeconds();
       await clockPage.clock.fastForward(5000);
       assert.equal(await readSeconds(), hiddenValue);
       await clockPage.evaluate(() => {
-        Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+        Object.defineProperty(document, 'hidden', {
+          configurable: true,
+          value: false,
+        });
         document.dispatchEvent(new Event('visibilitychange'));
       });
       assert.ok((await readSeconds()) >= hiddenValue + 5);
+      await clockPage.clock.setSystemTime(new Date('2027-05-01T12:00:00Z'));
+      await clockPage.clock.fastForward(1100);
+      assert.deepEqual(await clockPage.locator('[data-elapsed-years]').allTextContents(), [
+        '30',
+        '30',
+        '30',
+      ]);
+      await clockPage.clock.setSystemTime(new Date('2027-11-04T02:59:58Z'));
+      await clockPage.clock.fastForward(1100);
+      assert.deepEqual(await clockPage.locator('[data-elapsed-years]').allTextContents(), [
+        '30',
+        '30',
+        '30',
+      ]);
+      await clockPage.clock.fastForward(2100);
+      assert.deepEqual(await clockPage.locator('[data-elapsed-years]').allTextContents(), [
+        '31',
+        '31',
+        '31',
+      ]);
       await clockContext.close();
 
       // Simulate phones without Impact: load the local font and render the real page with it.
@@ -621,7 +896,10 @@ try {
       assert.ok(await fontPage.locator('.location-panel').isVisible());
       if (definition.name === 'chromium') {
         await fontPage.setViewportSize({ width: 390, height: 844 });
-        await fontPage.emulateMedia({ media: 'screen', forcedColors: 'active' });
+        await fontPage.emulateMedia({
+          media: 'screen',
+          forcedColors: 'active',
+        });
         assert.equal(
           await fontPage
             .locator('.hero-logo')
@@ -716,7 +994,9 @@ try {
     report.motionChecks.length === definitions.length &&
     report.fontChecks.length === definitions.length &&
     report.introChecks.length === definitions.length * viewports.length &&
-    report.introSafeguards.length === definitions.length
+    report.introSafeguards.length === definitions.length &&
+    report.durabilityChecks.length === definitions.length &&
+    report.notFoundChecks.length === definitions.length * 2
   )
     report.status = 'passed';
 } catch (error) {
@@ -730,6 +1010,7 @@ try {
         status: report.status,
         cases: report.browsers.length,
         introCases: report.introChecks.length,
+        notFoundCases: report.notFoundChecks.length,
         errors: report.errors,
       },
       null,

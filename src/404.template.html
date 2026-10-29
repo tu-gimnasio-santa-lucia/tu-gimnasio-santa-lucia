@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; base-uri 'none'; object-src 'none'; img-src 'self'; style-src 'self'; font-src 'self'; form-action 'none'"
+    />
+    <meta name="theme-color" content="#08084f" />
+    <title>Página no encontrada | {{name}}</title>
+    <meta
+      name="description"
+      content="Esta dirección no está disponible. Volvé al inicio de Tu Gimnasio para consultar actividades, horarios y contactos."
+    />
+    <link rel="icon" href="{{error_logo_path}}" />
+    <link
+      rel="stylesheet"
+      href="{{error_style_path}}"
+      integrity="{{style_integrity}}"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="error-page">
+    <main class="error-panel">
+      <a class="error-brand" href="{{home_path}}" aria-label="Volver al inicio de Tu Gimnasio">
+        <img
+          src="{{error_logo_path}}"
+          width="{{logo_width}}"
+          height="{{logo_height}}"
+          alt="Tu Gimnasio"
+        />
+      </a>
+      <p class="error-code">404</p>
+      <h1>Esta página no está disponible.</h1>
+      <p>
+        La dirección puede estar incompleta o haber cambiado. Volvé al inicio para encontrar las
+        actividades, los horarios y las consultas con tu profe.
+      </p>
+      <div class="error-actions">
+        <a class="button button-yellow" href="{{home_path}}">Volver al inicio</a>
+        <a class="error-activities" href="{{home_path}}#actividades">Ver actividades y horarios</a>
+      </div>
+      <p class="error-motto">{{motto_place}}</p>
+    </main>
+  </body>
+</html>

@@ -116,6 +116,15 @@ test('local preview rejects foreign authorities/origins, writes and private path
     assert.equal(post.headers.allow, 'GET, HEAD');
     for (const route of ['/.git/config', '/data/business.json', '/src/site.js'])
       assert.equal((await request(route)).status, 404);
+    const missing = await request('/tu-gimnasio-santa-lucia/carpeta/inexistente');
+    assert.equal(missing.status, 404);
+    assert.match(missing.headers['content-type'], /text\/html/);
+    assert.match(missing.body.toString(), /Esta página no está disponible/);
+    assert.match(missing.body.toString(), /href="\/tu-gimnasio-santa-lucia\/"/);
+    const missingHead = await request('/inexistente', 'HEAD');
+    assert.equal(missingHead.status, 404);
+    assert.equal(missingHead.body.length, 0);
+    assert.equal((await request('/tu-gimnasio-santa-lucia/')).status, 200);
     assert.equal((await request('/%zz')).status, 400);
     const head = await request('/', 'HEAD');
     assert.equal(head.status, 200);
@@ -229,6 +238,13 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
   assert.ok(
     html.includes('Cifras al ' + business.anniversary.snapshotDate.split('-').reverse().join('/')),
   );
+  assert.ok(
+    html.includes(
+      'Consultado el ' + business.googleRating.verifiedAt.split('-').reverse().join('/'),
+    ),
+  );
+  assert.ok(html.includes('Google Maps puede mostrar esta calle como'));
+  assert.ok(!html.includes('La actualización del nombre está en trámite.'));
   assert.match(html, /srcset="[^\"]+480w[^\"]+768w[^\"]+1254w" sizes=/);
   assert.doesNotMatch(html, /reapertura|próxima apertura|apertura anunciada|3 de noviembre/i);
   assert.doesNotMatch(structured.description, /apertura|inauguraci[oó]n/i);
@@ -401,6 +417,9 @@ test('directions retain the verified business identity instead of resolving a ne
 test('calendar anniversary uses Argentina midnight and elapsed totals handle leap years', () => {
   assert.equal(calculateElapsed('1996-11-04', new Date('2026-11-04T02:59:59Z')).years, 29);
   assert.equal(calculateElapsed('1996-11-04', new Date('2026-11-04T03:00:00Z')).years, 30);
+  assert.equal(calculateElapsed('1996-11-04', new Date('2027-05-01T12:00:00Z')).years, 30);
+  assert.equal(calculateElapsed('1996-11-04', new Date('2027-11-04T02:59:59Z')).years, 30);
+  assert.equal(calculateElapsed('1996-11-04', new Date('2027-11-04T03:00:00Z')).years, 31);
   const start = calculateElapsed('1996-11-04', new Date('1996-11-04T03:01:01Z'));
   assert.equal(start.seconds, 61);
   assert.equal(start.minutes, 1);

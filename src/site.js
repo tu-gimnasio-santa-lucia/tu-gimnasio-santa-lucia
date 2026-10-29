@@ -3,6 +3,8 @@ import { calculateElapsed } from './elapsed-time.js';
 (() => {
   'use strict';
 
+  if (navigator.connection?.saveData) document.documentElement.dataset.reducedEffects = 'true';
+
   /** Wall-clock calculation: no accumulated tick drift, work only while visible, user can pause. */
   function initializeLiveClock() {
     const clock = document.getElementById('live-clock');
@@ -55,6 +57,9 @@ import { calculateElapsed } from './elapsed-time.js';
     window.addEventListener('pagehide', () => clearTimeout(timer));
     window.addEventListener('pageshow', scheduleClock);
     scheduleClock();
+    // Reveal ages only after a valid calculation. Static HTML remains true after any anniversary.
+    document.querySelectorAll('[data-static-age]').forEach((element) => (element.hidden = true));
+    document.querySelectorAll('[data-live-age]').forEach((element) => (element.hidden = false));
   }
 
   /** Sharing is independent from motion: removing a control never disables other features. */
@@ -303,11 +308,12 @@ import { calculateElapsed } from './elapsed-time.js';
         ),
       );
       safetyTimer = setTimeout(finishIntro, 1450);
-      Promise.all(animations.map((animation) => animation.finished.catch(() => {}))).then(
-        finishIntro,
-      );
-    } catch {
+      await Promise.all(animations.map((animation) => animation.finished));
       finishIntro();
+    } catch (error) {
+      finishIntro();
+      // User interaction and the watchdog cancel with AbortError; unexpected failures stay visible.
+      if (error?.name !== 'AbortError') console.error('Error en la presentación de marca:', error);
     }
   }
 
@@ -315,7 +321,9 @@ import { calculateElapsed } from './elapsed-time.js';
   function initializeMotion() {
     if (!window.matchMedia || !('IntersectionObserver' in window) || !Element.prototype.animate)
       return;
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const preference = window.matchMedia(
+      '(prefers-reduced-motion: reduce), (forced-colors: active)',
+    );
     const activeAnimations = new Set();
     const cleanup = [];
     let observer;
@@ -359,7 +367,7 @@ import { calculateElapsed } from './elapsed-time.js';
       activeAnimations.forEach((animation) => animation.cancel());
     }
 
-    if (preference.matches) return;
+    if (preference.matches || navigator.connection?.saveData) return;
     observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

@@ -1,5 +1,13 @@
 # Fuentes y verificaciones
 
+## Revisión final y entrega autorizada — 29/10/2026
+
+Manifiesto aprobado: `b6fe8200f5c48ad5ccb6a2f3b0c5be1dfa32a5eda120f8ef7bf1c555dc7ae002`; 25 archivos contando el manifiesto. Dieciséis grupos de código, 56 casos principales en Chromium 156, Firefox 155, WebKit 27.2 y Edge 156, cuatro bloques ampliados, cuatro mediciones y diez casos límite adicionales de Chromium. Auditoría Node: cero avisos conocidos, sin instalar paquetes.
+
+Los informes aprobados corresponden exactamente al build. Se revisaron capturas antes/después, texto ampliado, impresión, alternativas sin JavaScript y movimiento. Los aniversarios 2026/2027 se probaron con reloj emulado y zona del dispositivo en Tokio. Recuperación previa completa e idéntica. No se atribuyen resultados de campo ni pruebas físicas de teléfonos a esta batería. Ver [estabilidad](ESTABILIDAD.md).
+
+El propietario autorizó publicar el 29/10. Los commits, bytes públicos y respaldo posterior se registran en la continuidad local de la publicación, fuera del paquete público. Las menciones inferiores a candidato local o entregas previas describen sus respectivas revisiones. Esta entrega mantiene el destino de Maps y los contactos confirmados, y no agrega analítica ni cuentas externas.
+
 ## Optimización web — 27/10/2026
 
 Doce grupos de código aprobados; 48 casos de navegador (24 generales y 24 de presentación) y cuatro mediciones de recursos/reloj aprobados. Manifiesto: f4de190435caa6f034a16eab442ec7306bd3fdabba7b8fef7bec6325b5081e3b. Capturas de móvil/escritorio revisadas antes del cierre. Se conservan contactos, horarios, pausa, datos, QR, identidad, contador penúltimo y bases último.

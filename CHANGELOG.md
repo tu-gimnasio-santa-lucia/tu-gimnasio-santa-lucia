@@ -1,4 +1,14 @@
-# Correcciones posteriores — 24/10/2026, sin publicar
+# Historial de cambios
+
+## 2026-10-29 — Revisión final y calidad web
+
+- Conservadas las mejoras locales previas de 404, llms y contratos de calidad.
+- Años sin JavaScript sustituidos por una referencia duradera a 1996; los tres años automáticos conservan aniversario argentino, pausa y actualización eficiente.
+- Cabecera adaptable al ampliar texto, navegación equilibrada y desplazamiento normal en tableta/paisaje. Enlace de salto oculto por recorte hasta recibir foco.
+- Respuestas completas y etiquetas legibles al imprimir; controles interactivos retirados del papel.
+- Presentación de 1040 ms conservada; cancelación esperada diferenciada de errores y efectos omitidos con colores forzados/ahorro de datos.
+- Valoración fechada y aviso condicional de Maps, sin cambios en datos, destino o cuentas externas.
+- Pruebas ampliadas de texto, espaciado, foco, impresión, preferencias y aniversarios 2026/2027. Sin dependencias de producción nuevas. Publicación autorizada por el propietario después de la revisión local.
 
 ## 2026-10-27 — Recursos, seguridad y verificación de publicación
 
@@ -16,7 +26,7 @@ Presentación única del logo/años hacia cabecera, cancelable y sin bloqueo, co
 - Consultas de WhatsApp e Instagram con ancho/altura y columna alineados; acciones principales de altura uniforme sin recortar texto ni limitar su crecimiento al ampliar.
 - Contador automático como penúltima sección; gráfica original «Volvamos a las bases» en la última. Pulido de portada, espaciado, contador, preguntas frecuentes y cierre, conservando la marca y los datos.
 - Anuncio, fecha visible, sección y consulta promocional de reapertura retirados por pedido posterior; fecha confirmada conservada en fuente/registro y `validFrom` de horarios.
-- La segunda etapa sigue pendiente hasta la orden directa «comencemos la 2da etapa». No se implementó la transición nueva del logo ni se publicó o cargaron imágenes en Maps.
+- Antecedente del 24/10, superado por la autorización y entrega del 25/10: la segunda etapa seguía pendiente hasta la orden directa «comencemos la 2da etapa». En ese estado anterior no se había implementado la transición nueva del logo ni publicado o cargado imágenes en Maps.
 
 # En preparación — primera jornada, 24/10/2026
 

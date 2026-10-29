@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir, readdir, copyFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { assertPublicSite } from './quality-gates.mjs';
 import {
   validateBusinessData,
   buildWhatsAppUrl,
@@ -151,7 +152,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const generalSchedule = getGeneralSchedule(business);
   const mapNotice = business.relocation.maps.streetNameUpdated
     ? ''
-    : `En Google Maps, esta calle todavía aparece como ${business.relocation.maps.displayedStreet}. La dirección es ${business.address.street} y el punto indicado corresponde al gimnasio. La actualización del nombre está en trámite.`;
+    : `Google Maps puede mostrar esta calle como ${business.relocation.maps.displayedStreet}. La dirección es ${business.address.street} y el punto indicado corresponde al gimnasio.`;
   const ratingDisplay = String(business.googleRating.value).replace('.', ',');
   const jsonLd = serializeJsonLd({
     '@context': 'https://schema.org',
@@ -245,7 +246,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     anniversary_metrics: anniversaryMetrics,
     anniversary_snapshot_label: business.anniversary.snapshotDate.split('-').reverse().join('/'),
     maps_notice: mapNotice ? `<p class="maps-notice">${escapeHtml(mapNotice)}</p>` : '',
-    maps_faq_title: mapNotice ? '¿Por qué Maps muestra San Martín?' : '¿Cómo llego al gimnasio?',
+    maps_faq_title: mapNotice ? '¿Y si Maps muestra San Martín?' : '¿Cómo llego al gimnasio?',
     maps_faq_text:
       mapNotice ||
       `El botón Cómo llegar con Google Maps abre las indicaciones hacia Tu Gimnasio en ${business.address.street}.`,
@@ -271,6 +272,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     motto_place: business.mottos.yourPlace,
     rating_display: ratingDisplay,
     rating_count: business.googleRating.reviewCount,
+    rating_verified_label: business.googleRating.verifiedAt.split('-').reverse().join('/'),
     activity_cards: activityCards,
     structured_data: jsonLd,
     csp,
@@ -279,6 +281,8 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     style_integrity: sri(css),
     script_integrity: sri(browserScript),
     identity_image_url: new URL(assets.identity.png, project.publicUrl).href,
+    identity_image_width: assets.identity.width,
+    identity_image_height: assets.identity.height,
     image_header_logo: picture('logo', 'brand-logo', '', true),
     image_footer_logo: picture('logo', 'brand-logo', '', false),
     image_hero_logo: picture('logo', 'hero-logo', 'Logo de Tu Gimnasio', true),
@@ -308,8 +312,20 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   const finalJsonLdHash = createHash('sha256').update(inlineJsonLd).digest('base64');
   html = html.replace(`sha256-${jsonLdHash}`, `sha256-${finalJsonLdHash}`);
   if (/\{\{[^}]+\}\}/.test(html)) throw new Error('Quedaron marcadores sin resolver.');
+  const errorTemplate = await readFile(path.join(ROOT, 'src/404.template.html'), 'utf8');
+  const errorHtml = renderTemplate(errorTemplate, {
+    ...replacements,
+    home_path: new URL(project.publicUrl).pathname,
+    error_logo_path: new URL(replacements.logo_file, project.publicUrl).pathname,
+    error_style_path: new URL(styleFile, project.publicUrl).pathname,
+    logo_width: assets.logo.width,
+    logo_height: assets.logo.height,
+  });
+  const llms = `# ${business.name}\n\n> Gimnasio de ${business.address.locality}, ${business.address.region}, Argentina. Desde ${business.foundedYear}. Actividades, horarios y consultas con cada profe.\n\nLas franjas y los docentes se consultan en la página oficial. En spinning sólo se publica la hora de inicio: no inferir la duración. Las cuotas se consultan con el profe. La información del sitio no es un anuncio de reapertura ni una confirmación de apertura efectiva.\n\n## Información del gimnasio\n\n- [Sitio oficial](${project.publicUrl}): identidad, actividades, horarios y contactos.\n- [Actividades y profes](${new URL('#actividades', project.publicUrl).href}): ${business.activities.map((activity) => activity.name).join(', ')}.\n- [Horarios y ubicación](${new URL('#horarios', project.publicUrl).href}): franjas de atención y acceso a las indicaciones de llegada.\n- [Historia](${new URL('#historia', project.publicUrl).href}): identidad del gimnasio y lemas originales.\n\n## Optional\n\n- [Instagram oficial](${business.contacts.instagram}): novedades del gimnasio.\n`;
   const outputs = new Map([
     ['index.html', Buffer.from(html)],
+    ['404.html', Buffer.from(errorHtml)],
+    ['llms.txt', Buffer.from(llms)],
     [styleFile, Buffer.from(css)],
     [scriptFile, Buffer.from(browserScript)],
     [timeFile, Buffer.from(timeSource)],
@@ -341,12 +357,17 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
   for (const file of assetFiles)
     if (!archivedFiles.has(file))
       outputs.set(file, await readFile(path.join(ROOT, 'assets', file)));
+  assertPublicSite(outputs, project);
   const manifest = {
     formatVersion: 1,
     generator: 'tu-gimnasio-static/2',
     publicUrl: project.publicUrl,
     files: [...outputs]
-      .map(([name, bytes]) => ({ name, bytes: bytes.length, sha256: sha256(bytes) }))
+      .map(([name, bytes]) => ({
+        name,
+        bytes: bytes.length,
+        sha256: sha256(bytes),
+      }))
       .sort((a, b) => a.name.localeCompare(b.name, 'en')),
   };
   outputs.set('build-manifest.json', Buffer.from(JSON.stringify(manifest, null, 2) + '\n'));

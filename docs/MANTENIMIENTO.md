@@ -25,6 +25,8 @@ node scripts/check.mjs
 node scripts/preview.mjs
 ```
 
+`check` incluye los [contratos de calidad web](CALIDAD-WEB.md) y guarda `artifacts/seo-report.json`. También pueden ejecutarse con `node scripts/seo-check.mjs`. El generador rechaza directamente un paquete inválido: 404/llms ausentes, metadatos rotos, bloqueo accidental, mapas de fuentes o JavaScript mayor de 32 KiB. La 404 se prueba sin JavaScript en cuatro motores y rutas anidadas; los estados HTTP de error no deben convertirse en una portada con 200. El robots del proyecto no controla la raíz del host de GitHub Pages.
+
 Para publicar, ejecutar también `node scripts/performance-check.mjs`: verifica presupuestos de recursos, fuente, actualizaciones del reloj y aniversario. Leer [rendimiento](RENDIMIENTO.md) para medir, regenerar recursos y distinguir bytes de métricas de usuarios reales. La preparación Python es opcional; Node usa los derivados ya versionados.
 
 La vista local usa `http://127.0.0.1:4173`. Recargar la portada regenera los archivos después de editar. Un editor de texto cualquiera sirve: no es necesario Codex, Claude, React ni un plugin.
@@ -59,6 +61,8 @@ El script de publicación hace otro respaldo verificado, repite las pruebas de c
 La rama main conserva el código y la documentación; site es una salida generada y GitHub Pages continúa publicando esa rama. La URL principal no cambia.
 
 ## Compatibilidad
+
+La [guía de estabilidad](ESTABILIDAD.md) describe la alternativa duradera de años sin JavaScript y las correcciones de cabecera/impresión. La batería incluye texto al 200 % en móvil, paisaje, tableta y escritorio, espaciado de texto, foco, respuestas de desplegables en papel, ausencia de efectos con colores forzados/ahorro de datos y los aniversarios 2026/2027. Los tres números deben coincidir incluso con la zona del dispositivo en Tokio. Estos casos complementan la revisión visual/manual; no certifican toda WCAG ni un teléfono físico.
 
 La publicación comprueba también los bytes preparados dentro de Git antes de subirlos. No cambiar la configuración global de finales de línea para saltar un fallo: resolver la causa. La licencia original de Anton es un recurso del proveedor con huella verificada y no debe reformatearse.
 

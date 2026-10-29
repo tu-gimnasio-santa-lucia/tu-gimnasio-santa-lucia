@@ -1,5 +1,9 @@
 # Tu Gimnasio — sitio oficial
 
+**Revisión final, 29/10/2026:** se conserva el trabajo de calidad anterior y se corrigen los años sin JavaScript, cabecera con texto ampliado, impresión y movimiento en colores forzados/ahorro de datos. Publicación autorizada por el propietario el 29/10, con 16 grupos, 56 casos principales, cuatro bloques ampliados y cuatro mediciones del mismo build. Ver [estabilidad y mantenimiento breve](docs/ESTABILIDAD.md) y [verificación](docs/VERIFICACION.md). Cada entrega posterior mantiene respaldo, QA y comprobación pública.
+
+**Calidad web, 29/10/2026:** se revisaron los 20 puntos de la captura del propietario. La fuente incorpora 404 propia, llms.txt y contratos automáticos de metadatos, rastreo y recursos. Estas mejoras se integran en la entrega autorizada del 29/10. Ver [resultado y matices de cada punto](docs/CALIDAD-WEB.md).
+
 **Optimización del 27/10/2026:** recursos responsive, fuente WOFF2 con TTF de respaldo, reloj sin escrituras repetidas y marcado SEO corregido. Doce grupos, 48 casos de navegador y cuatro mediciones aprobados. [Comparativa y mantenimiento](docs/RENDIMIENTO.md). Las cifras de 17 archivos de entregas anteriores describen esas versiones; el manifiesto generado define el paquete actual.
 
 **Segunda etapa — 25/10/2026:** publicada y comprobada, con presentación rápida del logo/años hacia cabecera y movimiento suave, cancelable y opcional. Nueve grupos y 48 casos aprobados. Se preservan consultas, contador penúltimo, cierre original y ausencia de anuncio de reapertura. Presentación: Profe Martita y Profe Titi. Los 17 archivos públicos coinciden por SHA-256 con el build aprobado. Las esperas inferiores del 24/10 son históricas.
@@ -27,6 +31,7 @@ La rama **main** contiene toda la fuente. La rama **site** sólo contiene la pub
 
 - [Arquitectura, contratos y nombres de funciones](docs/ARQUITECTURA.md).
 - [Edición, pruebas y publicación](docs/MANTENIMIENTO.md).
+- [Controles de calidad web y revisión de los 20 puntos](docs/CALIDAD-WEB.md).
 - [Identidad visual](DESIGN.md).
 - [Rendimiento, recursos y mediciones](docs/RENDIMIENTO.md).
 - [Seguridad y sus límites](docs/SEGURIDAD.md).

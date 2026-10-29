@@ -8,6 +8,7 @@ import { ROOT, buildSite } from './build.mjs';
 export async function startPreview(port = 4173) {
   const manifest = await buildSite();
   let allowed = new Set([...manifest.files.map((f) => f.name), 'build-manifest.json']);
+  const publicPath = new URL(manifest.publicUrl).pathname;
   const mime = {
     '.html': 'text/html; charset=utf-8',
     '.css': 'text/css; charset=utf-8',
@@ -41,8 +42,11 @@ export async function startPreview(port = 4173) {
       }
       let name;
       try {
+        const pathname = decodeURIComponent(new URL(request.url, host.origin).pathname);
         name =
-          decodeURIComponent(new URL(request.url, host.origin).pathname).slice(1) || 'index.html';
+          (pathname.startsWith(publicPath)
+            ? pathname.slice(publicPath.length)
+            : pathname.slice(1)) || 'index.html';
       } catch {
         response.writeHead(400).end('Bad request');
         return;
@@ -52,7 +56,18 @@ export async function startPreview(port = 4173) {
         allowed = new Set([...current.files.map((f) => f.name), 'build-manifest.json']);
       }
       if (!allowed.has(name)) {
-        response.writeHead(404).end('Not found');
+        const body = await readFile(path.join(ROOT, 'dist/404.html'));
+        response
+          .writeHead(404, {
+            'Content-Type': 'text/html; charset=utf-8',
+            'X-Content-Type-Options': 'nosniff',
+            'Cache-Control': 'no-store',
+            'X-Robots-Tag': 'noindex',
+            'Referrer-Policy': 'no-referrer',
+            'Cross-Origin-Resource-Policy': 'same-origin',
+            'Content-Security-Policy': "frame-ancestors 'none'",
+          })
+          .end(request.method === 'HEAD' ? undefined : body);
         return;
       }
       const bytes = await readFile(path.join(ROOT, 'dist', name));
