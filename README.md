@@ -1,5 +1,9 @@
 # Tu Gimnasio — sitio oficial
 
+**«Detalle» v4, 05/11/2026 — aprobado e integrado en local, pendiente de publicación.** El propietario aprobó la dirección «Detalle» y su perfeccionamiento v4 como versión visual y funcional definitiva. Incluye escenario azul profundo, títulos en Anton (antes que Impact, aprobado), capítulos superpuestos, índice de actividades, «¿Qué hay hoy?», un sistema de movimiento con tokens, una presentación de portada que nunca deja la pantalla vacía más de 0,5 s y microinteracciones accesibles. Datos, consultas por WhatsApp, Maps, QR, contador penúltimo y «Volvamos a las bases» al cierre se conservan. La página pública sigue con la entrega del 29/10 hasta que se autorice la publicación. Ver [identidad](DESIGN.md), [estabilidad](docs/ESTABILIDAD.md) y [verificación](docs/VERIFICACION.md).
+
+Los párrafos siguientes describen entregas anteriores y se conservan como historial.
+
 **Revisión final, 29/10/2026:** se conserva el trabajo de calidad anterior y se corrigen los años sin JavaScript, cabecera con texto ampliado, impresión y movimiento en colores forzados/ahorro de datos. Publicación autorizada por el propietario el 29/10, con 16 grupos, 56 casos principales, cuatro bloques ampliados y cuatro mediciones del mismo build. Ver [estabilidad y mantenimiento breve](docs/ESTABILIDAD.md) y [verificación](docs/VERIFICACION.md). Cada entrega posterior mantiene respaldo, QA y comprobación pública.
 
 **Calidad web, 29/10/2026:** se revisaron los 20 puntos de la captura del propietario. La fuente incorpora 404 propia, llms.txt y contratos automáticos de metadatos, rastreo y recursos. Estas mejoras se integran en la entrega autorizada del 29/10. Ver [resultado y matices de cada punto](docs/CALIDAD-WEB.md).

@@ -1,5 +1,36 @@
 # Fuentes y verificaciones
 
+## Integración local de «Detalle» v4 — 05/11/2026 (sin publicar)
+
+Aprobada por el propietario después de revisar la comparación v3/v4. Se integraron, sin modificarlos, `src/index.template.html`, `src/styles.css` y `src/site.js` de `../propuestas/rediseno-2026-11-v4/sitio/`; también se actualizaron `DESIGN.md` y `CHANGELOG.md`. El build integrado reproduce la huella del prototipo revisado: **`f830f5fceffa49ad1961cd33323c303e2ae558525cd8eddb389d94d20adb61d6`**. Datos, recursos (con el QR), scripts, pruebas y puertas no cambiaron.
+
+- Respaldo previo: `../tu-gimnasio-respaldos/2026-11-05T21-13-53-325Z-46112578/`, verificado. El estado es el mismo que se ensayó en esta sesión con el respaldo `2026-11-05T20-19-21-430Z-b2aa2b06` (mismo HEAD, estado, diff y `check`). La evidencia de v3 (`1ae49278…`) está en `../tu-gimnasio-respaldos/2026-11-05-fuera-de-git-antes-v4/web-artifacts/`.
+- `node scripts/check.mjs`: 17/17 pruebas, contratos SEO y CSP; JavaScript público de 30.765 de 32.768 bytes; `script-src 'self'` más los dos hashes; SRI en estilos y script.
+- `node scripts/browser-check.mjs`: aprobado en Chromium, Firefox, WebKit y Edge, con 24 casos generales, 24 de presentación y 8 de 404. Incluye las salvaguardas, la durabilidad (texto al 200 %, espaciado, teclado, impresión, colores forzados, ahorro de datos), movimiento, fuentes, axe y el QR leído con jsQR (`artifacts/qa-report.json`).
+- `node scripts/performance-check.mjs`: aprobado. Imágenes de 143.610 B (390 px, DPR 1) y 309.504 B (DPR 2), iguales que v3 (`artifacts/performance-after.json`).
+- `pnpm audit`: sin vulnerabilidades conocidas.
+- `validateReleaseReports` de `scripts/release-check.mjs`, en memoria y sin publicar: acepta los informes del build exacto.
+- Comprobaciones propias de v4 (`../propuestas/rediseno-2026-11-v4/qa/funciones-v4.mjs`) contra la vista previa oficial: 13/13 en Chromium, Firefox y WebKit, sin errores de consola.
+- Revisión visual de la integración a 390, 768 y 1440 px: portada, menú, hoja de consulta, horarios y profes (`../propuestas/rediseno-2026-11-v4/comparacion/integracion/`).
+- Antes de integrar, sobre el mismo build del prototipo, un intento de la batería tuvo un fallo intermitente en WebKit al volver desde la 404, porque la prueba no esperaba la navegación. Se reprodujo 60 veces sin fallar con v3 y con v4. Con autorización del propietario, sólo se corrigió esa sincronización en `scripts/browser-check.mjs`: espera la navegación a la ruta propia del sitio y después comprueba `#actividades` con la misma exigencia. Dos casos negativos provocados (`../propuestas/rediseno-2026-11-v4/qa/negativo-404.mjs`) siguen fallando: un enlace con otra ruta falla por tiempo de espera y `#actividades` oculto falla en la comprobación.
+- Prepublicación: `check` (17/17) y la batería completa de cuatro motores se repitieron con la prueba corregida sobre `f830f5fc…`: aprobados (`artifacts/qa-report.json`, creado el 05/11/2026 a las 21:28 UTC), con la puerta de informes en memoria aprobada. El informe de rendimiento del mismo build sigue vigente. Evidencia preservada en `../tu-gimnasio-respaldos/2026-11-05-evidencia-prepublicacion-f830f5fc/` con `SHA256SUMS`.
+- Documentación actualizada: `README.md`, `docs/ESTABILIDAD.md` y `docs/ETAPAS-ACTUALIZACION.md` describen «Detalle» v4.
+- Límites: sin teléfonos físicos ni métricas de usuarios reales; axe no equivale a una auditoría WCAG completa.
+
+## Integración local de «Detalle» — 05/11/2026 (sin publicar)
+
+Build verificado: `1ae4927847511297a9a835d3daa1769dab9a80398a77fc67f8d039d641fd0c13`. Estado: integrado y probado en local; **no publicado**. La página pública conserva la entrega del 29/10.
+
+- `check`: 17 pruebas aprobadas (incluye CSP con hashes, ningún atributo style, logo maestro intacto, compactación del script) y contratos SEO; JavaScript público 28.027 de 32.768 bytes.
+- `browser-check`: aprobado en Chromium 156, Firefox 157, WebKit 27.2 y Edge 156; 24 casos principales, 24 presentaciones (1510 ms en total, transform/opacity), salvaguardas de presentación, durabilidad (texto al 200 % en 320/844/1024/1280, espaciado WCAG, teclado, impresión, colores forzados, ahorro de datos), movimiento, fuentes, 8 casos de 404 y QR del paquete.
+- `performance-check`: aprobado. Imágenes elegidas (logo de portada + cierre): 143.610 bytes a 390 px/DPR 1 y 309.504 a DPR 2 (antes, con las imágenes de historia y cierre: 275.602 y 626.234). Sin escrituras ni consultas repetidas del reloj; aniversario argentino 29→30 comprobado.
+- `pnpm audit`: sin vulnerabilidades conocidas. Puerta `release-check`: aprueba los informes reales de este build.
+- Paridad con la versión anterior (generada desde el respaldo recuperado): los 23 enlaces/destinos, todos los mensajes de WhatsApp por horario y todos los anclajes siguen presentes; QR idéntico byte a byte y leído con jsQR desde la imagen mostrada a 390 y 1440 px.
+- Medición exploratoria de laboratorio (Chromium local, no son métricas de usuarios): CLS 0 en celular y escritorio; LCP entre 0,13 y 1,5 s según si corre la presentación, 1,9 s con CPU simulada ×4; interacción más lenta 72 ms. Un desplazamiento real del QR (CLS 0,121) se detectó y corrigió durante esta revisión.
+- Límites: sin pruebas en teléfonos físicos ni métricas de campo; axe no equivale a una auditoría WCAG completa.
+
+Respaldo previo a la integración: `tu-gimnasio-respaldos/2026-11-05T15-59-21-256Z-f0e122c3/` (87 huellas, bundle verificado, recuperación ensayada). Evidencia anterior de artifacts: `tu-gimnasio-respaldos/2026-11-05-web-artifacts-antes-integracion/`.
+
 ## Revisión final y entrega autorizada — 29/10/2026
 
 Manifiesto aprobado: `b6fe8200f5c48ad5ccb6a2f3b0c5be1dfa32a5eda120f8ef7bf1c555dc7ae002`; 25 archivos contando el manifiesto. Dieciséis grupos de código, 56 casos principales en Chromium 156, Firefox 155, WebKit 27.2 y Edge 156, cuatro bloques ampliados, cuatro mediciones y diez casos límite adicionales de Chromium. Auditoría Node: cero avisos conocidos, sin instalar paquetes.

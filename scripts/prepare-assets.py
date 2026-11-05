@@ -16,7 +16,9 @@ from fontTools.ttLib import TTFont
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 VERSIONS = {"Pillow": "13.0.0", "fonttools": "4.67.0", "Brotli": "1.2.1"}
-WIDTHS = {"identity": [480, 768], "manifesto": [480, 800, 1200]}
+WIDTHS = {"identity": [480, 768], "manifesto": [480, 800, 1200], "brand": [160, 320, 480, 768, 1080]}
+# Roles whose full-size WebP is also derived here (lossless, verified pixel by pixel).
+FULL_WEBP = {"brand"}
 
 
 def digest(file):
@@ -45,6 +47,14 @@ def prepare(destination):
                                  "sha256": digest(target)})
                 generated.append(file)
             entry["responsive"] = variants
+            if role in FULL_WEBP:
+                target = destination / entry["webp"]
+                original.save(target, "WEBP", lossless=True, method=6, exact=True,
+                              icc_profile=original.info.get("icc_profile", b""))
+                with Image.open(target) as decoded:
+                    assert decoded.convert("RGBA").tobytes() == original.convert("RGBA").tobytes()
+                entry["webpSha256"] = digest(target)
+                generated.append(entry["webp"])
     source = ASSETS / manifest["fonts"]["display"]["file"]
     assert digest(source) == manifest["fonts"]["display"]["sha256"]
     file = source.with_suffix(".woff2").name

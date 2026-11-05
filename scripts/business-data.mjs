@@ -196,7 +196,7 @@ export function validateBusinessData(data, project) {
     throw new Error('Faltan las actividades.');
   const activityIds = new Set();
   for (const activity of data.activities) {
-    if (!ID.test(activity.id) || activityIds.has(activity.id))
+    if (typeof activity.id !== 'string' || !ID.test(activity.id) || activityIds.has(activity.id))
       throw new Error('Identificador de actividad inválido o duplicado.');
     activityIds.add(activity.id);
     requireText(activity.name, 'actividad', 120);
@@ -207,7 +207,7 @@ export function validateBusinessData(data, project) {
       throw new Error('Actividad sin horarios confirmados.');
     const scheduleIds = new Set();
     for (const schedule of activity.schedules) {
-      if (!ID.test(schedule.id) || scheduleIds.has(schedule.id))
+      if (typeof schedule.id !== 'string' || !ID.test(schedule.id) || scheduleIds.has(schedule.id))
         throw new Error('Identificador de horario inválido o duplicado.');
       scheduleIds.add(schedule.id);
       if (!Object.hasOwn(data.teachers, schedule.teacherId))
@@ -258,7 +258,8 @@ export function validateBusinessData(data, project) {
     throw new Error('Los datos incluyen una actividad retirada.');
   const rating = data.googleRating;
   if (!(
-    rating?.value > 0 &&
+    Number.isFinite(rating?.value) &&
+    rating.value > 0 &&
     rating.value <= 5 &&
     Number.isSafeInteger(rating.reviewCount) &&
     rating.reviewCount > 0 &&

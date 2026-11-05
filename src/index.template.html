@@ -2,12 +2,13 @@
 <html lang="es-AR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Content-Security-Policy" content="{{csp}}" />
     <title>{{site_title}}</title>
     <meta name="description" content="{{meta_description}}" />
-    <meta name="theme-color" content="#08084f" />
+    <meta name="theme-color" content="#050537" />
+    <meta name="color-scheme" content="dark light" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:title" content="{{site_title}}" />
@@ -24,95 +25,93 @@
     <link rel="canonical" href="{{public_url}}" />
     <link rel="describedby" type="text/plain" href="llms.txt" />
     <link rel="icon" href="{{logo_file}}" />
+    <link rel="preload" href="anton-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link
       rel="stylesheet"
       href="{{style_file}}"
       integrity="{{style_integrity}}"
       crossorigin="anonymous"
     />
+    <script>{{boot_script}}</script>
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <header class="site-header">
+    <header class="site-header" data-header>
       <a class="brand" id="header-brand" href="#inicio"
-        >{{image_header_logo}}<span
+        >{{image_header_logo}}<span class="brand-text"
           >Tu Gimnasio<small class="brand-years"
             ><span data-live-age hidden
-              ><span data-elapsed-years>{{anniversary_years}}</span> años<span
-                class="brand-founded"
-              >
-                · Desde {{founded_year}}</span
-              ></span
+              ><span data-elapsed-years>{{anniversary_years}}</span> años con vos</span
             ><span data-static-age>Desde {{founded_year}}</span></small
           ></span
         ></a
       >
-      <nav aria-label="Navegación principal">
-        <a href="#actividades">Actividades</a>
-        <a href="#horarios">Horarios</a>
-        <a href="#ubicacion">Ubicación</a>
-        <a href="#historia">Historia</a>
+      <nav class="header-nav" aria-label="Navegación principal">
+        <a href="#actividades" data-spy="actividades">Actividades</a>
+        <a href="#horarios" data-spy="horarios">Hoy</a>
+        <a href="#profes" data-spy="profes">Profes</a>
+        <a href="#ubicacion" data-spy="ubicacion">Visitanos</a>
+        <span class="nav-indicator" aria-hidden="true"></span>
       </nav>
-      <a class="header-cta" href="{{whatsapp_url}}" target="_blank" rel="noopener noreferrer"
-        >Consultanos <span aria-hidden="true">↗</span></a
-      >
+      <div class="header-actions">
+        <a
+          class="header-cta"
+          href="{{whatsapp_url}}"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-open="consulta"
+          data-magnetic
+          >{{icon_wa}}<span>Consultar</span></a
+        >
+        <button
+          class="menu-button"
+          type="button"
+          data-open="menu"
+          aria-label="Abrir menú"
+          aria-haspopup="dialog"
+          hidden
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+      <span class="header-progress" aria-hidden="true"><i data-progress></i></span>
     </header>
 
     <main id="contenido" tabindex="-1">
-      <section class="hero" id="inicio" aria-labelledby="portada-titulo">
-        <div class="section-shell hero-layout">
-          <div class="hero-copy">
-            <p class="hero-edition">Santa Lucía · Desde {{founded_year}}</p>
-            <h1 id="portada-titulo"><span>Tu lugar.</span><span>Tu gimnasio.</span></h1>
-            <p class="hero-intro">
-              Musculación, spinning, gimnasia grupal y pilates en colchoneta. Entrená con Profe
-              Martita y Profe Titi. Encontrá tu horario y consultá con tu profe.
-            </p>
-            <div class="hero-actions">
-              <a class="button button-yellow" href="#actividades"
-                >Ver actividades y horarios <span aria-hidden="true">↘</span></a
-              >
-              <a class="hero-contact" href="#ubicacion"
-                >Cómo llegar al gimnasio <span aria-hidden="true">↘</span></a
-              >
-            </div>
-            <p class="hero-motto">Todos somos iguales,<br />la diferencia está en los detalles.</p>
-          </div>
-          <div class="hero-media">
-            <div class="hero-logo-wrap">{{image_hero_logo}}</div>
-            <div class="hero-signature">
-              <span>Tu Gimnasio</span><strong>Desde {{founded_year}}...</strong>
-            </div>
-            <p class="hero-media-note">Tu historia también es parte de la nuestra.</p>
-          </div>
+      <section class="hero" id="inicio" aria-labelledby="portada-titulo" data-hero>
+        <div class="hero-light" aria-hidden="true" data-intro="light"></div>
+        <div class="hero-stage">
+          <figure class="hero-emblem" data-emblem data-intro="emblem">{{image_hero_logo}}</figure>
+          <h1 class="hero-title" id="portada-titulo" data-hero-title>
+            <span class="ln"><span data-intro="line">Tu lugar.</span></span>
+            <span class="ln"><span data-intro="line">Tu gimnasio.</span></span>
+          </h1>
         </div>
-        <div class="brand-track" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-        </div>
-      </section>
-
-      <section class="activities" id="actividades" aria-labelledby="actividades-titulo">
-        <div class="section-shell">
-          <div class="section-heading" data-reveal="group">
-            <h2 id="actividades-titulo">Movete a tu manera.</h2>
-            <p>
-              Elegí tu actividad y consultá con el profe de tu horario por cupos, inscripción y
-              cuotas.
-            </p>
-          </div>
-          <div class="activity-grid">{{activity_cards}}</div>
-          <p class="activities-note">
-            En spinning indicamos la hora de inicio; consultá la duración con tu profe. Para fines
-            de semana y feriados, escribinos antes de venir.
+        <div class="hero-rule" aria-hidden="true" data-intro="rule"><i></i><i></i><i></i></div>
+        <div class="hero-foot">
+          <p class="hero-place" data-intro="foot">
+            Gimnasio familiar en Santa Lucía, Corrientes. <span>Desde {{founded_year}}.</span>
           </p>
+          <p class="hero-intro" data-intro="foot">
+            Musculación, spinning, gimnasia grupal y pilates en colchoneta, con Profe Martita y
+            Profe Titi.
+          </p>
+          <div class="hero-actions" data-intro="foot">
+            <a class="button button-yellow" href="#actividades" data-magnetic
+              ><span>Ver actividades y horarios</span></a
+            >
+            <a class="button button-line" href="#ubicacion"><span>Cómo llegar</span></a>
+          </div>
         </div>
       </section>
 
-      <section class="story section-shell" id="historia" aria-labelledby="historia-titulo">
-        <div class="story-visual" data-reveal="art">{{image_identity}}</div>
-        <div class="story-copy" data-reveal="group">
-          <p class="section-note">De Santa Lucía. Desde {{founded_year}}.</p>
-          <h2 id="historia-titulo">Hay un lugar.<br />Es el tuyo.</h2>
+      <section class="manifesto" id="historia" aria-labelledby="historia-titulo">
+        <h2 class="manifesto-text" id="historia-titulo" data-words>{{motto_main}}</h2>
+        <div class="manifesto-sign" data-reveal>
+          <span class="mini-rule" aria-hidden="true"><i></i><i></i><i></i></span>
+          <p>Desde el 4 de noviembre de {{founded_year}}, en Santa Lucía.</p>
+        </div>
+        <div class="manifesto-aside" data-reveal>
           <p>
             Tu Gimnasio nació con una idea simple: que cada persona encuentre un lugar donde
             entrenar, sentirse acompañada y avanzar a su manera.
@@ -122,73 +121,172 @@
             volver.
           </p>
           <a class="text-link" href="{{instagram_url}}" target="_blank" rel="noopener noreferrer"
-            >Seguinos en Instagram <span aria-hidden="true">↗</span></a
+            >Seguinos en Instagram{{icon_arrow}}</a
           >
-          <p class="story-signature">Tu lugar,<br /><strong>tu gimnasio.</strong></p>
         </div>
       </section>
 
-      <section class="reviews" aria-labelledby="opiniones-titulo">
-        <div class="section-shell reviews-inner" data-reveal="group">
-          <p class="reviews-score">
-            <strong>{{rating_display}}<span>/5</span></strong
-            ><span>{{rating_count}} opiniones en Google</span
-            ><span>Consultado el {{rating_verified_label}}</span>
+      <section class="activities" id="actividades" aria-labelledby="actividades-titulo" data-acts>
+        <div class="activities-glow" aria-hidden="true"></div>
+        <header class="activities-head">
+          <h2 id="actividades-titulo" data-split>
+            <span class="ln"><span>Elegí cómo</span></span>
+            <span class="ln"><span>moverte.</span></span>
+          </h2>
+          <p data-reveal>
+            Cuatro actividades y dos profes. Cada horario tiene su botón para escribirle
+            directamente al profe que lo da, por cupos, inscripción y cuotas.
           </p>
-          <div>
-            <h2 id="opiniones-titulo">La comunidad también habla.</h2>
-            <p>Conocé las experiencias de quienes ya pasaron por Tu Gimnasio.</p>
+        </header>
+        <div class="activities-body">
+          <nav class="activities-index" aria-label="Actividades"><div class="index-track" data-index-track>{{activity_index}}</div></nav>
+          <div class="activity-grid">{{activity_cards}}</div>
+        </div>
+        <p class="activities-note" data-reveal>
+          En spinning indicamos la hora de inicio; consultá la duración con tu profe. Para fines de
+          semana y feriados, escribinos antes de venir.
+        </p>
+      </section>
+
+      <section class="today" id="horarios" aria-labelledby="hoy-titulo" data-today>
+        <div class="today-side">
+          <h2 id="hoy-titulo" data-split>
+            <span class="ln ln-hang"><span><span class="hang">¿</span>Qué hay</span></span>
+            <span class="ln"><span>hoy?</span></span>
+          </h2>
+          <p class="today-clock"><span data-now-day>Horario de la sala</span> <span data-now-time></span></p>
+          <p class="today-status" data-status>
+            Sala de musculación: {{weekday_label}}, {{weekday_hours}}, con Profe {{general_teacher}}.
+          </p>
+          <p class="today-note">{{weekend_label}}: {{weekend_hours}}</p>
+          <div class="day-picker" role="group" aria-label="Elegí un día" data-seg hidden>
+            <span class="day-indicator" aria-hidden="true"></span>
+            <button type="button" data-day="1">Lun</button><button type="button" data-day="2">Mar</button
+            ><button type="button" data-day="3">Mié</button><button type="button" data-day="4">Jue</button
+            ><button type="button" data-day="5">Vie</button
+            ><button type="button" data-day="6">Sáb y dom</button>
           </div>
-          <a class="text-link" href="{{maps_url}}" target="_blank" rel="noopener noreferrer"
-            >Leer opiniones <span aria-hidden="true">↗</span></a
-          >
+          <div class="day-line" data-line hidden aria-hidden="true">
+            <div class="day-line-track" data-line-track></div>
+            <div data-line-marks></div>
+            <span class="day-line-now" data-line-now hidden><b>Ahora</b></span>
+            <div class="day-line-scale" data-line-scale></div>
+          </div>
+        </div>
+        <div class="today-main">
+          <p class="agenda-caption" data-cap hidden></p>
+          <ol class="agenda" data-agenda aria-live="polite"></ol>
+          <p class="today-fallback" data-agenda-fallback>
+            Todos los horarios, con su profe y su botón de consulta, están en
+            <a href="#actividades">actividades</a>. {{hours_notice}}
+          </p>
         </div>
       </section>
 
-      <section class="visit section-shell" aria-label="Horarios y ubicación del gimnasio">
-        <article class="schedule-panel" id="horarios" data-reveal="panel">
-          <p class="section-note">Musculación · Horario general</p>
-          <h2>Organizá<br />tu semana.</h2>
-          <div class="schedule-row">
-            <span>{{weekday_label}}</span><strong>{{weekday_hours}}</strong>
-          </div>
-          <div class="schedule-row closed">
-            <span>{{weekend_label}}</span><strong>{{weekend_hours}}</strong>
-          </div>
-          <p class="schedule-note">{{hours_notice}}</p>
-          <a class="text-link" href="#actividades"
-            >Ver todos los horarios y profesores <span aria-hidden="true">↑</span></a
-          >
-        </article>
-        <article class="location-panel" id="ubicacion" data-reveal="panel">
-          <p class="section-note">Ubicación · Santa Lucía</p>
-          <h2>{{street_address}}</h2>
-          <p>{{postal_locality}}<br />{{region_country}}</p>
-          <div class="location-actions">
+      <section class="teachers" id="profes" aria-labelledby="profes-titulo">
+        <h2 id="profes-titulo" data-split>
+          <span class="ln"><span>Escribile</span></span>
+          <span class="ln"><span>a tu profe.</span></span>
+        </h2>
+        <div class="teacher-grid">{{teacher_cards}}</div>
+      </section>
+
+      <section class="visit" id="ubicacion" aria-labelledby="ubicacion-titulo">
+        <div class="location-panel">
+          <h2 id="ubicacion-titulo" data-split>{{street_lines}}</h2>
+          <p class="visit-city" data-reveal>{{postal_locality}}, {{region_country}}</p>
+          <div class="location-actions" data-reveal>
             <a
-              class="button button-navy"
+              class="button button-yellow"
               href="{{directions_url}}"
               target="_blank"
               rel="noopener noreferrer"
-              >Cómo llegar con Google Maps <span aria-hidden="true">↗</span></a
-            >
-            <a class="phone-link" href="{{phone_href}}"
-              >{{default_teacher_name}} · {{phone_display}}</a
+              data-magnetic
+              >{{icon_pin}}<span>Cómo llegar con Google Maps</span></a
             >
           </div>
           {{maps_notice}}
-          <p class="location-code">Código de ubicación: {{plus_code}}</p>
-        </article>
+        </div>
+        <div class="visit-side">
+          <article class="reviews" data-reveal aria-labelledby="opiniones-titulo">
+            <h3 id="opiniones-titulo">La comunidad también habla.</h3>
+            <p class="reviews-score"><strong>{{rating_display}}</strong><span>de 5</span></p>
+            {{rating_stars}}
+            <p class="reviews-meta">
+              {{rating_count}} opiniones en Google. Consultado el {{rating_verified_label}}.
+            </p>
+            <a class="button button-line" href="{{maps_url}}" target="_blank" rel="noopener noreferrer"
+              ><span>Leer opiniones</span>{{icon_arrow}}</a
+            >
+          </article>
+          <dl class="visit-facts" data-reveal>
+            <div><dt>{{weekday_label}}</dt><dd>{{weekday_hours}}</dd></div>
+            <div><dt>{{weekend_label}}</dt><dd>{{weekend_hours}}</dd></div>
+            <div><dt>Cupos</dt><dd>{{hours_notice}}</dd></div>
+            <div><dt>Código de ubicación</dt><dd>{{plus_code}} Santa Lucía</dd></div>
+          </dl>
+        </div>
       </section>
 
-      <section class="questions section-shell" aria-labelledby="preguntas-titulo">
-        <div>
-          <p class="section-note">Para que vengas con todo claro</p>
-          <h2 id="preguntas-titulo">Antes de venir.</h2>
+      <section class="share-section" aria-labelledby="compartir-titulo">
+        <div class="share-copy">
+          <h2 id="compartir-titulo" data-split>
+            <span class="ln"><span>Llevá tu gimnasio</span></span>
+            <span class="ln"><span>con vos.</span></span>
+          </h2>
+          <p data-reveal>
+            Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
+            oficial para que tengas los horarios y las consultas a mano.
+          </p>
+          <div class="share-actions" data-reveal>
+            <div class="share-controls" id="share-controls" hidden>
+              <button class="button button-dark" id="share-site" type="button">
+                <span>Compartir página</span>
+              </button>
+              <button class="button button-line-dark" id="copy-link" type="button">
+                <span>Copiar enlace</span>
+              </button>
+            </div>
+            <a class="button button-line-dark" href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
+              >{{icon_down}}<span>Descargar QR</span></a
+            >
+          </div>
+          <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
+          <div id="manual-copy" class="manual-copy" hidden>
+            <label for="official-url">Dirección oficial para copiar</label>
+            <input
+              id="official-url"
+              type="url"
+              readonly
+              value="{{public_url}}"
+              spellcheck="false"
+              autocomplete="url"
+            />
+          </div>
+          <p class="share-fallback"><a href="{{public_url}}">{{official_host}}</a></p>
         </div>
-        <div class="questions-list">
+        <figure class="qr-card" data-reveal>
+          <a href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
+            ><img
+              src="qr-tu-gimnasio.png"
+              width="1146"
+              height="1216"
+              alt="Descargar el QR de la página oficial de Tu Gimnasio"
+              loading="lazy"
+              decoding="async"
+          /></a>
+          <figcaption>Escaneá. Guardá. Compartí.</figcaption>
+        </figure>
+      </section>
+
+      <section class="questions" aria-labelledby="preguntas-titulo">
+        <h2 id="preguntas-titulo" data-split>
+          <span class="ln"><span>Antes de</span></span>
+          <span class="ln"><span>venir.</span></span>
+        </h2>
+        <div class="questions-list" data-reveal>
           <details>
-            <summary>{{maps_faq_title}}</summary>
+            <summary><span>{{maps_faq_title}}</span><i aria-hidden="true"></i></summary>
             <p>
               {{maps_faq_text}}
               <a href="{{directions_url}}" target="_blank" rel="noopener noreferrer"
@@ -197,7 +295,7 @@
             </p>
           </details>
           <details>
-            <summary>¿Cómo consulto horarios y actividades?</summary>
+            <summary><span>¿Cómo consulto horarios y actividades?</span><i aria-hidden="true"></i></summary>
             <p>
               En <a href="#actividades">actividades y horarios</a> encontrás el nombre del profe de
               cada franja y su botón de WhatsApp. El horario especial de musculación se consulta con
@@ -210,145 +308,154 @@
         </div>
       </section>
 
-      <section class="share-section" aria-labelledby="compartir-titulo">
-        <div class="section-shell share-inner">
-          <div class="share-copy" data-reveal="group">
-            <p class="section-note">La historia se comparte</p>
-            <h2 id="compartir-titulo">Llevá tu gimnasio<br />con vos.</h2>
-            <p>
-              Guardá la página o compartila con alguien. El QR siempre lleva a nuestra dirección
-              oficial para que tengas los horarios y las consultas a mano.
-            </p>
-            <div class="share-actions" id="share-controls" hidden>
-              <button class="button button-yellow" id="share-site" type="button">
-                Compartir página <span aria-hidden="true">↗</span>
-              </button>
-              <button class="button button-ghost" id="copy-link" type="button">
-                Copiar enlace
-              </button>
-            </div>
-            <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
-            <div id="manual-copy" class="manual-copy" hidden>
-              <label for="official-url">Dirección oficial para copiar</label>
-              <input
-                id="official-url"
-                type="url"
-                readonly
-                value="{{public_url}}"
-                spellcheck="false"
-                autocomplete="url"
-              />
-            </div>
-            <p class="share-fallback">
-              <a href="{{public_url}}">Abrir la página oficial</a> · También podés descargar el QR.
-            </p>
-          </div>
-          <div class="qr-card">
-            <a href="qr-tu-gimnasio.png" download="qr-tu-gimnasio.png"
-              ><img
-                src="qr-tu-gimnasio.png"
-                width="1146"
-                height="1216"
-                alt="Descargar el QR de la página oficial de Tu Gimnasio"
-                loading="lazy"
-                decoding="async"
-            /></a>
-            <p>Escaneá. Guardá. Compartí.</p>
-          </div>
-        </div>
-      </section>
-
-      <section
-        class="anniversary section-shell"
-        id="aniversario"
-        aria-labelledby="aniversario-titulo"
-      >
-        <div class="anniversary-heading">
-          <p class="section-note">Una vida de movimiento</p>
-          <h2 id="aniversario-titulo">El tiempo pasa.<br />La pasión queda.</h2>
-          <p>
+      <section class="anniversary" id="aniversario" aria-labelledby="aniversario-titulo" data-years>
+        <svg class="anniversary-arcs" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
+          <circle cx="500" cy="500" r="470" pathLength="1" />
+          <circle cx="500" cy="500" r="430" pathLength="1" />
+          <circle cx="500" cy="500" r="390" pathLength="1" />
+        </svg>
+        <div class="anniversary-inner">
+          <h2 id="aniversario-titulo" data-reveal>El tiempo pasa.<br />La pasión queda.</h2>
+          <p class="anniversary-seal" data-reveal>
+            <span data-live-age hidden
+              ><strong data-elapsed-years>{{anniversary_years}}</strong
+              ><span class="seal-label">años con vos.</span></span
+            ><span class="anniversary-origin" data-static-age
+              >Con vos desde <strong>{{founded_year}}</strong></span
+            >
+          </p>
+          <p class="anniversary-lead" data-reveal>
             Hay cosas que los números no cuentan: cada encuentro, cada esfuerzo y las ganas de
             volver.
           </p>
-          <div class="anniversary-seal">
-            <strong data-live-age hidden
-              ><span data-elapsed-years>{{anniversary_years}}</span></strong
-            ><span data-live-age hidden>años<br />con vos.</span>
-            <span class="anniversary-origin" data-static-age
-              >Con vos desde <strong>{{founded_year}}</strong></span
+          <div class="anniversary-time" data-reveal>
+            <dl
+              class="time-grid"
+              id="live-clock"
+              data-founded-date="{{founded_date}}"
+              aria-live="off"
             >
+              {{anniversary_metrics}}
+            </dl>
+            <div class="clock-row">
+              <button
+                id="toggle-clock"
+                class="button button-line"
+                type="button"
+                aria-pressed="false"
+                hidden
+              >
+                Pausar contador
+              </button>
+              <p id="clock-status" role="status" aria-live="polite">
+                Cifras al {{anniversary_snapshot_label}}; el contador automático requiere
+                JavaScript.
+              </p>
+            </div>
+            <p class="anniversary-caption">
+              Desde el 4 de noviembre de 1996. Totales calculados desde el inicio de ese día, hora
+              argentina.
+            </p>
           </div>
-        </div>
-        <div class="anniversary-time" data-reveal="time">
-          <dl
-            class="time-grid"
-            id="live-clock"
-            data-founded-date="{{founded_date}}"
-            aria-live="off"
-          >
-            {{anniversary_metrics}}
-          </dl>
-          <button
-            id="toggle-clock"
-            class="button button-navy"
-            type="button"
-            aria-pressed="false"
-            hidden
-          >
-            Pausar contador
-          </button>
-          <p id="clock-status" role="status" aria-live="polite">
-            Cifras al {{anniversary_snapshot_label}}; el contador automático requiere JavaScript.
-          </p>
-          <p class="anniversary-caption">
-            Desde el 4 de noviembre de 1996. Totales calculados desde el inicio de ese día, hora
-            argentina.
-          </p>
         </div>
       </section>
 
       <section class="final-cta" id="bases" aria-labelledby="cierre-titulo">
-        <div class="section-shell final-layout">
-          <div class="final-copy" data-reveal="group">
-            <p>Volvamos a las bases.</p>
-            <h2 id="cierre-titulo">Tu lugar.<br />Tu gimnasio.</h2>
+        <div class="manifesto-art" data-clip>{{image_manifesto}}</div>
+        <div class="final-copy">
+          <p data-reveal>{{motto_return}}</p>
+          <h2 id="cierre-titulo" data-split>
+            <span class="ln"><span>Tu lugar.</span></span>
+            <span class="ln"><span>Tu gimnasio.</span></span>
+          </h2>
+          <div data-reveal>
             <a
-              class="button button-navy"
+              class="button button-yellow"
               href="{{whatsapp_url}}"
               target="_blank"
               rel="noopener noreferrer"
-              >Consultar por WhatsApp <span aria-hidden="true">↗</span></a
+              data-open="consulta"
+              data-magnetic
+              >{{icon_wa}}<span>Consultar por WhatsApp</span></a
             >
           </div>
-          <div class="manifesto-art" data-reveal="art">{{image_manifesto}}</div>
         </div>
       </section>
     </main>
 
-    <footer>
-      <div class="section-shell">
-        <div class="footer-top">
-          <a class="brand footer-brand" href="#inicio"
-            >{{image_footer_logo}}<span
-              >Tu Gimnasio<small>Desde {{founded_year}}...</small></span
-            ></a
-          >
-          <p>Todos somos iguales,<br />la diferencia está en los detalles.</p>
-          <div class="footer-links">
-            <a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer">Instagram</a
-            ><a href="{{directions_url}}" target="_blank" rel="noopener noreferrer">Cómo llegar</a
-            ><a href="{{phone_href}}">Llamar</a>
-          </div>
-        </div>
-        <p class="footer-wordmark">Tu Gimnasio</p>
+    <footer class="site-footer">
+      <div class="footer-brand">
+        {{image_footer_logo}}
+        <p class="footer-motto">{{motto_place}}</p>
         <p class="footer-place">
-          Santa Lucía, Corrientes ·
           <span data-live-age hidden
-            ><span data-elapsed-years>{{anniversary_years}}</span> años de historia.</span
-          ><span data-static-age>Desde {{founded_year}}.</span>
+            ><span data-elapsed-years>{{anniversary_years}}</span> años de historia en Santa
+            Lucía.</span
+          ><span data-static-age>Santa Lucía, Corrientes. Desde {{founded_year}}.</span>
         </p>
       </div>
+      <div class="footer-column">
+        <h2>Profes</h2>
+        {{footer_teachers}}
+      </div>
+      <div class="footer-column">
+        <h2>Visitanos</h2>
+        <p>{{street_address}}<br />Santa Lucía, Corrientes</p>
+        <p><a href="{{directions_url}}" target="_blank" rel="noopener noreferrer">Cómo llegar</a></p>
+      </div>
+      <div class="footer-column">
+        <h2>Seguinos</h2>
+        <p><a href="{{instagram_url}}" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+        <p><a href="{{maps_url}}" target="_blank" rel="noopener noreferrer">Google Maps</a></p>
+      </div>
+      <div class="footer-base">
+        <p>Todos somos iguales, la diferencia está en los detalles.</p>
+        <a class="to-top" href="#inicio">{{icon_up}}<span>Volver arriba</span></a>
+      </div>
     </footer>
+
+    <button class="floating-cta" type="button" data-open="consulta" data-fab hidden>
+      {{icon_wa}}<span>Consultar</span>
+    </button>
+
+    <dialog class="menu" id="menu" aria-label="Menú">
+      <div class="menu-inner">
+        <div class="menu-top">
+          <a class="brand menu-brand" href="#inicio" data-close
+            ><span class="brand-text">Tu Gimnasio</span></a
+          ><button class="dialog-close" type="button" data-close aria-label="Cerrar menú">
+            <span></span><span></span>
+          </button>
+        </div>
+        <nav aria-label="Secciones">
+          <a href="#actividades" data-close>Actividades</a>
+          <a href="#horarios" data-close>Hoy</a>
+          <a href="#profes" data-close>Profes</a>
+          <a href="#ubicacion" data-close>Visitanos</a>
+          <a href="#historia" data-close>Historia</a>
+        </nav>
+        <div class="menu-foot">
+          <p>Consultá por WhatsApp</p>
+          {{contact_options}}
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="sheet" id="consulta" aria-labelledby="consulta-titulo">
+      <div class="sheet-inner">
+        <span class="sheet-grip" aria-hidden="true"></span>
+        <div class="sheet-head">
+          <h2 id="consulta-titulo">¿Con quién querés hablar?</h2>
+          <button class="dialog-close" type="button" data-close aria-label="Cerrar">
+            <span></span><span></span>
+          </button>
+        </div>
+        <p>Cada profe responde por sus actividades y horarios.</p>
+        {{contact_options}}
+      </div>
+    </dialog>
+
+    <script type="application/json" id="agenda-data">{{agenda_data}}</script>
     <script type="application/ld+json">
       {{structured_data}}
     </script>

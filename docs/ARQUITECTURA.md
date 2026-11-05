@@ -18,11 +18,22 @@ La arquitectura estática existente se conserva. Nuevos contratos: fonts.display
 
 scripts/prepare-assets.py conserva originales, verifica píxeles de cada versión redimensionada, mapa Unicode y métricas de la fuente; --check regenera en temporal sin escribir assets. Requisitos exactos en scripts/requirements-assets.txt. scripts/performance-check.mjs mide cuatro combinaciones de viewport/DPR, presupuestos, reloj y aniversario argentino en procesos propios.
 
-scripts/release-check.mjs exporta validateReleaseReports(browser, performance, manifestBytes): exige ambos informes aprobados del build exacto y rechaza baseline, medición incompleta o evidencia obsoleta. publish.mjs aplica esa puerta antes de preparar la rama site. El reloj cachea nodos y calendario, escribiendo sólo valores distintos. El snapshot visible sin JavaScript deriva de business.json.
+scripts/release-check.mjs exporta validateReleaseReports(browser, performance, manifestBytes): exige ambos informes aprobados del build exacto, sus resultados y la cobertura única de las matrices de motores/tamaños y escenarios; rechaza baseline, errores, casos faltantes/duplicados o evidencia de otro build. Las expectativas explícitas de cobertura se revisan junto a la suite cuando ésta cambia. publish.mjs aplica esa puerta antes de preparar la rama site. El reloj cachea nodos y calendario, escribiendo sólo valores distintos. El snapshot visible sin JavaScript deriva de business.json.
 
 Datos → validación/generador → dist → código/navegador/rendimiento → puerta de publicación → site/Pages. La preparación de recursos es opcional y anterior al build. Las instrucciones/contexto privados siguen fuera del paquete; no se agregan agentes, servicios o frameworks sin un beneficio justificado. Ver RENDIMIENTO.md y SEGURIDAD.md.
 
-## Contrato vigente de movimiento — 25/10/2026, arquitectura 4
+## Contrato vigente — «Detalle», 05/11/2026, arquitectura 6
+
+Integración local de la dirección aprobada (ver DESIGN.md). Pendiente de autorización de publicación. Se conservan datos, generador, puertas, anclajes (#inicio, #historia, #actividades, #horarios, #ubicacion, #aniversario, #bases; nuevo #profes) y funciones; la sección inferior describe la arquitectura 4 como antecedente.
+
+- Plantilla: actividades con índice fijo, «¿Qué hay hoy?» (agenda derivada en el build como bloque de datos JSON `#agenda-data`), profes, ubicación con opiniones, compartir/QR, preguntas, aniversario y cierre. Menú y consulta usan `<dialog>` nativo; sin JavaScript, el botón de consulta enlaza al WhatsApp general y la navegación queda visible.
+- CSP sin cambios de alcance: `script-src 'self'` más dos hashes calculados sobre los bytes finales (JSON-LD y el marcador `document.documentElement.classList.add('js')`, único script en línea, verificado por el generador). Sin atributos `style`: los acentos son clases y las estrellas, un SVG recortado por atributos.
+- site.js (módulo con SRI) se publica compactado por compactScript(): quita sangría y comentarios de línea completa, rechaza literales de varias líneas y verifica la sintaxis; presupuesto de 32 KiB aplicado sobre lo publicado.
+- Presentación: initializeHeroIntro() con Web Animations sobre [data-intro]; estados data-hero-intro skipped/running/complete; límites de 1300 ms por pieza y 1600 ms en total comprobados por browser-check. Sin script, el estado previo no se aplica; si el módulo falla, una animación de seguridad muestra todo a los 3 s.
+- Reloj: calculateElapsed() compartido; tres [data-elapsed-years] (cabecera, aniversario y pie) y tres [data-static-age] verdaderos sin JavaScript; nodos cacheados y escrituras sólo al cambiar.
+- Logo: entrada `brand` del manifiesto con SHA del maestro y de su WebP completo; derivados con hash. El generador rechaza un maestro alterado.
+
+## Antecedente: contrato de movimiento — 25/10/2026, arquitectura 4
 
 Segunda etapa autorizada e implementada. Las referencias inferiores a esperar esa etapa son históricas. Datos y contratos existentes permanecen; se agrega la función privada initializeBrandIntro() después de reloj, compartir y revelado.
 

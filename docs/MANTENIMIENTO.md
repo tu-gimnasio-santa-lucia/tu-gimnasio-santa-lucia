@@ -9,15 +9,15 @@
 | Colores, tipografía, márgenes o diseño adaptable                  | `src/styles.css`                                                   |
 | Compartir/copiar y alternativas del navegador                     | `src/site.js`                                                      |
 | Imágenes                                                          | `assets/` y su `manifest.json`; conservar originales y dimensiones |
-| Reglas para personas y asistentes                                 | `AGENTS.md` y documentación pertinente                             |
+| Reglas para personas y asistentes                                 | `AGENTS.md` (neutral), `CLAUDE.md` (Claude Code) y documentación pertinente |
 
-Crear y comprobar un respaldo nuevo antes de editar. Los cambios del negocio se confirman con el gimnasio. Cuando se actualice Google, registrar fecha y fuente; no copiar una valoración vieja sólo porque está en un chat.
+Crear y comprobar un respaldo nuevo antes de editar, según los niveles de [recuperación](RECUPERACION.md#cuándo-respaldar-y-cuándo-ensayar). Los cambios del negocio se confirman con el gimnasio. Cuando se actualice Google, registrar fecha y fuente; no copiar una valoración vieja sólo porque está en un chat.
 
 ## Comandos
 
 Para la próxima apertura y el contador automático, leer [mudanza y aniversario](MUDANZA-Y-ANIVERSARIO.md). `address` describe la sede anunciada y los horarios estructurados usan `validFrom` con la fecha confirmada; `scheduled` no significa abierto. `activities[].schedules` y `teachers` son las fuentes únicas de franjas y teléfonos. La segunda jornada fue autorizada e implementada el 25/10/2026. Las publicaciones futuras requieren un pedido vigente y QA del build exacto.
 
-Con Node.js 22 o posterior, desde la raíz del repositorio:
+Con Node.js 22 o posterior y Git instalados en el sistema, ejecutar los comandos directamente desde la raíz del repositorio `web/`. No hay lanzador intermedio ni runtime de Codex: el antiguo `herramientas/web-tools.cmd` y su `local-settings.json` pertenecían a la PC anterior y no forman parte de esta copia; se conservan sólo como antecedente en `archivo/`. `check` cubre código y generación; navegador, rendimiento y auditoría de dependencias son comprobaciones separadas antes de publicar. No repetirlas para una consulta o un cambio sólo documental: verificar lo afectado y reutilizar la evidencia del mismo build cuando siga vigente. No reinstalar las herramientas por rutina.
 
 ```text
 node scripts/backup.mjs
@@ -42,11 +42,15 @@ node scripts/browser-check.mjs
 pnpm audit
 ```
 
-La batería completa de 48 casos (24 generales y 24 de presentación, más salvaguardas) requiere Microsoft Edge instalado, además de los tres motores descargados por Playwright. Si falta un motor, el informe falla y debe resolverse o documentarse explícitamente antes de publicar; no se omiten pruebas silenciosamente. La batería usa perfiles temporales; no conectarla a sesiones personales. Consultar `docs/VERIFICACION.md` para los motores efectivamente comprobados y cualquier diferencia del equipo. Emular un celular no sustituye todas las pruebas en dispositivos físicos.
+La batería completa tiene 56 casos principales (24 generales, 24 de presentación y 8 de 404), además de los bloques de durabilidad, movimiento, fuentes y salvaguardas. Requiere Microsoft Edge instalado, además de los tres motores descargados por Playwright. Si falta un motor, el informe falla y debe resolverse o documentarse explícitamente antes de publicar; no se omiten pruebas silenciosamente. La batería usa perfiles temporales; no conectarla a sesiones personales. Consultar `docs/VERIFICACION.md` para los motores efectivamente comprobados y cualquier diferencia del equipo. Emular un celular no sustituye todas las pruebas en dispositivos físicos.
 
-La variable opcional `TU_GIMNASIO_FIREFOX_PATH` permite seleccionar una compilación oficial de Firefox preparada para el equipo. En esta PC se probó Firefox 155 de Playwright, porque la compilación 157 descargada presentaba un fallo de inicio SideBySide/mozglue de Windows. La ruta queda en configuración local, no se fija dentro del código compartido. No se deshabilitaron medidas de seguridad ni se modificó el perfil personal.
+En Windows, si los navegadores se instalan desde una aplicación empaquetada (MSIX), como Claude Desktop o Codex, lo que esa aplicación escribe en `AppData` queda redirigido a `AppData\Local\Packages\<aplicación>\LocalCache`. El cargador SideBySide de Windows no ve esos archivos y Firefox falla al iniciar con un error de ensamblado `mozglue`; Chromium y WebKit pueden arrancar igual. Ese era el origen del fallo atribuido antes a la compilación 157 de Firefox, no un defecto de Firefox ni del equipo. Para evitarlo, definir la variable de usuario `PLAYWRIGHT_BROWSERS_PATH` con una carpeta fuera de `AppData` antes de `playwright install`, y comprobar que una sesión nueva la recibe. La ruta concreta es configuración local y no se fija en el código compartido.
+
+La variable opcional `TU_GIMNASIO_FIREFOX_PATH` sigue disponible para elegir otra compilación oficial de Firefox, pero no hace falta con la instalación anterior. No se deshabilitaron medidas de seguridad ni se modificó el perfil personal.
 
 Los resultados quedan en `artifacts/`. Deben revisarse las capturas y los errores; una ejecución que no realizó las comprobaciones no se considera aprobada. No se deben editar informes a mano para habilitar una publicación.
+
+La puerta `scripts/release-check.mjs` exige el build exacto y la cobertura completa y sin duplicados de casos, motores, bloques y escenarios de rendimiento; un `status: passed` aislado no alcanza. Si cambia deliberadamente la batería, actualizar su contrato y los casos positivos/negativos de `tests/site.test.mjs` junto al productor del informe. Una modificación de estos controles no obliga a repetir navegador si el build y el productor siguen intactos: comprobar la puerta con informes reales y fixtures fallidos, y conservar fecha y alcance de la evidencia reutilizada.
 
 ## Publicación
 

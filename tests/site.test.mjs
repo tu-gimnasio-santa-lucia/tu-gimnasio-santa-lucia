@@ -16,6 +16,7 @@ import {
   renderTemplate,
   validateBusinessData,
   validateAssetManifest,
+  compactScript,
 } from '../scripts/build.mjs';
 import {
   buildWhatsAppUrl,
@@ -34,6 +35,21 @@ test('refuses asset paths that escape the public allowlist', async () => {
   assert.throws(() => validateAssetManifest(fontAssets), /insegura/);
 });
 
+test('public script compaction keeps behaviour and refuses unsafe inputs', async () => {
+  const source = await readFile(path.join(ROOT, 'src/site.js'), 'utf8');
+  const compact = compactScript(source);
+  assert.ok(compact.length < source.length);
+  assert.ok(compact.split('\n').length <= source.split('\n').length);
+  assert.ok(compact.includes("import { calculateElapsed } from './elapsed-time.js';"));
+  assert.equal(
+    compactScript('const a = 1;\n  // nota\n  const b = a + 1;\n'),
+    'const a = 1;\nconst b = a + 1;\n',
+  );
+  assert.throws(() => compactScript('const s = `uno\n  dos`;'), /varias líneas/);
+  assert.throws(() => compactScript('/* abre\n cierra */'), /varias líneas/);
+  assert.throws(() => compactScript('const = ;'));
+});
+
 test('escapes HTML data and prevents a JSON-LD closing-tag injection', () => {
   assert.equal(escapeHtml('<img src=x onerror="x">'), '&lt;img src=x onerror=&quot;x&quot;&gt;');
   assert.ok(!serializeJsonLd({ text: '</script><script>alert(1)</script>' }).includes('</script>'));
@@ -41,19 +57,136 @@ test('escapes HTML data and prevents a JSON-LD closing-tag injection', () => {
 });
 
 test('release requires browser and complete performance evidence from the exact build', () => {
-  const manifest = Buffer.from('release fixture');
+  const publicUrl = 'https://tu-gimnasio-santa-lucia.github.io/tu-gimnasio-santa-lucia/';
+  const manifest = Buffer.from(JSON.stringify({ publicUrl }));
   const digest = createHash('sha256').update(manifest).digest('hex');
-  const browser = { status: 'passed', buildManifestSha256: digest };
+  const engines = ['chromium', 'firefox', 'webkit', 'edge'];
+  const viewports = [
+    [320, 800],
+    [390, 844],
+    [768, 1024],
+    [844, 390],
+    [1280, 800],
+    [1920, 1080],
+  ];
+  const matrix = engines.flatMap((browser) =>
+    viewports.map(([width, height]) => ({ browser, width, height })),
+  );
+  const browser = {
+    status: 'passed',
+    buildManifestSha256: digest,
+    errors: [],
+    browsers: matrix.map((row) => ({
+      ...row,
+      version: 'test',
+      status: 'passed',
+      accessibilityViolations: 0,
+      horizontalOverflow: false,
+      consoleErrors: 0,
+      remoteRequests: 0,
+      captureWarnings: [],
+    })),
+    introChecks: matrix.map((row) => ({
+      ...row,
+      status: 'passed',
+      durationMs: 1040,
+      headerLayoutShift: false,
+      interactionBlocking: false,
+    })),
+    motionChecks: engines.map((browser) => ({
+      browser,
+      realAnimation: 'passed',
+      preferenceChange: 'passed',
+      fixedFinalValues: 'passed',
+    })),
+    fontChecks: engines.map((browser) => ({
+      browser,
+      status: 'passed',
+      localFontLoaded: true,
+      printLayout: 'passed',
+      widths: [320, 390, 1280],
+    })),
+    introSafeguards: engines.map((browser) => ({
+      browser,
+      preferenceChange: 'passed',
+      pointerCancellation: 'passed',
+      resizeCancellation: 'passed',
+      hiddenCancellation: 'passed',
+      deepLink: 'passed',
+      slowImage: 'passed',
+      missingAnimationAPI: 'passed',
+    })),
+    durabilityChecks: engines.map((browser) => ({
+      browser,
+      status: 'passed',
+      enlargedText: [320, 844, 1024, 1280],
+      textSpacing: [320, 768, 1280],
+      keyboardAt200Percent: true,
+      printAnswers: true,
+      forcedColorsStatic: true,
+      saveDataStatic: true,
+    })),
+    notFoundChecks: engines.flatMap((browser) =>
+      [320, 1280].map((width) => ({
+        browser,
+        width,
+        status: 'passed',
+        httpStatus: 404,
+        noJavaScript: true,
+      })),
+    ),
+    qrDestination: publicUrl,
+    noJavaScript: 'passed in all four engines',
+    clipboardAndFallback: 'passed',
+    shareCancellation: 'passed',
+  };
   const performance = {
     status: 'passed',
     mode: 'verify',
     buildManifestSha256: digest,
-    cases: [1, 2, 3, 4],
+    cases: [
+      [390, 844, 1],
+      [390, 844, 2],
+      [1280, 800, 1],
+      [1920, 1080, 2],
+    ].map(([width, height, deviceScaleFactor]) => ({
+      width,
+      height,
+      deviceScaleFactor,
+      glyphs: true,
+      counterAdvanced: true,
+      yearsStable: true,
+      argentinaAnniversaryRollover: 'passed',
+      yearWritesDuringFiveTicks: 0,
+      selectorCallsDuringFiveTicks: 0,
+      pictures: [
+        {
+          file: 'identity.webp',
+          bytes: 100,
+          cssWidth: 300,
+          naturalWidth: 480,
+          naturalHeight: 480,
+        },
+        {
+          file: 'manifesto.webp',
+          bytes: 200,
+          cssWidth: 280,
+          naturalWidth: 480,
+          naturalHeight: 270,
+        },
+      ],
+      imageBytes: 300,
+      fontFiles: [{ file: 'anton.woff2', bytes: 100 }],
+    })),
     errors: [],
   };
   assert.equal(validateReleaseReports(browser, performance, manifest), digest);
   assert.throws(() =>
-    validateReleaseReports({ ...browser, buildManifestSha256: 'previous' }, performance, manifest),
+    validateReleaseReports(
+      { ...browser, buildManifestSha256: 'previous' },
+      performance,
+      manifest,
+    ),
   );
   for (const changed of [
     null,
@@ -63,6 +196,105 @@ test('release requires browser and complete performance evidence from the exact 
     { ...performance, buildManifestSha256: 'previous' },
   ])
     assert.throws(() => validateReleaseReports(browser, changed, manifest));
+  for (const mutate of [
+    (b) => {
+      delete b.browsers;
+    },
+    (b) => {
+      b.errors.push('case failed');
+    },
+    (b) => {
+      b.browsers[0].status = 'failed';
+    },
+    (b) => {
+      b.browsers = b.browsers.filter((row) => row.browser !== 'firefox');
+    },
+    (b) => {
+      b.browsers[0] = structuredClone(b.browsers[1]);
+    },
+    (b) => {
+      b.browsers[0].width = 1;
+    },
+    (b) => {
+      b.browsers[0].width = '320';
+    },
+    (b) => {
+      b.browsers[0].consoleErrors = 1;
+    },
+    (b) => {
+      b.motionChecks[0].preferenceChange = 'failed';
+    },
+    (b) => {
+      b.fontChecks[0].localFontLoaded = false;
+    },
+    (b) => {
+      b.introChecks[0].headerLayoutShift = true;
+    },
+    (b) => {
+      b.introSafeguards[0].slowImage = 'failed';
+    },
+    (b) => {
+      b.durabilityChecks[0].keyboardAt200Percent = false;
+    },
+    (b) => {
+      b.notFoundChecks[0].httpStatus = 200;
+    },
+    (b) => {
+      b.qrDestination = 'https://example.invalid/';
+    },
+    (b) => {
+      delete b.noJavaScript;
+    },
+    (b) => {
+      b.clipboardAndFallback = 'failed';
+    },
+  ]) {
+    const changed = structuredClone(browser);
+    mutate(changed);
+    assert.throws(() => validateReleaseReports(changed, performance, manifest));
+  }
+  for (const mutate of [
+    (p) => {
+      p.cases = [{}, {}, {}, {}];
+    },
+    (p) => {
+      p.cases[0] = structuredClone(p.cases[1]);
+    },
+    (p) => {
+      p.cases[0].counterAdvanced = false;
+    },
+    (p) => {
+      p.cases[0].argentinaAnniversaryRollover = 'failed';
+    },
+    (p) => {
+      p.cases[0].yearWritesDuringFiveTicks = 5;
+    },
+    (p) => {
+      p.cases[0].pictures = [];
+    },
+    (p) => {
+      p.cases[0].imageBytes = Infinity;
+    },
+    (p) => {
+      p.cases[0].pictures[0].bytes += 1;
+    },
+    (p) => {
+      p.cases[0].fontFiles = [];
+    },
+    (p) => {
+      p.cases[0].width = '390';
+    },
+    (p) => {
+      p.cases[0].fontFiles[0].file = 'anton.ttf';
+    },
+    (p) => {
+      p.errors.push('measurement failed');
+    },
+  ]) {
+    const changed = structuredClone(performance);
+    mutate(changed);
+    assert.throws(() => validateReleaseReports(browser, changed, manifest));
+  }
 });
 
 test('rejects unsafe responsive/font paths and inconsistent candidate dimensions', async () => {
@@ -174,6 +406,14 @@ test('rejects unsafe links, duplicate activities and invalid real-business input
     (d) => {
       d.activities[0].schedules[0].periods[1].start = '10:00';
     },
+    (d) => { delete d.activities[1].id; },
+    (d) => { d.activities[1].id = null; },
+    (d) => { d.activities[1].id = true; },
+    (d) => { delete d.activities[1].schedules[0].id; },
+    (d) => { d.activities[1].schedules[0].id = null; },
+    (d) => { d.activities[1].schedules[0].id = true; },
+    (d) => { d.googleRating.value = '4.8'; },
+    (d) => { d.googleRating.value = true; },
   ]) {
     const data = structuredClone(business);
     mutate(data);
@@ -245,7 +485,20 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
   );
   assert.ok(html.includes('Google Maps puede mostrar esta calle como'));
   assert.ok(!html.includes('La actualización del nombre está en trámite.'));
-  assert.match(html, /srcset="[^\"]+480w[^\"]+768w[^\"]+1254w" sizes=/);
+  // The approved master logo ships with lossless responsive WebP candidates and a declared slot size.
+  assert.match(html, /srcset="[^\"]+160w[^\"]+320w[^\"]+480w[^\"]+768w[^\"]+1080w[^\"]+1269w" sizes="[^\"]+"/);
+  const assetManifest = JSON.parse(await readFile(path.join(ROOT, 'assets/manifest.json'), 'utf8'));
+  assert.equal(
+    createHash('sha256').update(await readFile(path.join(one, assetManifest.brand.png))).digest('hex'),
+    'cee6fb4fe714e77af3cf31f81c97bc0d2bb4d69a5588c220d90fff3fd61cd319',
+    'El logo maestro aprobado se publica sin cambios.',
+  );
+  // Exactly one inline script, the scripting marker, allowed by its own hash; no inline styles.
+  const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]);
+  assert.equal(inline.length, 1);
+  assert.ok(html.includes('sha256-' + createHash('sha256').update(inline[0]).digest('base64')));
+  assert.doesNotMatch(html, /\sstyle="/);
+  assert.doesNotMatch(html, /unsafe-inline|unsafe-eval/);
   assert.doesNotMatch(html, /reapertura|próxima apertura|apertura anunciada|3 de noviembre/i);
   assert.doesNotMatch(structured.description, /apertura|inauguraci[oó]n/i);
   assert.deepEqual(

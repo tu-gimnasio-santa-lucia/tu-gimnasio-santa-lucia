@@ -70,7 +70,7 @@ async function checkDurability(browser, definition) {
         };
       });
       assert.equal(dimensions.overflow, false, 'Texto ampliado sin desborde.');
-      if (dimensions.position === 'sticky')
+      if (['sticky', 'fixed'].includes(dimensions.position))
         assert.ok(
           dimensions.headerHeight < viewport.height / 2,
           'La cabecera no tapa la pantalla.',
@@ -158,7 +158,7 @@ async function checkDurability(browser, definition) {
     await page.reload();
     await page.locator('#aniversario').scrollIntoViewIfNeeded();
     assert.equal(await page.evaluate(() => document.getAnimations().length), 0);
-    assert.equal(await page.locator('.brand-intro').count(), 0);
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.heroIntro), 'skipped');
     assert.deepEqual(errors, []);
   } finally {
     await context.close();
@@ -175,7 +175,7 @@ async function checkDurability(browser, definition) {
     await page.goto(url);
     await page.locator('#aniversario').scrollIntoViewIfNeeded();
     assert.equal(await page.evaluate(() => document.getAnimations().length), 0);
-    assert.equal(await page.locator('.brand-intro').count(), 0);
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.heroIntro), 'skipped');
   } finally {
     await limited.close();
   }
@@ -239,7 +239,15 @@ async function checkNotFound(browser, definition) {
           fullPage: true,
           caret: 'initial',
         });
-      await page.getByRole('link', { name: 'Volver al inicio', exact: true }).click();
+      // Wait for the navigation the link starts (to the site's own path), then check: isVisible()
+      // does not wait, and without this the check could run on the 404 page that is unloading.
+      const home = new URL(new URL(project.publicUrl).pathname, url);
+      await Promise.all([
+        page.waitForURL((current) => current.origin === home.origin && current.pathname === home.pathname, {
+          waitUntil: 'load',
+        }),
+        page.getByRole('link', { name: 'Volver al inicio', exact: true }).click(),
+      ]);
       assert.ok(await page.locator('#actividades').isVisible());
       assert.deepEqual(errors, []);
       report.notFoundChecks.push({
@@ -255,8 +263,11 @@ async function checkNotFound(browser, definition) {
   }
 }
 
-/** Exercise the real flight, then cancellation and progressive fallbacks in each engine. */
-async function checkBrandIntro(browser, definition) {
+/**
+ * Exercise the real hero presentation, then its cancellations and progressive fallbacks.
+ * Transform/opacity only, bounded timing, input never blocked, no header layout shift.
+ */
+async function checkHeroIntro(browser, definition) {
   for (const viewport of viewports) {
     const context = await browser.newContext({
       viewport,
@@ -268,68 +279,79 @@ async function checkBrandIntro(browser, definition) {
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded' });
       await page.waitForFunction(
-        () => document.documentElement.dataset.brandIntro === 'running',
+        () => document.documentElement.dataset.heroIntro === 'running',
         null,
-        {
-          timeout: 2500,
-        },
+        { timeout: 2500 },
       );
       const first = await page.evaluate(() => {
-        const intro = document.querySelector('.brand-intro');
-        const flying = intro.querySelector('.brand-intro-logo');
-        const logo = document.querySelector('#header-brand .brand-logo');
-        const box = logo.getBoundingClientRect();
-        const keyframes = flying.getAnimations()[0].effect.getKeyframes();
-        const timing = flying.getAnimations()[0].effect.getTiming();
+        const parts = [...document.querySelectorAll('[data-intro]')];
+        const animations = parts.flatMap((part) => part.getAnimations());
+        const brand = document.querySelector('#header-brand').getBoundingClientRect();
+        const action = document.querySelector('.hero-actions a');
+        const box = action.getBoundingClientRect();
+        const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
         return {
-          accessible: intro.getAttribute('aria-hidden'),
-          pointerEvents: getComputedStyle(intro).pointerEvents,
-          header: { x: box.x, y: box.y, width: box.width, height: box.height },
+          parts: parts.length,
+          animated: parts.filter((part) => part.getAnimations().length === 1).length,
+          timings: animations.map((animation) => animation.effect.getTiming()),
+          keyframes: animations.map((animation) => animation.effect.getKeyframes()),
+          header: { x: brand.x, y: brand.y, width: brand.width, height: brand.height },
           years: document.querySelector('#header-brand .brand-years').textContent,
-          keyframes,
-          duration: timing.duration,
-          iterations: timing.iterations,
           overflow: getComputedStyle(document.body).overflow,
           scrollWidth: document.documentElement.scrollWidth,
+          heroPointer: getComputedStyle(document.querySelector('.hero')).pointerEvents,
+          actionReachable: Boolean(hit && action.contains(hit)),
         };
       });
-      assert.equal(first.accessible, 'true');
-      assert.equal(first.pointerEvents, 'none');
+      assert.ok(first.parts >= 5);
+      assert.equal(first.animated, first.parts, 'Cada parte de la presentación tiene una animación.');
+      assert.notEqual(first.heroPointer, 'none');
+      assert.ok(first.actionReachable, 'La acción principal debe poder usarse durante la presentación.');
       assert.notEqual(first.overflow, 'hidden');
       assert.ok(first.scrollWidth <= viewport.width + 1);
       assert.match(first.years, /\d+\s*años/);
-      assert.ok(first.duration > 0 && first.duration <= 1200);
-      assert.equal(first.iterations, 1);
-      assert.notEqual(first.keyframes[0].transform, 'none');
-      for (const frame of first.keyframes)
-        for (const forbidden of ['left', 'top', 'width', 'height', 'margin'])
-          assert.equal(Object.hasOwn(frame, forbidden), false, forbidden);
+      const total = Math.max(...first.timings.map((timing) => timing.delay + timing.duration));
+      for (const timing of first.timings) {
+        assert.ok(timing.duration > 0 && timing.duration <= 1300, `Duración ${timing.duration}`);
+        assert.equal(timing.iterations, 1);
+      }
+      assert.ok(total > 0 && total <= 1600, `Presentación total ${total} ms`);
+      for (const frames of first.keyframes) {
+        assert.ok(frames.length >= 2);
+        assert.notDeepEqual(frames[0], frames.at(-1));
+        for (const frame of frames)
+          for (const key of Object.keys(frame))
+            assert.ok(
+              ['offset', 'computedOffset', 'easing', 'composite', 'opacity', 'transform'].includes(key),
+              `Propiedad animada no permitida: ${key}`,
+            );
+      }
       if (definition.name === 'chromium' && [390, 1280].includes(viewport.width))
         await page.screenshot({
           path: path.join(artifacts, 'intro-inicio-' + viewport.width + '.png'),
           caret: 'initial',
         });
       await page.waitForFunction(
-        () => document.documentElement.dataset.brandIntro === 'complete',
+        () => document.documentElement.dataset.heroIntro === 'complete',
         null,
-        {
-          timeout: 2200,
-        },
+        { timeout: 2500 },
       );
-      assert.equal(await page.locator('.brand-intro').count(), 0);
-      const final = await page.locator('#header-brand .brand-logo').evaluate((logo) => {
-        const box = logo.getBoundingClientRect();
+      const final = await page.evaluate(() => {
+        const brand = document.querySelector('#header-brand').getBoundingClientRect();
+        const parts = [...document.querySelectorAll('[data-intro]')];
         return {
-          x: box.x,
-          y: box.y,
-          width: box.width,
-          height: box.height,
-          opacity: getComputedStyle(logo).opacity,
+          header: { x: brand.x, y: brand.y, width: brand.width, height: brand.height },
+          settled: parts.every(
+            (part) =>
+              part.getAnimations().length === 0 &&
+              getComputedStyle(part).opacity === '1' &&
+              getComputedStyle(part).transform === 'none',
+          ),
         };
       });
+      assert.ok(final.settled, 'Al terminar, todo queda visible y en su lugar.');
       for (const dimension of ['x', 'y', 'width', 'height'])
-        assert.ok(Math.abs(first.header[dimension] - final[dimension]) < 1);
-      assert.equal(final.opacity, '1');
+        assert.ok(Math.abs(first.header[dimension] - final.header[dimension]) < 1);
       assert.equal(await page.locator('#header-brand .brand-years').textContent(), first.years);
       if (definition.name === 'chromium' && [390, 1280].includes(viewport.width))
         await page.screenshot({
@@ -341,7 +363,7 @@ async function checkBrandIntro(browser, definition) {
         browser: definition.name,
         width: viewport.width,
         height: viewport.height,
-        durationMs: first.duration,
+        durationMs: total,
         headerLayoutShift: false,
         interactionBlocking: false,
         status: 'passed',
@@ -359,27 +381,23 @@ async function checkBrandIntro(browser, definition) {
   const running = async () => {
     await page.goto(url, { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(
-      () => document.documentElement.dataset.brandIntro === 'running',
+      () => document.documentElement.dataset.heroIntro === 'running',
       null,
-      {
-        timeout: 2500,
-      },
+      { timeout: 2500 },
     );
   };
   const completed = async () => {
     await page.waitForFunction(
-      () => document.documentElement.dataset.brandIntro === 'complete',
+      () => document.documentElement.dataset.heroIntro === 'complete',
       null,
-      {
-        timeout: 1500,
-      },
+      { timeout: 1000 },
     );
-    assert.equal(await page.locator('.brand-intro').count(), 0);
-    assert.equal(
-      await page
-        .locator('#header-brand .brand-logo')
-        .evaluate((logo) => getComputedStyle(logo).opacity),
-      '1',
+    assert.ok(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('[data-intro]')].every(
+          (part) => part.getAnimations().length === 0 && getComputedStyle(part).opacity === '1',
+        ),
+      ),
     );
   };
   try {
@@ -388,7 +406,7 @@ async function checkBrandIntro(browser, definition) {
     await completed();
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await running();
-    await page.locator('a[href="#actividades"]').first().click();
+    await page.locator('.hero-actions a[href="#actividades"]').click();
     await completed();
     assert.equal(new URL(page.url()).hash, '#actividades');
     await running();
@@ -406,45 +424,39 @@ async function checkBrandIntro(browser, definition) {
     // A direct-link visit needs a fresh document, not a same-document hash navigation.
     const deepPage = await context.newPage();
     await deepPage.goto(url + '#actividades', { waitUntil: 'networkidle' });
-    assert.equal(await deepPage.locator('.brand-intro').count(), 0);
     assert.equal(
-      await deepPage.evaluate(() => document.documentElement.dataset.brandIntro),
+      await deepPage.evaluate(() => document.documentElement.dataset.heroIntro),
       'skipped',
     );
+    assert.ok(await deepPage.locator('#actividades').isVisible());
   } finally {
     await context.close();
   }
 
   const slow = await browser.newContext({ reducedMotion: 'no-preference' });
   try {
-    // Delay image decoding in the page: also works with the pinned Firefox build whose
-    // network-interception protocol predates the current Playwright route API.
+    // A logo that decodes later than the short wait must never hold the hero hidden.
     await slow.addInitScript(() => {
-      const complete = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'complete');
       const decode = HTMLImageElement.prototype.decode;
-      Object.defineProperty(HTMLImageElement.prototype, 'complete', {
-        configurable: true,
-        get() {
-          return this.getAttribute('src') === 'tu-gimnasio-logo.jpg'
-            ? false
-            : complete.get.call(this);
-        },
-      });
       HTMLImageElement.prototype.decode = async function () {
-        if (this.getAttribute('src') === 'tu-gimnasio-logo.jpg')
-          await new Promise((resolve) => setTimeout(resolve, 700));
+        if (this.classList.contains('hero-logo'))
+          await new Promise((resolve) => setTimeout(resolve, 1600));
         return decode.call(this);
       };
     });
     const slowPage = await slow.newPage();
     await slowPage.goto(url, { waitUntil: 'domcontentloaded' });
     await slowPage.waitForFunction(
-      () => ['skipped', 'complete'].includes(document.documentElement.dataset.brandIntro),
+      () => ['skipped', 'complete'].includes(document.documentElement.dataset.heroIntro),
       null,
       { timeout: 1500 },
     );
-    assert.equal(await slowPage.locator('.brand-intro').count(), 0);
+    assert.equal(await slowPage.evaluate(() => document.documentElement.dataset.heroIntro), 'skipped');
     assert.ok(await slowPage.locator('.hero-actions a').first().isVisible());
+    assert.equal(
+      await slowPage.locator('.hero-foot').evaluate((element) => getComputedStyle(element).opacity),
+      '1',
+    );
   } finally {
     await slow.close();
   }
@@ -457,9 +469,10 @@ async function checkBrandIntro(browser, definition) {
     });
     const plain = await unsupported.newPage();
     await plain.goto(url);
-    assert.equal(await plain.locator('.brand-intro').count(), 0);
+    assert.equal(await plain.evaluate(() => document.documentElement.dataset.heroIntro), 'skipped');
     assert.ok(await plain.locator('#header-brand .brand-years').isVisible());
     assert.ok(await plain.locator('#toggle-clock').isVisible());
+    assert.ok(await plain.locator('.hero-actions a').first().isVisible());
   } finally {
     await unsupported.close();
   }
@@ -532,7 +545,7 @@ try {
           }
           await page.evaluate(() => window.scrollTo(0, 0));
           assert.ok(await page.locator('#share-controls').isVisible());
-          assert.equal(await page.locator('.brand-intro').count(), 0);
+          assert.equal(await page.evaluate(() => document.documentElement.dataset.heroIntro), 'skipped');
           assert.ok(await page.locator('#header-brand .brand-years').isVisible());
           assert.equal(await page.locator('h1').count(), 1);
           // WebKit's platform setting may tab only between controls. Test the link's keyboard action
@@ -636,22 +649,31 @@ try {
           );
           const logoFits = await page.locator('.hero-logo').evaluate((image) => {
             const box = image.getBoundingClientRect();
-            const frame = image.closest('.hero-logo-wrap').getBoundingClientRect();
-            const centerX = frame.x + frame.width / 2;
-            const centerY = frame.y + frame.height / 2;
+            const hero = image.closest('.hero').getBoundingClientRect();
+            const style = getComputedStyle(image);
+            let clipped = false;
+            for (let node = image.parentElement; node && node !== document.body; node = node.parentElement) {
+              const own = getComputedStyle(node);
+              const frame = node.getBoundingClientRect();
+              if (own.clipPath !== 'none' || ((own.overflow !== 'visible' || own.borderRadius !== '0px') && (box.left < frame.left - 1 || box.right > frame.right + 1 || box.top < frame.top - 1 || box.bottom > frame.bottom + 1)))
+                clipped = true;
+            }
             return (
-              getComputedStyle(image).borderRadius === '0px' &&
-              [
-                [box.left, box.top],
-                [box.right, box.top],
-                [box.left, box.bottom],
-                [box.right, box.bottom],
-              ].every(([x, y]) => Math.hypot(x - centerX, y - centerY) < frame.width / 2 - 1)
+              !clipped &&
+              style.borderRadius === '0px' &&
+              style.clipPath === 'none' &&
+              style.objectFit === 'fill' &&
+              box.width >= 120 &&
+              Math.abs(box.width / box.height - image.naturalWidth / image.naturalHeight) < 0.01 &&
+              box.left >= hero.left - 1 &&
+              box.right <= hero.right + 1 &&
+              box.top >= hero.top - 1 &&
+              box.bottom <= hero.bottom + 1
             );
           });
           assert.ok(
             logoFits,
-            'El archivo completo del logo debe quedar dentro del círculo, sin cortar el nombre.',
+            'El archivo completo del logo debe verse entero, sin recortes, marcos que lo corten ni deformación.',
           );
           for (const text of [
             'desde 1996',
@@ -733,7 +755,7 @@ try {
         }
       }
       await checkNotFound(browser, definition);
-      await checkBrandIntro(browser, definition);
+      await checkHeroIntro(browser, definition);
       await checkDurability(browser, definition);
       const noScript = await browser.newContext({
         javaScriptEnabled: false,

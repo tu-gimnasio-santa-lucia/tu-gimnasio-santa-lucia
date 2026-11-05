@@ -1,6 +1,12 @@
 # Actualización en dos jornadas
 
-## Estado vigente — 25/10/2026
+## Estado vigente — 05/11/2026
+
+Después de la entrega publicada el 29/10, el propietario aprobó la dirección «Detalle» (prototipo v3) y su perfeccionamiento v4 como versión visual y funcional definitiva. Ambos están integrados en local, sin commits, push ni publicación; la página pública sigue con la entrega del 29/10. La publicación (fase 3) requiere una autorización expresa que nombre el repositorio, las ramas `main` y `site` y la versión exacta, y sigue [mantenimiento](MANTENIMIENTO.md). Evidencia en [verificación](VERIFICACION.md); decisiones de diseño en `DESIGN.md`.
+
+Siguen vigentes los requisitos de las etapas anteriores: consultas simétricas, contador penúltimo, «Volvamos a las bases» último, sin anuncio de reapertura, Profe Martita antes que Profe Titi en las presentaciones generales, QR y URL oficial sin cambios, sin precios ni la actividad retirada.
+
+## Antecedente — 25/10/2026
 
 La segunda etapa fue autorizada directamente e implementada. Las esperas de los apartados anteriores son antecedentes ya cumplidos; no requieren una nueva frase literal. Nueve grupos y 48 casos de navegador aprobados. Web publicada por script y 17 archivos públicos comprobados por SHA-256 el 25/10/2026; respaldo final y recibo de recuperación en el registro local.
 

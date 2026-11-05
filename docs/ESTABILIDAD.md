@@ -1,6 +1,6 @@
 # Estabilidad y mantenimiento breve
 
-Revisión del 29/10/2026, cuya publicación fue autorizada después de comprobar el candidato local. El sitio conserva HTML/CSS/JavaScript estándar, cero dependencias de producción, datos canónicos y marca original. Las cuentas de Maps/Instagram no forman parte de esta entrega.
+Vigente para «Detalle» v4 (05/11/2026, integrado en local y pendiente de publicación). Actualiza la revisión del 29/10/2026, que sigue publicada hasta que se autorice la nueva versión. El sitio conserva HTML/CSS/JavaScript estándar, cero dependencias de producción, datos canónicos y marca original. Las cuentas de Maps e Instagram no forman parte de esta entrega.
 
 ## Antigüedad que no depende de una publicación anual
 
@@ -14,11 +14,11 @@ La valoración visible conserva su fecha real de consulta, tomada de `googleRati
 
 ## Cabecera y movimiento
 
-Las columnas de escritorio pueden contraerse y la navegación ajustarse sin convertir el nombre en una columna de letras al ampliar texto. Cuando la navegación ocupa dos filas (hasta 1100 px) o la pantalla es baja (hasta 500 px), la cabecera se desplaza con el documento para dejar espacio al contenido. En escritorio amplio conserva la posición fija durante el desplazamiento.
+La cabecera es fija y translúcida al desplazarse. Se oculta al bajar y vuelve al subir, y nunca se oculta si tiene el foco. Cuando su contenido no entra en una fila (por ejemplo, con texto ampliado), pasa sola al modo compacto con menú en lugar de deformar el nombre; la batería exige que no ocupe más de media pantalla. Sin JavaScript se desplaza con el documento y muestra toda la navegación. En la cabecera hay una sola marca visible a la vez: el logo de la portada le cede el lugar al desplazarse, y con movimiento reducido cambia sin fundido.
 
-La presentación original conserva 1040 ms, su vigilancia de 1450 ms, salida al interactuar, logo completo y contenido disponible desde el inicio. La cancelación de Web Animations genera `AbortError`, que se trata como interrupción esperada; otros errores se registran en consola después de limpiar la presentación. No se silencian para obtener una prueba aprobada.
+La presentación de la portada dura 1,4 s (contrato de la batería: 1600 ms como máximo y ninguna pieza de más de 1300 ms), usa sólo transformación y opacidad, no bloquea ninguna acción y termina al tocar, usar el teclado, desplazar, cambiar el tamaño u ocultar la pestaña. Espera la fuente y el logo hasta 0,9 s contados desde el inicio de la navegación; si no llegan, se omite. Si el script no la inició 0,5 s después del primer pintado, una salvaguarda CSS muestra la portada y el script ya no la oculta: nunca queda vacía más de medio segundo, ni oculta con movimiento reducido aunque el script falle. Cada mejora se inicializa por separado: un error se registra en consola sin desactivar las demás ni ocultar contenido, y no se silencia para aprobar una prueba.
 
-Movimiento reducido y colores forzados dejan una alternativa estática. Con ahorro de datos se omiten las entradas JavaScript y CSS, sin cancelar el reloj ni las consultas. Los efectos sólo cambian transformaciones/opacidad; no se agregaron ciclos, vídeo, parallax ni dependencias.
+Movimiento reducido y colores forzados dejan una alternativa estática; las manipulaciones directas, como cerrar la hoja de consulta arrastrándola, siguen disponibles sin animación. Con ahorro de datos se omiten los efectos, sin cancelar el reloj ni las consultas. Los efectos usan los tokens de movimiento de `src/styles.css`: transformación y opacidad, sin bucles ni rebotes. El parallax leve del logo y del título al desplazar es el aprobado en «Detalle». No hay vídeo ni dependencias.
 
 ## Impresión
 

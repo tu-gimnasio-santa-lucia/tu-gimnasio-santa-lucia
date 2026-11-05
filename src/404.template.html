@@ -9,7 +9,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; base-uri 'none'; object-src 'none'; img-src 'self'; style-src 'self'; font-src 'self'; form-action 'none'"
     />
-    <meta name="theme-color" content="#08084f" />
+    <meta name="theme-color" content="#050537" />
     <title>Página no encontrada | {{name}}</title>
     <meta
       name="description"
@@ -26,12 +26,13 @@
   <body class="error-page">
     <main class="error-panel">
       <a class="error-brand" href="{{home_path}}" aria-label="Volver al inicio de Tu Gimnasio">
-        <img
-          src="{{error_logo_path}}"
-          width="{{logo_width}}"
-          height="{{logo_height}}"
-          alt="Tu Gimnasio"
-        />
+        <picture
+          ><source srcset="{{error_brand_webp}}" type="image/webp" /><img
+            src="{{error_brand_png}}"
+            width="{{brand_width}}"
+            height="{{brand_height}}"
+            alt="Tu Gimnasio"
+        /></picture>
       </a>
       <p class="error-code">404</p>
       <h1>Esta página no está disponible.</h1>

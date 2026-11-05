@@ -36,7 +36,7 @@ try {
       return document.fonts.check('400 40px "Tu Gimnasio Display"', 'ÁÉÍÓÚÑáéíóúñ 0123456789');
     });
     const pictures = [];
-    for (const selector of ['.identity-image', '.manifesto-image']) {
+    for (const selector of ['.hero-logo', '.manifesto-image']) {
       const image = page.locator(selector);
       await image.scrollIntoViewIfNeeded();
       await image.evaluate((img) => img.decode());

@@ -80,5 +80,46 @@
     "png": "tu-gimnasio-spinning.png",
     "width": 1206,
     "height": 1507
+  },
+  "brand": {
+    "png": "tu-gimnasio-logo-maestro.png",
+    "webp": "tu-gimnasio-logo-maestro.webp",
+    "width": 1269,
+    "height": 1240,
+    "sha256": "cee6fb4fe714e77af3cf31f81c97bc0d2bb4d69a5588c220d90fff3fd61cd319",
+    "source": "materiales/identidad/logo-tu-gimnasio-transparente-contorno-negro.png (maestro aprobado el 30/10/2026)",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-logo-maestro-160.webp",
+        "width": 160,
+        "height": 156,
+        "sha256": "8c635917074fc88ff86899d5a766617145054bccfd59586dddcb1fb3b03ab0cf"
+      },
+      {
+        "file": "tu-gimnasio-logo-maestro-320.webp",
+        "width": 320,
+        "height": 313,
+        "sha256": "9dcc68aa2510520072365044861968075c8c20b2ad2e6cf0f34f78e6ec47b611"
+      },
+      {
+        "file": "tu-gimnasio-logo-maestro-480.webp",
+        "width": 480,
+        "height": 469,
+        "sha256": "58a3f959bf5bc8815a7187ab8f5ad98f69857db491c493f710dea4649e279d07"
+      },
+      {
+        "file": "tu-gimnasio-logo-maestro-768.webp",
+        "width": 768,
+        "height": 750,
+        "sha256": "6bcd6cd6c1e1f20b1451e64259f93db73f16fb76363fb10bcf76dee5ebed94c0"
+      },
+      {
+        "file": "tu-gimnasio-logo-maestro-1080.webp",
+        "width": 1080,
+        "height": 1055,
+        "sha256": "50a61c06a1e402addca7ff92e0d2975f286a714139ffae30d64156b5151e6b4e"
+      }
+    ],
+    "webpSha256": "8375f7f700a3a5e84a0ca31642fffb7b0774e8e41c2531e23d611c5d843ac7ee"
   }
 }

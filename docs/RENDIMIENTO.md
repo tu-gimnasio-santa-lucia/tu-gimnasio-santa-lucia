@@ -20,6 +20,7 @@ La fuente WOFF2 conserva el mapa Unicode completo, orden de glifos y métricas. 
 
 - `fonts.display.file/sha256`: TTF original; licencia y sus bytes siguen intactos.
 - `fonts.display.woff2`: `{file, sha256}`, derivado comprimido. CSS pide WOFF2 y conserva TTF de respaldo.
+- `brand` (05/11/2026): logo maestro aprobado, PNG con su `sha256` y WebP completo con `webpSha256`; candidatos sin pérdida de 160, 320, 480, 768 y 1080 px. El generador rechaza un maestro o derivado alterado. La portada declara `sizes` según su ancho real (54vw, 60vw o 30vw, con tope de 528 px).
 - `identity.responsive`, `manifesto.responsive`: candidatos ordenados `{file, width, height, sha256}`. Anchos menores al original, proporción conservada, rutas WebP seguras y archivos sin duplicar.
 - El generador valida rutas, dimensiones declaradas y hashes de derivados antes de publicar. `srcset` y `sizes` permiten al navegador seleccionar resolución. El logo y su animación conservan el recurso original.
 - `sizes` es una estimación conservadora para estos dos espacios. Si cambia su disposición CSS, contrastar de nuevo los archivos seleccionados a varios anchos/DPR, además de la revisión visual.
@@ -34,7 +35,7 @@ node scripts/performance-check.mjs
 node scripts/browser-check.mjs
 ```
 
-`performance-check.mjs` inicia su propio servidor en un puerto libre de loopback y un perfil Chromium temporal, que cierra al terminar. Comprueba selección WOFF2, avance del reloj, ausencia de escrituras/consultas repetidas, presupuestos móviles de imágenes y cambio de 29 a 30 en los tres años visibles al cruzar el 04/11/2026 argentino. Guarda `artifacts/performance-after.json` con huella del build. Los límites son 350 KB para estas dos imágenes en 390 px/DPR 1 y 800 KB en DPR 2.
+`performance-check.mjs` inicia su propio servidor en un puerto libre de loopback y un perfil Chromium temporal, que cierra al terminar. Comprueba selección WOFF2, avance del reloj, ausencia de escrituras/consultas repetidas, presupuestos móviles de imágenes (desde el 05/11/2026: logo de portada y gráfica de cierre) y cambio de 29 a 30 en los tres años visibles al cruzar el 04/11/2026 argentino. Guarda `artifacts/performance-after.json` con huella del build. Los límites son 350 KB para estas dos imágenes en 390 px/DPR 1 y 800 KB en DPR 2.
 
 `--baseline` mide el checkout donde se ejecuta, sin exigir los presupuestos nuevos; no restaura una versión anterior. Para comparar antes/después usar una copia anterior recuperada, la misma instrumentación y las mismas condiciones. No editar los resultados para aprobar.
 
