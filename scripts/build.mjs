@@ -27,6 +27,22 @@ export const serializeJsonLd = (value) =>
   JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 
 /** Restrict asset paths and types: an accidental file in assets must never be published. */
+/** Real photos of the venue (06/11/2026): the façade in «Visitanos» and one per activity. */
+export const PHOTO_ROLES = [
+  'facadeDay',
+  'facadeNight',
+  'photoMusculacion',
+  'photoSpinning',
+  'photoGimnasiaGrupal',
+  'photoPilates',
+];
+const ACTIVITY_PHOTOS = {
+  musculacion: 'photoMusculacion',
+  spinning: 'photoSpinning',
+  'gimnasia-grupal': 'photoGimnasiaGrupal',
+  pilates: 'photoPilates',
+};
+
 export function validateAssetManifest(assets) {
   const names = new Set(['qr-tu-gimnasio.png']);
   const font = assets.fonts?.display;
@@ -62,9 +78,23 @@ export function validateAssetManifest(assets) {
     'manifesto',
     'schedule',
     'spinning',
+    ...PHOTO_ROLES,
     ...(assets.originalLogo ? ['originalLogo'] : []),
   ]) {
     const image = assets[key];
+    // Real venue photos: hashed derivatives with a description of what is visible.
+    if (
+      PHOTO_ROLES.includes(key) &&
+      (!image?.jpeg ||
+        !image.webp ||
+        !/^[a-f0-9]{64}$/.test(image.sha256 || '') ||
+        !/^[a-f0-9]{64}$/.test(image.webpSha256 || '') ||
+        typeof image.alt !== 'string' ||
+        image.alt.trim().length < 10 ||
+        typeof image.caption !== 'string' ||
+        !image.caption.trim())
+    )
+      throw new Error('Foto de la sede incompleta: ' + key);
     if (image?.archived !== undefined && typeof image.archived !== 'boolean')
       throw new Error('Estado de archivo de imagen inválido.');
     if (
@@ -153,6 +183,18 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     throw new Error('El logo maestro no coincide con la versión aprobada.');
   if (sha256(await readFile(path.join(ROOT, 'assets', assets.brand.webp))) !== assets.brand.webpSha256)
     throw new Error('Recurso derivado alterado: ' + assets.brand.webp);
+  for (const role of PHOTO_ROLES) {
+    const photo = assets[role];
+    if (
+      sha256(await readFile(path.join(ROOT, 'assets', photo.jpeg))) !== photo.sha256 ||
+      sha256(await readFile(path.join(ROOT, 'assets', photo.webp))) !== photo.webpSha256
+    )
+      throw new Error('Foto de la sede alterada: ' + role);
+  }
+  // Every activity shows its space, or none does: the cards stay even.
+  const activityIds = business.activities.map((activity) => activity.id);
+  if (activityIds.some((id) => !ACTIVITY_PHOTOS[id]) && activityIds.some((id) => ACTIVITY_PHOTOS[id]))
+    throw new Error('Cada actividad necesita su foto o ninguna la lleva.');
   const derivatives = [
     assets.fonts.display.woff2,
     ...Object.values(assets).flatMap((image) => image.responsive || []),
@@ -235,6 +277,11 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     const sizesAttribute = image.responsive?.length ? ` sizes="${escapeHtml(sizes)}"` : '';
     return `<picture>${image.webp ? `<source srcset="${escapeHtml(srcset)}"${sizesAttribute} type="image/webp">` : ''}<img class="${escapeHtml(className)}" src="${escapeHtml(image.png || image.jpeg)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}></picture>`;
   }
+  /** A venue photo with its visible caption; revealed like the closing artwork (data-clip). */
+  function photoFigure(role, className, sizes) {
+    const photo = assets[role];
+    return `<figure class="${className}"><div class="photo-frame" data-clip>${picture(role, 'photo-image', photo.alt, { sizes })}</div><figcaption>${escapeHtml(photo.caption)}</figcaption></figure>`;
+  }
   const external = 'target="_blank" rel="noopener noreferrer"';
   const icon = {
     wa: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.8l4.9-1.3A9.8 9.8 0 1 0 12 2.2Zm0 17.8a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.9 2c0 1.2.9 2.3 1 2.5.1.2 1.7 2.6 4.2 3.7 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.5-.5Z"/></svg>',
@@ -275,7 +322,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
           return `<li class="activity-session" data-reveal id="horario-${activity.id}-${schedule.id}" data-schedule-id="${schedule.id}" data-teacher-id="${schedule.teacherId}"><div class="session-information">${weekStrip(schedule.days)}<p class="schedule-days">${escapeHtml(days)}</p>${schedule.label ? `<h4>${escapeHtml(schedule.label)}</h4>` : ''}<p class="schedule-times">${periods}</p></div><div class="session-contact"><p>Profe <strong>${escapeHtml(teacher.name)}</strong> <a class="teacher-phone" href="tel:+${teacher.phoneInternational}">${escapeHtml(teacher.phoneDisplay)}</a></p><a class="teacher-contact" href="${escapeHtml(contact)}" ${external} aria-label="Consultar con ${escapeHtml(teacher.name)} por ${escapeHtml(activity.name)}, ${escapeHtml(days.toLowerCase())}, ${escapeHtml(formatSchedulePeriods(schedule.periods))}">${icon.wa}<span>Consultar con ${escapeHtml(teacher.name)}</span></a></div></li>`;
         })
         .join('\n');
-      return `<article class="activity-card accent-${activity.accent}" id="actividad-${activity.id}" data-activity-id="${activity.id}" data-act aria-labelledby="titulo-${activity.id}"><header class="activity-card-header" data-reveal><span class="activity-ribbon" aria-hidden="true"></span><h3 id="titulo-${activity.id}">${escapeHtml(activity.name)}</h3><p class="activity-description">${escapeHtml(activity.description)}</p><a class="activity-instagram" href="${escapeHtml(business.contacts.instagram)}" ${external} aria-label="Consultar en Instagram por ${escapeHtml(activity.name)} de Tu Gimnasio"><span>Consultar en Instagram</span>${icon.arrow}</a></header><ul class="activity-schedules" aria-label="Horarios y profesores de ${escapeHtml(activity.name)}">${schedules}</ul></article>`;
+      return `<article class="activity-card accent-${activity.accent}" id="actividad-${activity.id}" data-activity-id="${activity.id}" data-act aria-labelledby="titulo-${activity.id}"><header class="activity-card-header" data-reveal><span class="activity-ribbon" aria-hidden="true"></span><h3 id="titulo-${activity.id}">${escapeHtml(activity.name)}</h3><p class="activity-description">${escapeHtml(activity.description)}</p><a class="activity-instagram" href="${escapeHtml(business.contacts.instagram)}" ${external} aria-label="Consultar en Instagram por ${escapeHtml(activity.name)} de Tu Gimnasio"><span>Consultar en Instagram</span>${icon.arrow}</a></header>${photoFigure(ACTIVITY_PHOTOS[activity.id], 'activity-photo', '(max-width: 960px) min(calc(100vw - 2.5rem), 34rem), 23vw')}<ul class="activity-schedules" aria-label="Horarios y profesores de ${escapeHtml(activity.name)}">${schedules}</ul></article>`;
     })
     .join('\n');
   const activityIndex = business.activities
@@ -344,6 +391,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     anniversary_year: business.anniversary.referenceYear,
     anniversary_metrics: anniversaryMetrics,
     anniversary_snapshot_label: business.anniversary.snapshotDate.split('-').reverse().join('/'),
+    visit_photos: `<div class="visit-photos">${photoFigure('facadeDay', 'visit-photo', '(max-width: 960px) min(calc(100vw - 2.5rem), 34rem), 36vw')}${photoFigure('facadeNight', 'visit-photo is-night', '(max-width: 960px) min(32vw, 12rem), 12vw')}</div>`,
     maps_notice: mapNotice ? `<p class="maps-notice">${escapeHtml(mapNotice)}</p>` : '',
     maps_faq_title: mapNotice ? '¿Y si Maps muestra San Martín?' : '¿Cómo llego al gimnasio?',
     maps_faq_text:
@@ -427,6 +475,7 @@ export async function buildSite(outputDirectory = path.join(ROOT, 'dist')) {
     'rating_stars',
     'anniversary_metrics',
     'maps_notice',
+    'visit_photos',
     'structured_data',
     'boot_script',
     ...Object.keys(replacements).filter((key) => key.startsWith('image_') || key.startsWith('icon_')),

@@ -1,5 +1,23 @@
 # Fuentes y verificaciones
 
+## Fotos reales de la sede — 06/11/2026 (local, sin publicar)
+
+El propietario entregó 21 fotos y 1 video de Héroes de Malvinas 150 el 06/11/2026. Se copiaron sin modificar a `../materiales/fotos-sede-2026-11/originales/`, fuera del repositorio, con `SHA256SUMS`. Aprobó el alcance: fachada y actividades. Gimnasia grupal y Pilates comparten el salón de F16; F03 es el rincón de elongación y no se usa; se usan las fotos de WhatsApp (960 px). En el sitio se publican 6 fotos derivadas, recortadas a 4:3 y sin metadatos. Después de un refinamiento pedido por él (pies sobre la imagen, fachada como postal con la vista nocturna en un recuadro superpuesto y tarjetas con texto y foto lado a lado según su propio ancho), el build final es **`1d547df987373b0af029f28172ed66ddd9650a7fa123158f6a83ba460107f377`**.
+
+- Respaldo previo: `../tu-gimnasio-respaldos/2026-11-06T15-26-27-724Z-c42a6a2f/`. Recuperación ensayada en una carpeta nueva: mismo HEAD `6a7abc3` y `check` aprobado con `f830f5fc…`.
+- `prepare-assets.py --check` con Pillow 13.0.0 en `../herramientas/.venv-assets`: las salidas son reproducibles byte a byte y los originales quedan intactos.
+- `node scripts/check.mjs`: 18/18 pruebas, incluida la nueva del manifiesto de fotos. JavaScript sin cambios: 30.765 de 32.768 bytes.
+- `node scripts/browser-check.mjs`: aprobado en Chromium, Firefox, WebKit y Edge, con 24 casos generales, 24 de presentación y 8 de 404 (`artifacts/qa-report.json`). Durante el refinamiento, la prueba de durabilidad detectó en WebKit un bucle de ResizeObserver con texto al 200 %: el diseño de las tarjetas dependía de `header-compact`, que el script alterna al medir la cabecera. Se corrigió la causa con una consulta de contenedor en `rem`, sin tocar la prueba, y la batería repetida pasó completa.
+- `node scripts/performance-check.mjs`: aprobado. La carga inicial de imágenes no cambia (143.610 B a 390 px con DPR 1), porque las fotos se cargan en diferido; en celular cada una pesa entre 13 y 35 KB.
+- `pnpm audit`: sin vulnerabilidades conocidas.
+- Revisión visual a 390, 768 y 1440 px de las cuatro tarjetas y de Visitanos: las seis fotos cargan, sin desborde, sin errores de consola y sin recursos fallidos.
+- Apertura: el 06/11/2026 el propietario confirmó que la sede abrió el 03/11/2026. `data/business.json` pasa a `relocation.status: open`, con `openingConfirmedAt` y `openingConfirmedBy`, y el validador exige esa confirmación. `check` 18/18. El build sigue siendo `1d547df9…`, porque el estado no cambia los archivos publicados, así que la batería del mismo build sigue vigente.
+- Límites: las fotos son de 960 px (WhatsApp) y pueden verse algo blandas en pantallas grandes.
+
+## Publicación de «Detalle» v4 — 05/11/2026
+
+Autorizada por el propietario. `main` `6a7abc3` (push normal desde `b54d2c9`) y `site` `9eeed07` (un commit lineal sobre `8e499d5`, con `scripts/publish.mjs`). Build `f830f5fc…`; GitHub Pages quedó `built` a las 21:43 UTC. Comprobado en Internet: los 31 archivos públicos son idénticos por SHA-256 al build, la 404 propia responde 404 y el QR público lleva a la URL oficial. WhatsApp, Maps e Instagram presentes, y 13/13 funciones de v4 en Chromium, Firefox y WebKit. Respaldos: el del script y uno final.
+
 ## Integración local de «Detalle» v4 — 05/11/2026 (sin publicar)
 
 Aprobada por el propietario después de revisar la comparación v3/v4. Se integraron, sin modificarlos, `src/index.template.html`, `src/styles.css` y `src/site.js` de `../propuestas/rediseno-2026-11-v4/sitio/`; también se actualizaron `DESIGN.md` y `CHANGELOG.md`. El build integrado reproduce la huella del prototipo revisado: **`f830f5fceffa49ad1961cd33323c303e2ae558525cd8eddb389d94d20adb61d6`**. Datos, recursos (con el QR), scripts, pruebas y puertas no cambiaron.

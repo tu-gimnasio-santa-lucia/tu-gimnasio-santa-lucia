@@ -35,6 +35,22 @@ test('refuses asset paths that escape the public allowlist', async () => {
   assert.throws(() => validateAssetManifest(fontAssets), /insegura/);
 });
 
+test('venue photos need hashes, a description and a caption; their paths stay in the allowlist', async () => {
+  const fresh = async () => JSON.parse(await readFile(path.join(ROOT, 'assets/manifest.json')));
+  let assets = await fresh();
+  delete assets.photoSpinning.alt;
+  assert.throws(() => validateAssetManifest(assets), /Foto de la sede incompleta/);
+  assets = await fresh();
+  assets.facadeDay.webpSha256 = 'x';
+  assert.throws(() => validateAssetManifest(assets), /Foto de la sede incompleta/);
+  assets = await fresh();
+  assets.facadeNight.caption = ' ';
+  assert.throws(() => validateAssetManifest(assets), /Foto de la sede incompleta/);
+  assets = await fresh();
+  assets.photoPilates.jpeg = '../materiales/original.jpg';
+  assert.throws(() => validateAssetManifest(assets), /insegura/);
+});
+
 test('public script compaction keeps behaviour and refuses unsafe inputs', async () => {
   const source = await readFile(path.join(ROOT, 'src/site.js'), 'utf8');
   const compact = compactScript(source);
@@ -493,6 +509,24 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
     'cee6fb4fe714e77af3cf31f81c97bc0d2bb4d69a5588c220d90fff3fd61cd319',
     'El logo maestro aprobado se publica sin cambios.',
   );
+  // Real venue photos: the façade in «Visitanos» and one per activity, lazy, sized, described,
+  // never with priority over the hero; the originals stay outside the published package.
+  const photoTags = [...html.matchAll(/<img class="photo-image"[^>]*>/g)].map((match) => match[0]);
+  assert.equal(photoTags.length, 6);
+  for (const tag of photoTags) {
+    assert.match(tag, /loading="lazy"/);
+    assert.match(tag, /width="\d+" height="\d+"/);
+    assert.match(tag, /alt="[^"]{10,}"/);
+    assert.doesNotMatch(tag, /fetchpriority/);
+  }
+  for (const activity of business.activities)
+    assert.match(
+      html,
+      new RegExp(`id="actividad-${activity.id}"[^]*?</header><figure class="activity-photo">`),
+      'Cada actividad muestra su espacio.',
+    );
+  assert.match(html, /<div class="visit-photos"><figure class="visit-photo">[^]*?Desde la calle[^]*?De noche/);
+  assert.doesNotMatch(html, /WhatsApp Image|originales\//);
   // Exactly one inline script, the scripting marker, allowed by its own hash; no inline styles.
   const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]);
   assert.equal(inline.length, 1);
@@ -562,7 +596,7 @@ test('reproducible build; official content, CSP hash, SRI and output boundaries'
     assert.ok(!/\.env|\.git|\.tsx|\.mjs|business\.json|node_modules/.test(name));
 });
 
-test('anniversary figures remain coherent and a scheduled opening cannot imply an open venue', async () => {
+test('anniversary figures remain coherent and the venue is open only with a dated confirmation', async () => {
   const business = JSON.parse(await readFile(path.join(ROOT, 'data/business.json')));
   const project = JSON.parse(await readFile(path.join(ROOT, 'project.json')));
   for (const mutate of [
@@ -582,7 +616,16 @@ test('anniversary figures remain coherent and a scheduled opening cannot imply a
       data.relocation.openingDate = '2026-02-31';
     },
     (data) => {
-      data.relocation.status = 'open';
+      delete data.relocation.openingConfirmedAt;
+    },
+    (data) => {
+      data.relocation.openingConfirmedAt = '2026-11-01';
+    },
+    (data) => {
+      data.relocation.openingConfirmedBy = ' ';
+    },
+    (data) => {
+      data.relocation.status = 'abierta';
     },
     (data) => {
       data.relocation.maps.coordinateSource = 'street-view-camera';

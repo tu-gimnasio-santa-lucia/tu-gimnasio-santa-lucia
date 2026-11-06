@@ -31,8 +31,10 @@
     "snapshotDate": "2026-10-15"
   },
   "relocation": {
-    "status": "scheduled",
+    "status": "open",
     "openingDate": "2026-11-03",
+    "openingConfirmedAt": "2026-11-06",
+    "openingConfirmedBy": "propietario",
     "maps": {
       "locationUpdated": true,
       "streetNameUpdated": false,

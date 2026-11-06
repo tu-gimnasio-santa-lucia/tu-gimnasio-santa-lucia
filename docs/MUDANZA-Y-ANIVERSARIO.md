@@ -2,7 +2,7 @@
 
 ## Revisión vigente — 25/10/2026
 
-Segunda etapa autorizada e implementada. Mantener scheduled, sin anuncio público de reapertura ni afirmar funcionamiento efectivo u hora de inauguración. Maps conserva San Martín s/n: no retirar aviso de Héroes de Malvinas 150. Conservar el destino con nombre y Place ID comprobados.
+**06/11/2026:** el propietario confirmó que la sede de Héroes de Malvinas 150 abrió el 03/11/2026; `relocation.status` pasa a `open` con esa confirmación fechada. Siguen sin anuncio público de reapertura y sin hora de inauguración. Antecedente: segunda etapa autorizada e implementada. Mantenía scheduled, sin anuncio público de reapertura ni afirmar funcionamiento efectivo u hora de inauguración. Maps conserva San Martín s/n: no retirar aviso de Héroes de Malvinas 150. Conservar el destino con nombre y Place ID comprobados.
 
 La antigüedad aparece también en cabecera y entrada usando el mismo cálculo argentino desde 04/11/1996. Contador completo penúltimo y «Volvamos a las bases» último. No crear cálculos duplicados ni cifras fijas de 30 antes del aniversario.
 
@@ -15,7 +15,7 @@ La apertura de esta sede y la fundación del gimnasio son hechos distintos: se f
 | Campo | Significado vigente |
 | --- | --- |
 | `address` | Dirección autorizada de la sede anunciada; alimenta anuncio, contacto y JSON-LD. Ya no representa Av. Italia 109. |
-| `relocation.status` | `scheduled`: apertura prevista; no implica funcionamiento efectivo. |
+| `relocation.status` | `open` desde el 06/11/2026: apertura efectiva el 03/11/2026, confirmada por el propietario (`openingConfirmedAt`, `openingConfirmedBy`). `scheduled` sigue aceptado para una apertura prevista, que no implica funcionamiento efectivo. |
 | `relocation.openingDate` | `2026-11-03`, fecha sin hora. |
 | `contacts.maps` | Ficha persistente de Tu Gimnasio; comprobada nuevamente, ya apunta al pin nuevo. |
 | `relocation.maps.locationUpdated` | `true`: el perfil cambió al punto nuevo. |

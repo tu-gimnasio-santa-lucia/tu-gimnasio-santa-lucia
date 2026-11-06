@@ -52,6 +52,8 @@ python scripts/prepare-assets.py
 python scripts/prepare-assets.py --check
 ```
 
+Las fotos de la sede son la excepción a los derivados sin pérdida. Sus originales viven fuera del repositorio, en `materiales/fotos-sede-2026-11/originales/` de la carpeta del proyecto, y no se publican. `prepare-assets.py` aplica el recorte declarado en `PHOTOS`, quita los metadatos (cámara y ubicación) y codifica WebP con calidad 78, con un JPEG de respaldo de calidad 82. El manifiesto guarda la fuente, su huella, el recorte, las huellas de cada salida, el texto alternativo y el pie. Las fotos se cargan en diferido y con su tamaño reservado: no forman parte de la carga inicial que mide `performance-check`, y en celular cada una pesa entre 13 y 35 KB.
+
 La instalación debe ejecutarse con el Python de ese entorno activado. `--check` regenera en una carpeta temporal y compara bytes, sin escribir en `assets/`. Conservar hashes, versiones del codificador y licencias; crear un respaldo antes de regenerar. Los scripts fallan ante otra versión para no presentar una salida diferente como idéntica. Las rutas específicas de esta PC quedan en el registro local, fuera de la fuente pública.
 
 ## Decisiones y límites

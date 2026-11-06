@@ -1,6 +1,14 @@
 # Historial de cambios
 
-## 2026-11-05 — Integración local de «Detalle» v4 (sin publicar)
+## 2026-11-06 — Fotos reales de la sede (local, sin publicar)
+
+- Aprobado por el propietario: la fachada de día y de noche en «Visitanos» y una foto por actividad. Refinado a pedido suyo: las seis fotos en 4:3 con el pie como etiqueta sobre la imagen; la fachada como postal sobre las opiniones, con la vista nocturna como recuadro superpuesto; en computadora, cada tarjeta con el texto y la foto lado a lado y los horarios debajo, más baja y sin espacios vacíos. Gimnasia grupal y Pilates comparten el salón de clases grupales, con dos encuadres de la misma foto. La portada no cambia y no hay galería, video ni JavaScript nuevo.
+- `prepare-assets.py` suma un modo para fotos: recorte declarado, sin metadatos, WebP con pérdida (calidad 78) y JPEG de respaldo. Las fuentes son originales sin modificar, fuera del repositorio, con su huella registrada en el manifiesto.
+- El build valida la huella, el texto alternativo y el pie de cada foto, y exige que las cuatro actividades lleven foto o que ninguna la lleve. El revelado `data-clip` de la imagen del cierre ahora vale para todas las imágenes.
+- Sede de Héroes de Malvinas 150 confirmada como abierta desde el 03/11/2026 (confirmación del propietario del 06/11). `relocation.status` = `open` sólo con fecha y origen de confirmación, nunca antes de la apertura; las pruebas rechazan una sede abierta sin confirmación válida. No cambia ningún texto visible ni el build.
+- Pruebas: una nueva para el manifiesto de fotos y aserciones sobre las seis fotos publicadas (diferidas, con tamaño, con descripción y sin rutas de originales). `DESIGN.md` y `docs/RENDIMIENTO.md` actualizados.
+
+## 2026-11-05 — Integración local de «Detalle» v4 (publicada el 05/11/2026)
 
 - Perfeccionamiento v4 aprobado por el propietario e integrado tal como se revisó en `propuestas/rediseno-2026-11-v4/` (mismo build `f830f5fc…`). Cambian sólo `src/index.template.html`, `src/styles.css`, `src/site.js` y `DESIGN.md`.
 - Sistema de movimiento: 3 curvas y 5 duraciones como tokens; salidas más cortas que las entradas; un único escalonado de revelados.

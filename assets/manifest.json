@@ -121,5 +121,197 @@
       }
     ],
     "webpSha256": "8375f7f700a3a5e84a0ca31642fffb7b0774e8e41c2531e23d611c5d843ac7ee"
+  },
+  "facadeDay": {
+    "jpeg": "tu-gimnasio-sede-fachada-dia.jpg",
+    "webp": "tu-gimnasio-sede-fachada-dia.webp",
+    "width": 960,
+    "height": 720,
+    "source": "materiales/fotos-sede-2026-11/originales/WhatsApp Image 2026-11-06 at 12.14.39.jpeg",
+    "sourceSha256": "ce563de35c9426e837e4de487b34b592770caf662f2803923fb1c48c42775f43",
+    "crop": [
+      0,
+      270,
+      960,
+      990
+    ],
+    "sha256": "fb5c2658730072ef84665dd66ed4b399de5acc510e14ce330b9537415c25c142",
+    "webpSha256": "a1d6edb66f0bb9a24f76a56de0ad9c0803476b732381a2572312ee049cf9846b",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-sede-fachada-dia-480.webp",
+        "width": 480,
+        "height": 360,
+        "sha256": "a318bf02d56cb963d9ac01c4c3dbc09c4f7be41c192cfb2417844f70807c8e27"
+      },
+      {
+        "file": "tu-gimnasio-sede-fachada-dia-720.webp",
+        "width": 720,
+        "height": 540,
+        "sha256": "ac8019f3c1af4138b1e0f85a6cd5ef96ecda1758711150280e7089173f882364"
+      }
+    ],
+    "alt": "Fachada de Tu Gimnasio de día: el cartel con el logo sobre la puerta de entrada y los ventanales.",
+    "caption": "Desde la calle"
+  },
+  "facadeNight": {
+    "jpeg": "tu-gimnasio-sede-fachada-noche.jpg",
+    "webp": "tu-gimnasio-sede-fachada-noche.webp",
+    "width": 960,
+    "height": 720,
+    "source": "materiales/fotos-sede-2026-11/originales/WhatsApp Image 2026-11-06 at 12.10.29.jpeg",
+    "sourceSha256": "13a9d9c8d18b24e4ee3e5d208304fbbf30d004b745b26685651c11ee42820c70",
+    "crop": [
+      0,
+      330,
+      960,
+      1050
+    ],
+    "sha256": "0bce0bc27a93d985694845a68915aee068e7f2649aa2c1ca70aee37eee2593b2",
+    "webpSha256": "d56c8f6f0366364c9b5c7a1b7afbf600929ae8a2f5947977f04ec0050e6bb8b9",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-sede-fachada-noche-320.webp",
+        "width": 320,
+        "height": 240,
+        "sha256": "64d2bed36b4193ca8be640a83257b3bdf42e0fccc243fed528714d40fae33f2f"
+      },
+      {
+        "file": "tu-gimnasio-sede-fachada-noche-480.webp",
+        "width": 480,
+        "height": 360,
+        "sha256": "e15dbcf1d25354235360ffeddaf2e201395588e41401a510f40a4eab3f09a54b"
+      }
+    ],
+    "alt": "Fachada de Tu Gimnasio de noche, con el cartel del logo iluminado.",
+    "caption": "De noche"
+  },
+  "photoMusculacion": {
+    "jpeg": "tu-gimnasio-sede-musculacion.jpg",
+    "webp": "tu-gimnasio-sede-musculacion.webp",
+    "width": 960,
+    "height": 720,
+    "source": "materiales/fotos-sede-2026-11/originales/WhatsApp Image 2026-11-06 at 12.11.54 (2).jpeg",
+    "sourceSha256": "8d6bbc10fa4d8bc0b67cb5fb19d5e49b590a92c13359baf057869231db8465e2",
+    "crop": [
+      0,
+      330,
+      960,
+      1050
+    ],
+    "sha256": "57b1ab8fdc0feea9035455b0657ea0581cbf10fff8115c902e1360a170248ec0",
+    "webpSha256": "6794320ddfb1592607316610faae73c5fa809d21e4581f83e805fa10db0f0526",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-sede-musculacion-480.webp",
+        "width": 480,
+        "height": 360,
+        "sha256": "9313f81fa4fe42cd782edaa2fa99c9cca377d655b5625b094645f1fe22c378d8"
+      },
+      {
+        "file": "tu-gimnasio-sede-musculacion-720.webp",
+        "width": 720,
+        "height": 540,
+        "sha256": "6f741a490b3ba08720cbf26b73f0d7de4719fe6dfac67857f12eaa872fdb8625"
+      }
+    ],
+    "alt": "Sala de musculación con bancos, discos y una pared con el logo de Tu Gimnasio.",
+    "caption": "Sala de musculación"
+  },
+  "photoSpinning": {
+    "jpeg": "tu-gimnasio-sede-spinning.jpg",
+    "webp": "tu-gimnasio-sede-spinning.webp",
+    "width": 960,
+    "height": 720,
+    "source": "materiales/fotos-sede-2026-11/originales/WhatsApp Image 2026-11-06 at 12.13.20.jpeg",
+    "sourceSha256": "f23059f9caa5e7fff70ccb756de76b0715bb6805fadd8fd5bb224ef44a0afe67",
+    "crop": [
+      0,
+      380,
+      960,
+      1100
+    ],
+    "sha256": "783c632f17af6bb1d32bb1fdec051a38f1f908798e8537fc0132c4bbc4bab7d8",
+    "webpSha256": "5962e00cf3fc8adf3c3740278a813ec9adbd291b025f2161c673d4fc6e956e7d",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-sede-spinning-480.webp",
+        "width": 480,
+        "height": 360,
+        "sha256": "e68665daa7dc6f516190f798347ced1cdb3d825960d34deb48c1726add10e008"
+      },
+      {
+        "file": "tu-gimnasio-sede-spinning-720.webp",
+        "width": 720,
+        "height": 540,
+        "sha256": "744cb3a8a6f0c425bb17f24d3c55d69037f1a34e59e20ad7fc14861652a9a4ad"
+      }
+    ],
+    "alt": "Dos filas de bicicletas de spinning en la sala de Tu Gimnasio.",
+    "caption": "Sala de spinning"
+  },
+  "photoGimnasiaGrupal": {
+    "jpeg": "tu-gimnasio-sede-salon-steps.jpg",
+    "webp": "tu-gimnasio-sede-salon-steps.webp",
+    "width": 760,
+    "height": 570,
+    "source": "materiales/fotos-sede-2026-11/originales/WhatsApp Image 2026-11-06 at 12.13.20 (1).jpeg",
+    "sourceSha256": "45713cfdd2d20b64f9fe510b9fccf2b48e1826065e711592c77258f21bf2251f",
+    "crop": [
+      520,
+      190,
+      1280,
+      760
+    ],
+    "sha256": "196457e2699c78742428c3e53b1f5015c58cfd8de7d2d59e80707377829afd56",
+    "webpSha256": "2814ad7739f42bc736e47e0988380e3b289b9df930d704fa64a241c25851af82",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-sede-salon-steps-480.webp",
+        "width": 480,
+        "height": 360,
+        "sha256": "25193fd20a02c031c3c08c87e651dd9620d79cb0b748f9d3da508d5e568c27d6"
+      }
+    ],
+    "alt": "Steps de colores apilados contra la pared del salón de clases grupales.",
+    "caption": "Salón de clases grupales"
+  },
+  "photoPilates": {
+    "jpeg": "tu-gimnasio-sede-salon.jpg",
+    "webp": "tu-gimnasio-sede-salon.webp",
+    "width": 1280,
+    "height": 960,
+    "source": "materiales/fotos-sede-2026-11/originales/WhatsApp Image 2026-11-06 at 12.13.20 (1).jpeg",
+    "sourceSha256": "45713cfdd2d20b64f9fe510b9fccf2b48e1826065e711592c77258f21bf2251f",
+    "crop": [
+      0,
+      0,
+      1280,
+      960
+    ],
+    "sha256": "8f0b5fa4444b677cb9d0f44b21e0f1b8a4b5c934f8b5d2116e0a16ce6a80f07f",
+    "webpSha256": "f7f24ca14a89819ae3c486fae0c8dfdc457c1040814a4f8ad093d277a683e68e",
+    "responsive": [
+      {
+        "file": "tu-gimnasio-sede-salon-480.webp",
+        "width": 480,
+        "height": 360,
+        "sha256": "4e86c903e6e5df3079f8f9ce56eb194ed752769eee4a5918d0c69c6395b03447"
+      },
+      {
+        "file": "tu-gimnasio-sede-salon-720.webp",
+        "width": 720,
+        "height": 540,
+        "sha256": "697a72badc304408cc1cdc39919102aa075da22a44d41a174463756a20aa3c47"
+      },
+      {
+        "file": "tu-gimnasio-sede-salon-960.webp",
+        "width": 960,
+        "height": 720,
+        "sha256": "fc1fb0b7f7039fea48783a0311e02c9938c1aa7a07d0630062599b9e3f83fef8"
+      }
+    ],
+    "alt": "Salón de clases grupales de Tu Gimnasio, amplio y con piso libre.",
+    "caption": "Salón de clases grupales"
   }
 }

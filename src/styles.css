@@ -2048,6 +2048,111 @@ html.js:not(.rm) .metric-number.tick {
   border-radius: clamp(1rem, 2vw, 1.75rem);
   box-shadow: 0 2.5rem 6rem -2.5rem rgba(0, 0, 0, 0.65);
 }
+
+/* ================= Venue photos (real, 06/11/2026) ================= */
+/* All six photos share one 4:3 format, the card radius and a hairline edge. Captions sit on
+   the image as a small translucent label, so they take no line of their own. The <img> keeps
+   its width/height: space is reserved before the lazy file arrives (no layout shift). */
+.activity-photo,
+.visit-photo {
+  position: relative;
+  margin: 0;
+}
+.photo-frame {
+  --clip-r: 1.1rem;
+  overflow: hidden;
+  border-radius: var(--clip-r);
+  background: rgba(255, 255, 255, 0.05);
+  outline: 1px solid rgba(255, 255, 255, 0.09);
+  outline-offset: -1px;
+  box-shadow: 0 1.5rem 3.5rem -2rem rgba(0, 0, 18, 0.7);
+}
+.photo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.activity-photo figcaption,
+.visit-photo figcaption {
+  position: absolute;
+  left: 0.7rem;
+  bottom: 0.7rem;
+  max-width: calc(100% - 1.4rem);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(5, 5, 55, 0.74);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font: 750 0.66rem / 1.2 var(--body-font);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.activity-photo {
+  max-width: 34rem;
+  margin-top: 1.75rem;
+}
+/* «Visitanos»: one postcard — the façade by day, with the night view as a small inset that
+   overlaps its lower corner, framed by a hairline of the page background. */
+.visit-photos {
+  position: relative;
+  max-width: 34rem;
+  margin-bottom: 1.6rem;
+}
+.visit-photo.is-night {
+  position: absolute;
+  right: 0.9rem;
+  bottom: -1.6rem;
+  width: 34%;
+}
+.visit-photo.is-night .photo-frame {
+  --clip-r: 0.8rem;
+  box-shadow:
+    0 0 0 3px var(--noche),
+    0 1rem 2rem -0.8rem rgba(0, 0, 18, 0.8);
+}
+.visit-photo.is-night figcaption {
+  left: 0.4rem;
+  bottom: 0.4rem;
+  max-width: calc(100% - 0.8rem);
+  padding: 0.28rem 0.5rem;
+  font-size: 0.58rem;
+}
+/* When the card is wide enough, text and photo share one row and the schedules follow below.
+   The card decides by its own width (in rem), not by the header: enlarged text raises the
+   threshold and the card stacks again, with no script involved. */
+.activity-grid {
+  container: activity-grid / inline-size;
+}
+@container activity-grid (min-width: 40rem) {
+  .activity-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+    align-content: center;
+  }
+  .activity-card > .activity-card-header {
+    grid-column: 1;
+    align-self: start;
+  }
+  .activity-card > .activity-photo {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    max-width: none;
+    margin-top: 0.15rem;
+  }
+  .activity-card > .activity-schedules {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 961px) {
+  @container activity-grid (min-width: 40rem) {
+    .activity-card-header > .activity-description {
+      font-size: clamp(1.4rem, 0.95rem + 0.95vw, 2.15rem);
+    }
+  }
+}
 .manifesto-image {
   display: block;
   width: 100%;
@@ -2417,18 +2522,32 @@ html.js[data-reveals='on']:not(.rm) [data-split] .ln > span {
 html.js[data-reveals='on']:not(.rm) [data-split].is-in .ln > span {
   transform: none;
 }
-html.js[data-reveals='on']:not(.rm) .manifesto-art {
-  clip-path: inset(6% 6% 6% 6% round 1.75rem);
+/* Images open from a slightly inset frame while the picture settles: the closing artwork and
+   every venue photo share this one reveal, with the radius of their own frame. */
+html.js[data-reveals='on']:not(.rm) [data-clip] {
+  clip-path: inset(6% 6% 6% 6% round var(--clip-r, 1.75rem));
   transition: clip-path calc(var(--t-hero) * 1.2) var(--ease-out);
 }
-html.js[data-reveals='on']:not(.rm) .manifesto-image {
+html.js[data-reveals='on']:not(.rm) [data-clip] img {
   transform: scale(1.08);
   transition: transform calc(var(--t-hero) * 1.4) var(--ease-out);
 }
-html.js[data-reveals='on']:not(.rm) .manifesto-art.is-in {
-  clip-path: inset(0 0 0 0 round 1.75rem);
+html.js[data-reveals='on']:not(.rm) [data-clip].is-in {
+  clip-path: inset(0 0 0 0 round var(--clip-r, 1.75rem));
 }
-html.js[data-reveals='on']:not(.rm) .manifesto-art.is-in .manifesto-image {
+html.js[data-reveals='on']:not(.rm) [data-clip].is-in img {
+  transform: none;
+}
+/* The label on a photo arrives once the picture has opened. */
+html.js[data-reveals='on']:not(.rm) .photo-frame + figcaption {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--t-ui) var(--ease-out) 0.45s,
+    transform var(--t-reveal) var(--ease-out) 0.45s;
+}
+html.js[data-reveals='on']:not(.rm) .photo-frame.is-in + figcaption {
+  opacity: 1;
   transform: none;
 }
 @keyframes rise-in {
@@ -2972,8 +3091,8 @@ html.rm {
   }
   [data-reveal],
   [data-split] .ln > span,
-  .manifesto-art,
-  .manifesto-image {
+  [data-clip],
+  [data-clip] img {
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;

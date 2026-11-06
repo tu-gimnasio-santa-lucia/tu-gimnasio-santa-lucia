@@ -160,8 +160,18 @@ export function validateBusinessData(data, project) {
       throw new Error('Cifra de antigüedad inválida.');
     requireText(metric.label, 'etiqueta de antigüedad', 40);
   });
-  if (data.relocation?.status !== 'scheduled' || !validDate(data.relocation.openingDate))
-    throw new Error('La nueva sede tiene una apertura anunciada; no inferir que ya está abierta.');
+  // «open» needs the owner's confirmation, dated on or after the opening; a planned date alone never opens the venue.
+  const relocation = data.relocation;
+  const scheduled = relocation?.status === 'scheduled' && validDate(relocation.openingDate);
+  const confirmedOpen =
+    relocation?.status === 'open' &&
+    validDate(relocation.openingDate) &&
+    validDate(relocation.openingConfirmedAt) &&
+    relocation.openingConfirmedAt >= relocation.openingDate &&
+    typeof relocation.openingConfirmedBy === 'string' &&
+    relocation.openingConfirmedBy.trim().length > 0;
+  if (!scheduled && !confirmedOpen)
+    throw new Error('La nueva sede sólo figura abierta con una apertura confirmada; no inferir que ya está abierta.');
   const map = data.relocation.maps;
   if (
     !map ||
