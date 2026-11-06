@@ -11,7 +11,7 @@
     {
       "name": "404.html",
       "bytes": 2154,
-      "sha256": "7facf67ea82fde0aaa85fe217b947f575d254d38ae96271d26590a555bb81dea"
+      "sha256": "e9fb0c2cc8f1b98af45f8003287f1812fc1846c5f23ddad0c7406ef2700337f5"
     },
     {
       "name": "anton-ofl.txt",
@@ -35,8 +35,8 @@
     },
     {
       "name": "index.html",
-      "bytes": 59743,
-      "sha256": "329940e5fac5cbcd402965ce02832998ffddefb0afc6d16c1638c983d292b2ad"
+      "bytes": 63178,
+      "sha256": "b4ccc25664c373c226099eb361c75c018ee3952d8a4ea7cfbcec005f6d4f04a4"
     },
     {
       "name": "llms.txt",
@@ -69,9 +69,9 @@
       "sha256": "65a80d65b9b6b43066c1ecdd346e57fffc84c55e3827ca43b9a6a2178a3462ab"
     },
     {
-      "name": "styles.1f3e8db38742.css",
-      "bytes": 68744,
-      "sha256": "1f3e8db3874273796a54d6c7787f28600e8ebca2bdd4ee050010da1c4ae1dbee"
+      "name": "styles.2acd1d147eee.css",
+      "bytes": 72239,
+      "sha256": "2acd1d147eee31fff4186d2f3fd64fb271ddc544681d635163fd9c0065ed4851"
     },
     {
       "name": "tu-gimnasio-actividades-1200.webp",
@@ -157,6 +157,126 @@
       "name": "tu-gimnasio-logo.jpg",
       "bytes": 177784,
       "sha256": "1cb712d2d4e2ebefc9aa463b0534ade70780cdcf20bbe1ff813550fa936866cc"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-dia-480.webp",
+      "bytes": 18100,
+      "sha256": "a318bf02d56cb963d9ac01c4c3dbc09c4f7be41c192cfb2417844f70807c8e27"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-dia-720.webp",
+      "bytes": 31718,
+      "sha256": "ac8019f3c1af4138b1e0f85a6cd5ef96ecda1758711150280e7089173f882364"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-dia.jpg",
+      "bytes": 94002,
+      "sha256": "fb5c2658730072ef84665dd66ed4b399de5acc510e14ce330b9537415c25c142"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-dia.webp",
+      "bytes": 45886,
+      "sha256": "a1d6edb66f0bb9a24f76a56de0ad9c0803476b732381a2572312ee049cf9846b"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-noche-320.webp",
+      "bytes": 9772,
+      "sha256": "64d2bed36b4193ca8be640a83257b3bdf42e0fccc243fed528714d40fae33f2f"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-noche-480.webp",
+      "bytes": 19878,
+      "sha256": "e15dbcf1d25354235360ffeddaf2e201395588e41401a510f40a4eab3f09a54b"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-noche.jpg",
+      "bytes": 107802,
+      "sha256": "0bce0bc27a93d985694845a68915aee068e7f2649aa2c1ca70aee37eee2593b2"
+    },
+    {
+      "name": "tu-gimnasio-sede-fachada-noche.webp",
+      "bytes": 58388,
+      "sha256": "d56c8f6f0366364c9b5c7a1b7afbf600929ae8a2f5947977f04ec0050e6bb8b9"
+    },
+    {
+      "name": "tu-gimnasio-sede-musculacion-480.webp",
+      "bytes": 23294,
+      "sha256": "9313f81fa4fe42cd782edaa2fa99c9cca377d655b5625b094645f1fe22c378d8"
+    },
+    {
+      "name": "tu-gimnasio-sede-musculacion-720.webp",
+      "bytes": 41728,
+      "sha256": "6f741a490b3ba08720cbf26b73f0d7de4719fe6dfac67857f12eaa872fdb8625"
+    },
+    {
+      "name": "tu-gimnasio-sede-musculacion.jpg",
+      "bytes": 112771,
+      "sha256": "57b1ab8fdc0feea9035455b0657ea0581cbf10fff8115c902e1360a170248ec0"
+    },
+    {
+      "name": "tu-gimnasio-sede-musculacion.webp",
+      "bytes": 63466,
+      "sha256": "6794320ddfb1592607316610faae73c5fa809d21e4581f83e805fa10db0f0526"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon-480.webp",
+      "bytes": 24228,
+      "sha256": "4e86c903e6e5df3079f8f9ce56eb194ed752769eee4a5918d0c69c6395b03447"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon-720.webp",
+      "bytes": 52976,
+      "sha256": "697a72badc304408cc1cdc39919102aa075da22a44d41a174463756a20aa3c47"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon-960.webp",
+      "bytes": 91150,
+      "sha256": "fc1fb0b7f7039fea48783a0311e02c9938c1aa7a07d0630062599b9e3f83fef8"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon-steps-480.webp",
+      "bytes": 23270,
+      "sha256": "25193fd20a02c031c3c08c87e651dd9620d79cb0b748f9d3da508d5e568c27d6"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon-steps.jpg",
+      "bytes": 80910,
+      "sha256": "196457e2699c78742428c3e53b1f5015c58cfd8de7d2d59e80707377829afd56"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon-steps.webp",
+      "bytes": 51476,
+      "sha256": "2814ad7739f42bc736e47e0988380e3b289b9df930d704fa64a241c25851af82"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon.jpg",
+      "bytes": 210030,
+      "sha256": "8f0b5fa4444b677cb9d0f44b21e0f1b8a4b5c934f8b5d2116e0a16ce6a80f07f"
+    },
+    {
+      "name": "tu-gimnasio-sede-salon.webp",
+      "bytes": 157642,
+      "sha256": "f7f24ca14a89819ae3c486fae0c8dfdc457c1040814a4f8ad093d277a683e68e"
+    },
+    {
+      "name": "tu-gimnasio-sede-spinning-480.webp",
+      "bytes": 28030,
+      "sha256": "e68665daa7dc6f516190f798347ced1cdb3d825960d34deb48c1726add10e008"
+    },
+    {
+      "name": "tu-gimnasio-sede-spinning-720.webp",
+      "bytes": 52962,
+      "sha256": "744cb3a8a6f0c425bb17f24d3c55d69037f1a34e59e20ad7fc14861652a9a4ad"
+    },
+    {
+      "name": "tu-gimnasio-sede-spinning.jpg",
+      "bytes": 135173,
+      "sha256": "783c632f17af6bb1d32bb1fdec051a38f1f908798e8537fc0132c4bbc4bab7d8"
+    },
+    {
+      "name": "tu-gimnasio-sede-spinning.webp",
+      "bytes": 84760,
+      "sha256": "5962e00cf3fc8adf3c3740278a813ec9adbd291b025f2161c673d4fc6e956e7d"
     }
   ]
 }
