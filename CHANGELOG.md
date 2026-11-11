@@ -1,5 +1,11 @@
 # Historial de cambios
 
+## 2026-11-11 - Reglas y skills de Claude Code versionadas (sin cambios en el sitio)
+
+- Nuevo .claude/CLAUDE.md: importa AGENTS.md y agrega cómo trabajar con Claude Code, también en sesiones en la nube: preservación de clases, IDs y atributos, separación HTML/CSS/JS, verificación y Git. Sin configuración de ninguna PC.
+- Seis skills en .claude/skills/ (ponytail, frontend-design, review-animations, improve-animations, security-review y security-and-hardening), copiadas sin cambios con su licencia MIT o Apache-2.0. Son asesoramiento subordinado a la marca y a las puertas.
+- No cambian src/, datos, recursos, scripts, pruebas ni el build publicado.
+
 ## 2026-11-06 — Fotos reales de la sede (local, sin publicar)
 
 - Aprobado por el propietario: la fachada de día y de noche en «Visitanos» y una foto por actividad. Refinado a pedido suyo: las seis fotos en 4:3 con el pie como etiqueta sobre la imagen; la fachada como postal sobre las opiniones, con la vista nocturna como recuadro superpuesto; en computadora, cada tarjeta con el texto y la foto lado a lado y los horarios debajo, más baja y sin espacios vacíos. Gimnasia grupal y Pilates comparten el salón de clases grupales, con dos encuadres de la misma foto. La portada no cambia y no hay galería, video ni JavaScript nuevo.
